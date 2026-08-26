@@ -1,0 +1,44 @@
+{
+  "kerjasama/create": {
+    "module": "kerjasama",
+    "page": "create",
+    "path": "/v2/kerjasama/data-kerjasama/create",
+    "pattern": "/v2/kerjasama/data-kerjasama/create"
+  },
+  "kerjasama/create-filled": {
+    "module": "kerjasama",
+    "page": "create-filled",
+    "path": "/v2/kerjasama/data-kerjasama/create",
+    "pattern": "/v2/kerjasama/data-kerjasama/create"
+  },
+  "kerjasama/create-success": {
+    "module": "kerjasama",
+    "page": "create-success",
+    "path": "/v2/kerjasama/data-kerjasama/101",
+    "pattern": "/v2/kerjasama/data-kerjasama/{id}"
+  },
+  "kerjasama/daftar": {
+    "module": "kerjasama",
+    "page": "daftar",
+    "path": "/v2/kerjasama/data-kerjasama",
+    "pattern": "/v2/kerjasama/data-kerjasama"
+  },
+  "kerjasama/detail": {
+    "module": "kerjasama",
+    "page": "detail",
+    "path": "/v2/kerjasama/data-kerjasama/101",
+    "pattern": "/v2/kerjasama/data-kerjasama/{id}"
+  },
+  "kerjasama/edit-success": {
+    "module": "kerjasama",
+    "page": "edit-success",
+    "path": "/v2/kerjasama/data-kerjasama/101",
+    "pattern": "/v2/kerjasama/data-kerjasama/{id}"
+  },
+  "kerjasama/index": {
+    "module": "kerjasama",
+    "page": "index",
+    "path": "/v2/kerjasama/dashboard",
+    "pattern": "/v2/kerjasama/dashboard"
+  }
+}
