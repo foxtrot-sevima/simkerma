@@ -1,7 +1,7 @@
 # Mockup sync report - kerjasama/detail
 
 - Source capture: `mockups/raw/kerjasama-detail/SEVIMA Platform - Detail Kerjasama Detail.html`
-- Generated mockup: `mockups/pages/kerjasama/detail.html`
+- Generated mockup: `v1/kerjasama-detail.html`
 - Rendering CSS source: **captured (3 file(s))**
   (this page's own captured stylesheet was used, so visuals should match production exactly)
 - Everything is local now - 4 font/pattern url()s resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), 0 unresolvable external url()s dropped to `none`.
@@ -56,7 +56,7 @@ Charts: 0 functional script(s) vendored locally (Chart.js + datalabels plugin + 
 - Preload/prefetch links removed: 9
 - Dead/extension `<style>` blocks removed: 2
 - HTML comments stripped: 3
-- Captured `<link rel=stylesheet>` dropped (replaced by the vendored copies above): 4
+- Captured `<link rel=stylesheet>` dropped (replaced by the QUANTUM vendor bundle above): 4
 - Captured `<script src>` dropped: 4 (0 of those kept - see Charts/Dropdowns above)
 - Images re-pointed to the local capture's asset folder: 3
 - Favicon swapped for the capture's own logo (browsers don't save the real favicon file)

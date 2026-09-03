@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html class="sf-js-enabled" data-mockup-page-id="kerjasama/index" lang="en"><head><base href="/v1/"/><link href="assets/captured/app-1960aad9.css" rel="stylesheet"/><link href="assets/captured/app-627c9488.css" rel="stylesheet"/><link href="assets/captured/stylesheets.css" rel="stylesheet"/></head><body><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Uf7U40VcJcjB5i3PaBxxotVef2cti6TwjQHf8WR3" name="csrf-token"/>
+<title>SEVIMA Platform - Dashboard</title>
+<link href="../mockups/raw/dashboard/SEVIMA Platform - Dashboard_files/logo-sevimaplatform-small.png" rel="icon"/>
+
+
+
+<style>
+        .qn-header-pattern {
+            background-image: url(assets/vendors/local-assets/sevima-header.webp);
+        }
+
+        .qn-sidebar {
+            background-image: url(assets/vendors/local-assets/sevima-sidebar.svg);
+        }
+
+        @font-face {
+            font-display: block;
+            font-family: "quantum-symbols";
+            src: url(assets/vendors/local-assets/quantum-symbols.woff2) format("woff2"),
+            url(assets/vendors/local-assets/quantum-symbols.woff) format("woff");
+        }
+    </style><style>/* Make clicks pass-through */
+
+    #nprogress {
+      pointer-events: none;
+    }
+
+    #nprogress .bar {
+      background: var(--livewire-progress-bar-color, #29d);
+
+      position: fixed;
+      z-index: 1031;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 2px;
+    }
+
+    /* Fancy blur effect */
+    #nprogress .peg {
+      display: block;
+      position: absolute;
+      right: 0px;
+      width: 100px;
+      height: 100%;
+      box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+      opacity: 1.0;
+
+      -webkit-transform: rotate(3deg) translate(0px, -4px);
+          -ms-transform: rotate(3deg) translate(0px, -4px);
+              transform: rotate(3deg) translate(0px, -4px);
+    }
+
+    /* Remove these to get rid of the spinner */
+    #nprogress .spinner {
+      display: block;
+      position: fixed;
+      z-index: 1031;
+      top: 15px;
+      right: 15px;
+    }
+
+    #nprogress .spinner-icon {
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+
+      border: solid 2px transparent;
+      border-top-color: var(--livewire-progress-bar-color, #29d);
+      border-left-color: var(--livewire-progress-bar-color, #29d);
+      border-radius: 50%;
+
+      -webkit-animation: nprogress-spinner 400ms linear infinite;
+              animation: nprogress-spinner 400ms linear infinite;
+    }
+
+    .nprogress-custom-parent {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+      position: absolute;
+    }
+
+    @-webkit-keyframes nprogress-spinner {
+      0%   { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes nprogress-spinner {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style><style></style><style id="dark-reader-style" type="text/css">@media screen {
+html {-webkit-transition : -webkit-filter 300ms linear;}
+}</style>
+<div class="">
+<header class="qn-header z-2 sticky-top header_position-static">
+<div class="qn-header-pattern p-md-3 py-3 px-xl-5 bg-primary text-white">
+<div class="container-fluid">
+<div class="d-flex flex-wrap align-items-center justify-content-start">
+<div class="d-flex gap-2 gap-md-3 align-items-center">
+<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-icon btn-lg btn-light rounded-1 d-block d-lg-none bg-transparent text-white" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<i class="sym sym-menu-03"></i>
+</button>
+<a class="qn-identity d-flex align-items-center link-body-emphasis text-decoration-none rounded-3 bg-white" data-mockup-unresolved="/v2/kerjasama" href="#">
+<img alt="Example Campus Logo" class="img-fluid w-auto h-100 object-fit-contain" src="../mockups/raw/dashboard/SEVIMA Platform - Dashboard_files/logo-sevimaplatform-small.png"/>
+</a>
+<div class="d-flex flex-column">
+<span>SIM Kerjasama</span>
+<h5 class="m-0">Universitas Foxtrot</h5>
+</div>
+</div>
+<div class="ms-auto d-flex align-items-center gap-1">
+<div class="d-none d-md-flex align-items-center gap-1">
+<a aria-label="Pindah Modul" class="btn btn-light p-2 py-1 bg-transparent text-white border-0" data-mockup-unresolved="/gate/menu" href="#">
+<i class="sym sym-dots-grid-solid"></i>
+<span class="d-none d-lg-inline-block ms-2">Modul</span>
+</a>
+</div>
+<hr class="d-none d-md-block vr mx-2"/>
+
+<div class="dropdown d-none d-md-block rounded-4 bg-white text-black p-1">
+<a aria-expanded="false" class="d-flex gap-1 align-items-center link-body-emphasis text-decoration-none dropdown-toggle pe-1" data-bs-toggle="dropdown" href="index.html">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<span class="qn-avatar-name d-none d-lg-block text-truncate">Dimas Sevima</span>
+</a>
+<ul class="dropdown-menu pt-0 text-small" style="width: 296px;">
+<li>
+<div class="d-flex flex-column gap-2 p-3 py-4 pb-3 text-nowrap">
+<div class="d-flex align-items-center gap-3">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<div class="d-block">
+<h6 class="mb-1">Dimas Sevima</h6>
+<span class="text-muted">Superadmin</span>
+</div>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<button class="dropdown-item d-flex flex-nowrap justify-content-between" data-bs-target="#modal-switch-role" data-bs-toggle="modal">
+                                    Ganti Role
+                                    <i class="sym sym-refresh-ccw-02"></i>
+</button>
+</li>
+<li>
+<a class="dropdown-item text-danger" data-mockup-unresolved="/v2/gate/sessions/logout" href="#">
+<i class="sym sym-arrow-left-solid me-2"></i>
+                                    Keluar
+                                </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md-3 py-md-0 px-xl-5 border-bottom shadow-sm bg-white">
+<div class="container-fluid">
+<nav class="navbar navbar-expand-lg p-0 bg-white">
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="w-100 navbar-nav py-1 gap-1">
+<li class="nav-item">
+<a aria-current="page" class="nav-link text-primary active" href="index.html">Dashboard</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="kerjasama-daftar.html">Kerjasama</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/kegiatan" href="#">Kegiatan</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/mitra" href="#">Mitra</a>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="index.html" role="button">
+                                    Data Referensi
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/bentuk-kegiatan" href="#">Bentuk Kegiatan</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sasaran-kinerja" href="#">Sasaran Kinerja</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/kriteria-mitra" href="#">Kriteria Mitra</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sumber-dana" href="#">Sumber Dana</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/jenis-dokumen" href="#">Jenis Dokumen</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/unit-kerja" href="#">Unit Kerja</a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="index.html" role="button">
+                                    Laporan
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/laporan-kerjasama" href="#">Laporan Kerjasama</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<form action="#" data-mockup-unresolved="/v2/gate/sessions/switch-role" enctype="multipart/form-data" id="form-switch" method="POST">
+<input autocomplete="off" name="_token" type="hidden" value="Uf7U40VcJcjB5i3PaBxxotVef2cti6TwjQHf8WR3"/> <div aria-hidden="true" aria-labelledby="modalDeleteLabel" class="modal fade" id="modal-switch-role" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper">
+<h5 class="modal-title">Ganti Role</h5>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="box-switch selected" data-module="kerjasama" data-name="sa" data-organization="0" onclick="switchRole(this)">
+<h5>
+                        Superadmin
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">SEVIMA</span>
+</h5>
+<div>
+<i class="sym sym-check-circle-solid" style="color:#5d88f6"></i>
+</div>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_perguruan_tinggi" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Administrator PT
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_kerjasama" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Admin Kerjasama
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<div class="container">
+<div class="row row-cols-1 gy-3 p-3 p-lg-4">
+<div class="d-flex align-items-center justify-content-between gap-1 px-0 mb-2">
+<div class="d-flex flex-column gap-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li aria-current="page" class="breadcrumb-item active">Dashboard</li>
+</ol>
+</nav>
+<div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end gap-2">
+<h4 class="m-0"></h4>
+</div>
+</div>
+</div>
+<div class="container">
+<div class="px-0">
+<div class="row row-cols-1 row-cols-lg-5 mx-0">
+ <div class="pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+ 
+<div class="card p-3 w-100 h-100">
+<div class="d-flex gap-2 align-items-center mb-1">
+<i class="sym sym-check-square-broken fs-4 text-success"></i>
+<h4 class="mb-0">Aktif</h4>
+</div>
+<span class="fs-2 lh-1 my-1 d-block">100</span>
+<span class="text-secondary small">Kerjasama sedang berjalan dan masih berlaku.</span>
+</div>
+ 
+</div>
+<div class="pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+ <a class="text-decoration-none text-reset d-block w-100 h-100" href="kerjasama-daftar.html">
+
+<div class="card p-3 w-100 h-100">
+<div class="d-flex gap-2 align-items-center mb-1">
+<i class="sym sym-alert-triangle fs-4 text-warning"></i>
+<h4 class="mb-0">Akan Kedaluwarsa</h4>
+</div>
+<span class="fs-2 lh-1 my-1 d-block">7</span>
+<span class="text-secondary small">Kerjasama aktif yang akan berakhir dalam 30 hari.</span>
+</div>
+ </a>
+
+</div>
+<div class="pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+ 
+<div class="card p-3 w-100 h-100">
+<div class="d-flex gap-2 align-items-center mb-1">
+<i class="sym sym-clock-refresh fs-4 text-primary"></i>
+<h4 class="mb-0">Perpanjangan</h4>
+</div>
+<span class="fs-2 lh-1 my-1 d-block">0</span>
+<span class="text-secondary small">Kerjasama sedang dalam proses perpanjangan.</span>
+</div>
+ 
+</div>
+<div class="pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+ 
+<div class="card p-3 w-100 h-100">
+<div class="d-flex gap-2 align-items-center mb-1">
+<i class="sym sym-alert-triangle fs-4 text-warning"></i>
+<h4 class="mb-0">Kedaluwarsa</h4>
+</div>
+<span class="fs-2 lh-1 my-1 d-block">0</span>
+<span class="text-secondary small">Kerjasama telah melewati masa berlaku dan belum diperpanjang.</span>
+</div>
+ 
+</div>
+<div class="pb-md-0 pb-3 px-0">
+ 
+<div class="card p-3 w-100 h-100">
+<div class="d-flex gap-2 align-items-center mb-1">
+<i class="sym sym-x-circle fs-4 text-danger"></i>
+<h4 class="mb-0">Tidak Aktif</h4>
+</div>
+<span class="fs-2 lh-1 my-1 d-block">0</span>
+<span class="text-secondary small">Kerjasama sudah tidak berlaku atau dihentikan.</span>
+</div>
+ 
+</div>
+
+</div>
+</div>
+<br/>
+<div class="px-0">
+<div class="row row-cols-1 row-cols-lg-3 mx-0 g-3">
+<div class="col px-0">
+<div class="card h-100" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Jenis Dokumen</h4>
+</div>
+</div>
+<div class="p-2" style="height: 280px; position: relative">
+<canvas height="330" id="chart-bar-dokumen" width="492"></canvas>
+</div>
+</div>
+</div>
+<div class="col ps-lg-3 ps-md-0 pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card h-100" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4> Ruang Lingkup Mitra</h4>
+</div>
+</div>
+
+<div class="" style="height: 280px; position: relative">
+<canvas height="350" id="chart-pie-ruang-lingkup" width="472"></canvas>
+</div>
+</div>
+</div>
+<div class="col ps-lg-2 ps-md-0 pe-lg-0 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card h-100" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Jenis Mitra</h4>
+</div>
+</div>
+<div class="p-2" style="height: 280px; position: relative">
+<canvas height="330" id="chart-gauge-bar-doughnut" width="482"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+<br/>
+<div class="px-0 mb-3">
+<div class="row row-cols-1 row-cols-lg-3 mx-0">
+<div class="pb-md-0 col-lg-6 pb-3 px-0 pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Bentuk Kegiatan Terbanyak</h4>
+</div>
+</div>
+<div class="p-2" style="height: 280px; position: relative">
+<canvas height="280" id="chart-bar-bentuk-kegiatan"></canvas>
+</div>
+</div>
+</div>
+<div class="col-lg-6 pe-lg-2 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Top 5 Unit Kerja</h4>
+</div>
+</div>
+<div class="" style="height: 280px; position: relative; padding: 0;">
+<canvas height="350" id="chart-bar-unit-kerja" width="789"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-0 mb-3">
+<div class="row row-cols-1 row-cols-lg-3 mx-0">
+<div class="pb-md-0 pb-3 px-0 pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Top 5 Provinsi Mitra</h4>
+</div>
+</div>
+<div class="" style="height: 280px; position: relative">
+<canvas height="350" id="chart-bar-wilayah" width="492"></canvas>
+</div>
+</div>
+</div>
+<div class="col-lg-8 pe-lg-2 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Top 5 Kriteria Mitra</h4>
+</div>
+</div>
+<div class="" style="height: 280px; position: relative">
+<canvas height="350" id="chart-bar-kriteria-mitra" width="1076"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="px-0 mb-3">
+<div class="row row-cols-1 row-cols-lg-3 mx-0">
+<div class="pb-md-0 col-lg-6 pb-3 px-0 pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Implementasi Kegiatan</h4>
+</div>
+</div>
+<div class="p-2" style="height: 280px; position: relative">
+<canvas height="330" id="chart-pie-implementasi-kegiatan" width="759"></canvas>
+</div>
+</div>
+</div>
+<div class="col-lg-6 pe-lg-2 pe-lg-3 pb-lg-0 pb-md-3 pb-2 pb-md-0 pb-3 px-0">
+<div class="card" style="padding: 1.5rem;">
+<div class="card-title">
+<div>
+<h4>Implementasi Kerjasama</h4>
+</div>
+</div>
+<div class="" style="height: 280px; position: relative; padding: 0;">
+<canvas height="350" id="chart-pie-implementasi-kerjasama" width="779"></canvas>
+</div>
+</div>
+</div>
+</div>
+</div>
+<br/>
+</div>
+</div>
+</div>
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="index.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/dashboard/SEVIMA Platform - Dashboard_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+</main>
+</div>
+ 
+
+
+
+
+
+
+
+<veepn-lock-screen><template shadowrootmode="open"><style>html{box-sizing:border-box;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;word-break:normal;tab-size:4}*,:before,:after{box-sizing:border-box;background-repeat:no-repeat}:before,:after{-webkit-text-decoration:inherit;text-decoration:inherit;vertical-align:inherit}*{margin:0;padding:0}hr{height:0;color:inherit;border:0;border-top:1px solid;overflow:visible}details,main{display:block}summary{display:list-item}small{font-size:80%}[hidden]{display:none!important}abbr[title]{border-bottom:none;-webkit-text-decoration:underline dotted;text-decoration:underline dotted}a{background-color:#0000}a:active,a:hover{outline-width:0}code,kbd,pre,samp{font-family:monospace}pre{font-size:1em}b,strong{font-weight:bolder}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{border-color:inherit;text-indent:0}iframe{border-style:none}input{border-radius:0}[type=number]::-webkit-inner-spin-button{height:auto}[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{appearance:none}textarea{resize:vertical;overflow:auto}button,input,optgroup,select,textarea{font:inherit;color:inherit}optgroup{font-weight:700}button{overflow:visible}button,select{text-transform:none}button,[type=button],[type=reset],[type=submit],[role=button]{cursor:pointer}button::-moz-focus-inner{border-style:none;padding:0}[type=button]::-moz-focus-inner{border-style:none;padding:0}[type=reset]::-moz-focus-inner{border-style:none;padding:0}[type=submit]::-moz-focus-inner{border-style:none;padding:0}button,html [type=button],[type=reset],[type=submit]{appearance:auto}button,input,select,textarea{background-color:#0000;border-style:none}button:-moz-focusring{outline:1px dotted buttontext}[type=button]::-moz-focus-inner{outline:1px dotted buttontext}[type=reset]::-moz-focus-inner{outline:1px dotted buttontext}[type=submit]::-moz-focus-inner{outline:1px dotted buttontext}select{appearance:none}a:focus,button:focus,input:focus,select:focus,textarea:focus{outline-width:0}select::-ms-expand{display:none}select::-ms-value{color:currentColor}legend{color:inherit;white-space:normal;border:0;max-width:100%;display:table}::-webkit-file-upload-button{appearance:auto;color:inherit;font:inherit}[disabled]{cursor:default}img{border-style:none}progress{vertical-align:baseline}[aria-busy=true]{cursor:progress}[aria-controls]{cursor:pointer}[aria-disabled=true]{cursor:default}ul,ol{list-style-type:none}figure{margin:0}@keyframes slide-in{0%{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0%)}}.gradient-blue{background:radial-gradient(106.41% 128.47% at 50.15% 128.47%,#23abff 0%,#3066ff 100%)}.gradient-green{background:radial-gradient(92.26% 118.88% at 50.15% .13%,#00c3c3 0%,#00aab3 100%)}.gradient-purple{background:radial-gradient(165.12% 115.56% at 50.15% .13%,#a15aff 0%,#00a0eb 100%)}.bg-blue{background-color:#f2f5ff}.bg-purple{background-color:#f7f0ff}.bg-green{background-color:#ebffed}.lock-screen{letter-spacing:normal;z-index:2147483638;border-radius:24px;width:327px;font-family:FigtreeVF,sans-serif;animation:.3s ease-in-out forwards slide-in;position:fixed;bottom:24px;right:24px;overflow:hidden;box-shadow:0 24px 32px #00000014}.lock-screen__content{padding:24px 24px 64px;position:relative}.lock-screen__close{opacity:.5;justify-content:center;align-items:center;width:24px;height:24px;display:flex;position:absolute;top:16px;right:16px}.lock-screen__label{color:#fff;background-color:#fff3;border-radius:50px;justify-content:center;align-items:center;gap:8px;width:fit-content;height:26px;margin:-8px auto 16px;padding-inline:16px;font-size:12px;line-height:18px;display:flex}.lock-screen__title{color:#fff;text-align:center;margin-bottom:8px;font-size:20px;font-weight:600;line-height:28px}.lock-screen__description{color:#f5f6f7;text-align:center;font-size:14px;line-height:20px}.lock-screen__description b{font-weight:600}.lock-screen__card{z-index:1;background-color:#fff;border-radius:24px;margin-top:-44px;padding:32px 20px 20px;position:relative}.lock-screen__inner{margin-bottom:24px}.lock-screen__submit{color:#fff;background-color:#f70;border-radius:12px;justify-content:center;align-items:center;gap:10px;width:100%;height:40px;margin-bottom:16px;padding-inline:16px;font-size:16px;font-weight:700;display:flex}.lock-screen__skip{color:#82829c;justify-content:center;align-items:center;margin-inline:auto;font-size:14px;line-height:20px;display:flex}.price-card{background:linear-gradient(254.14deg,#fafbff .04%,#f5f8ff 100.04%);border:1px solid #f2f2fc;border-radius:24px;padding:24px 28px}.price-card__label{color:#4a5764;text-align:center;text-transform:uppercase;margin-bottom:16px;font-size:14px;line-height:20px}.price-card__price{justify-content:center;align-items:flex-start;column-gap:2px;margin-bottom:12px;display:flex}.price-card__currency{color:#515478;font-size:18px;line-height:28px}.price-card__number{color:#14142a;text-align:center;font-size:64px;line-height:54px}.price-card__wrap{flex-direction:column;display:flex}.price-card__decimal{color:#515478;font-size:18px;font-weight:600;line-height:28px}.price-card__period{color:#515478;margin-top:-6px;font-size:14px;line-height:20px}.price-card__discount{justify-content:center;align-items:center;margin-bottom:12px;display:flex;position:relative}.price-card__discount-divider{z-index:0;background-color:#dbe2f9;width:100%;height:1px;position:absolute;top:50%;left:0;transform:translateY(-50%)}.price-card__discount-icon{z-index:1;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}.price-card__discount-text{z-index:2;color:#fff;font-size:12px;font-weight:600;line-height:18px;position:relative}.price-card__features{justify-content:center;align-items:center;column-gap:16px;display:flex}.price-card__feature{color:#222e3a;align-items:center;gap:6px;font-size:14px;line-height:20px;display:flex}.price-card__feature:before{content:"";background-color:#20df9e;border-radius:50%;flex-shrink:0;width:4px;height:4px;display:block}.features-list{grid-template-columns:repeat(3,1fr);gap:12px;display:grid}.features-list__item{flex-direction:column;align-items:center;gap:6px;display:flex}.features-list__icon{border-radius:12px;justify-content:center;align-items:center;width:52px;height:52px;display:flex}.features-list__text{color:#293a53;text-align:center;letter-spacing:-.1px;font-size:16px;line-height:24px}</style></template><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style></veepn-lock-screen><div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/chart.js"></script><script src="assets/chartjs-plugin-datalabels.min.js"></script><script src="assets/chart-settings.js"></script><script>
+        function splitAllLabels(chartLabels) {
+            return chartLabels.map(label => {
+                const parts = label.split(' ');
+                return parts.length > 2 ? parts : label;
+            });
+        }
+
+        Chart.register(ChartDataLabels);
+        document.addEventListener('DOMContentLoaded', function() {
+            const qnFuncColorBlue = "#0F6AF5";
+            const qnFuncColorNeutral200 = "#369a97";
+            const thirdColor = "#286361";
+
+            let chartDoughnut = null;
+            let chartBar = null;
+            let chartBarKegiatan = null;
+            let chartBarUnitKerja = null;
+            let chartPieRuangLingkup = null;
+            let chartBarKriteriaMitra = null;
+            let chartBarWilayah = null;
+            let chartPieImplementasiKegiatan = null;
+            let chartPieImplementasiKerjasama = null;
+
+
+            const buildChartDoughnut = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-gauge-bar-doughnut");
+                if (!canvasElement) {
+                    console.error('Canvas element "chart-gauge-bar-doughnut" not found');
+                    return null;
+                }
+
+                // Destroy existing chart if it exists
+                if (chartDoughnut) {
+                    chartDoughnut.destroy();
+                }
+
+                try {
+                    chartDoughnut = new Chart(canvasElement, {
+                        type: "pie",
+                        data: {
+                            labels: chartLabels,
+                            datasets: [{
+                                data: chartData,
+                                backgroundColor: [qnFuncColorBlue, qnFuncColorNeutral200],
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: "0%",
+                            borderRadius: 10,
+                            layout: {
+                                padding: 0
+                            },
+                            rotation: 270,
+                            hoverBorderWidth: 0,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom'
+                                },
+                                tooltip: {
+                                    enabled: true
+                                },
+                                datalabels: {
+                                    enabled: true,
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    formatter: (value) => value.toLocaleString("id-ID"),
+                                },
+                            },
+                            animation: true,
+                        },
+                    });
+                    console.log('Doughnut chart created successfully');
+                    return chartDoughnut;
+                } catch (error) {
+                    console.error('Error creating doughnut chart:', error);
+                    return null;
+                }
+            };
+
+            const buildChartBar = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-bar-dokumen");
+                const formattedLabels = splitAllLabels(chartLabels);
+                try {
+                    chartBar = new Chart(canvasElement, {
+                        type: "bar",
+                        data: {
+                            labels: formattedLabels,
+                            datasets: [{
+                                data: chartData,
+                                backgroundColor: [qnFuncColorBlue],
+                                borderColor: [qnFuncColorBlue],
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        display: true,
+                                        color: 'black'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                datalabels: {
+                                    enabled: true,
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    formatter: (value) => value.toLocaleString("id-ID"),
+                                },
+                                tooltip: {
+                                    enabled: true,
+                                    callbacks: {
+                                        label: (context) => context.parsed.y.toLocaleString("id-ID")
+                                    },
+                                },
+                            },
+                        },
+                    });
+                    console.log('Bar chart created successfully');
+                    return chartBar;
+                } catch (error) {
+                    console.error('Error creating bar chart:', error);
+                    return null;
+                }
+            };
+
+
+            const buildChartBarBentukKegiatan = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-bar-bentuk-kegiatan");
+                const chartBarKegiatan = new Chart(canvasElement, {
+                    type: "bar",
+                    data: {
+                        labels: chartData.map((_, i) => i + 1), // Order number
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: [qnFuncColorBlue],
+                            borderColor: [qnFuncColorBlue],
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.5,
+                            barThickness: 22
+                        }],
+                    },
+                    options: {
+                        layout: {
+                            padding: 0
+                        },
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                display: false,
+                                max: Math.max(...chartData) * 1.1,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                border: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'black',
+                                    mirror: true,
+                                    font: {
+                                        size: 14
+                                    },
+                                    labelOffset: -20,
+                                    callback: function(value, index) {
+                                        return `${index + 1}. ${chartLabels[index]}`;
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    title: (context) => {
+                                        return `${context[0].label}. ${chartLabels[context[0].dataIndex]}`;
+                                    },
+                                    label: (context) => {
+                                        return context.parsed.x.toLocaleString("id-ID");
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    size: 14
+                                },
+                                anchor: 'end',
+                                align: 'right',
+                                offset: 5,
+                                formatter: (value) => value.toLocaleString("id-ID")
+                            },
+
+                        }
+                    }
+                });
+                console.log('Progress bar chart for Unit Kerja created successfully');
+                return chartBarKegiatan;
+            };
+
+            const buildChartBarUnitKerja = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-bar-unit-kerja");
+                const chartBarUnitKerja = new Chart(canvasElement, {
+                    type: "bar",
+                    data: {
+                        labels: chartData.map((_, i) => i + 1), // Order number
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: [qnFuncColorBlue],
+                            borderColor: [qnFuncColorBlue],
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.5,
+                            barThickness: 22
+                        }],
+                    },
+                    options: {
+                        layout: {
+                            padding: 0
+                        },
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                display: false,
+                                max: Math.max(...chartData) * 1.1,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                border: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'black',
+                                    mirror: true,
+                                    font: {
+                                        size: 14
+                                    },
+                                    labelOffset: -20,
+                                    callback: function(value, index) {
+                                        return `${index + 1}. ${chartLabels[index]}`;
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    title: (context) => {
+                                        return `${context[0].label}. ${chartLabels[context[0].dataIndex]}`;
+                                    },
+                                    label: (context) => {
+                                        return context.parsed.x.toLocaleString("id-ID");
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    size: 14
+                                },
+                                anchor: 'end',
+                                align: 'right',
+                                offset: 5,
+                                formatter: (value) => value.toLocaleString("id-ID")
+                            },
+
+                        }
+                    }
+                });
+                console.log('Progress bar chart for Unit Kerja created successfully');
+                return chartBarUnitKerja;
+            };
+
+            const buildChartPieRuangLingkup = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-pie-ruang-lingkup");
+
+                try {
+                    chartPieRuangLingkup = new Chart(canvasElement, {
+                        type: "pie",
+                        data: {
+                            labels: chartLabels,
+                            datasets: [{
+                                data: chartData,
+                                backgroundColor: [qnFuncColorBlue, qnFuncColorNeutral200, thirdColor],
+                            }],
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.5,
+                            barThickness: 22
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: "0%",
+                            borderRadius: 10,
+                            layout: {
+                                padding: 0
+                            },
+                            rotation: 270,
+                            hoverBorderWidth: 0,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom'
+                                },
+                                tooltip: {
+                                    enabled: true
+                                },
+                                datalabels: {
+                                    enabled: true,
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    formatter: (value) => value.toLocaleString("id-ID"),
+                                },
+                            },
+                            animation: true,
+                        },
+                    });
+                    console.log('Doughnut chart created successfully');
+                    return chartDoughnut;
+                } catch (error) {
+                    console.error('Error creating doughnut chart:', error);
+                    return null;
+                }
+            };
+
+            const buildChartPieImplementasiKegiatan = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-pie-implementasi-kegiatan");
+
+                try {
+                    chartPieImplementasiKegiatan = new Chart(canvasElement, {
+                        type: "pie",
+                        data: {
+                            labels: chartLabels,
+                            datasets: [{
+                                data: chartData,
+                                backgroundColor: [qnFuncColorBlue, qnFuncColorNeutral200, thirdColor],
+                            }],
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.5,
+                            barThickness: 22
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: "0%",
+                            borderRadius: 10,
+                            layout: {
+                                padding: 0
+                            },
+                            rotation: 270,
+                            hoverBorderWidth: 0,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom'
+                                },
+                                tooltip: {
+                                    enabled: true
+                                },
+                                datalabels: {
+                                    enabled: true,
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    formatter: (value) => value.toLocaleString("id-ID"),
+                                },
+                            },
+                            animation: true,
+                        },
+                    });
+                    return chartPieImplementasiKegiatan;
+                } catch (error) {
+                    return null;
+                }
+            };
+
+
+            const buildChartPieImplementasiKerjasama = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-pie-implementasi-kerjasama");
+
+                try {
+                    chartPieImplementasiKerjasama = new Chart(canvasElement, {
+                        type: "pie",
+                        data: {
+                            labels: chartLabels,
+                            datasets: [{
+                                data: chartData,
+                                backgroundColor: [qnFuncColorBlue, qnFuncColorNeutral200, thirdColor],
+                            }],
+                            barPercentage: 0.7,
+                            categoryPercentage: 0.5,
+                            barThickness: 22
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: "0%",
+                            borderRadius: 10,
+                            layout: {
+                                padding: 0
+                            },
+                            rotation: 270,
+                            hoverBorderWidth: 0,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom'
+                                },
+                                tooltip: {
+                                    enabled: true
+                                },
+                                datalabels: {
+                                    enabled: true,
+                                    color: 'white',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    formatter: (value) => value.toLocaleString("id-ID"),
+                                },
+                            },
+                            animation: true,
+                        },
+                    });
+                    return chartPieImplementasiKerjasama;
+                } catch (error) {
+                    return null;
+                }
+            };
+
+            const buildChartBarKriteriaMitra = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-bar-kriteria-mitra");
+                if (!canvasElement) {
+                    console.error('Canvas element "chart-bar-kriteria-mitra" not found');
+                    return null;
+                }
+
+                const chartBarKriteriaMitra = new Chart(canvasElement, {
+                    type: "bar",
+                    data: {
+                        labels: chartData.map((_, i) => i + 1),
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: [qnFuncColorBlue],
+                            borderColor: [qnFuncColorBlue],
+                            barPercentage: 0.7
+                        }],
+                    },
+                    options: {
+                        layout: {
+                            padding: 0
+                        },
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                display: false,
+                                max: Math.max(...chartData) * 1.1,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                border: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'black',
+                                    mirror: true,
+                                    font: {
+                                        size: 14
+                                    },
+                                    labelOffset: -20,
+                                    callback: function(value, index) {
+                                        return `${index + 1}. ${chartLabels[index]}`;
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    title: (context) => {
+                                        return `${context[0].label}. ${chartLabels[context[0].dataIndex]}`;
+                                    },
+                                    label: (context) => {
+                                        return context.parsed.x.toLocaleString("id-ID");
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    size: 14
+                                },
+                                anchor: 'end',
+                                align: 'right',
+                                offset: 5,
+                                formatter: (value) => value.toLocaleString("id-ID")
+                            },
+                        }
+                    }
+                });
+
+                console.log('Progress bar chart for Kriteria Mitra created successfully');
+                return chartBarKriteriaMitra;
+            };
+
+            const buildChartBarWilayah = (chartData, chartLabels) => {
+                const canvasElement = document.getElementById("chart-bar-wilayah");
+                if (!canvasElement) {
+                    console.error('Canvas element "chart-bar-bentuk-kegiatan" not found');
+                    return null;
+                }
+
+                const formattedLabels = splitAllLabels(chartLabels);
+                chartBarWilayah = new Chart(canvasElement, {
+                    type: "bar",
+                    data: {
+                        labels: formattedLabels,
+                        datasets: [{
+                            data: chartData,
+                            backgroundColor: [qnFuncColorBlue],
+                            borderColor: [qnFuncColorBlue],
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                ticks: {
+                                    display: true,
+                                    color: 'black'
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    precision: 0, // Ensures only integer values
+                                    callback: function(value) {
+                                        if (value % 1 === 0) {
+                                            return value;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            datalabels: {
+                                enabled: true,
+                                color: 'white',
+                                font: {
+                                    weight: 'bold'
+                                },
+                                formatter: (value) => value.toLocaleString("id-ID"),
+                            },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: (context) => context.parsed.y.toLocaleString("id-ID")
+                                },
+                            },
+                        },
+                    },
+                });
+                console.log('Bar chart for Bentuk Kegiatan created successfully');
+                return chartBarKegiatan;
+
+            };
+
+            const jenisMitraData = [{"jenis_mitra":"Non Perguruan Tinggi","jumlah_mitra":44},{"jenis_mitra":"Perguruan Tinggi","jumlah_mitra":30}];
+            if (jenisMitraData && jenisMitraData.length > 0) {
+                const jenisMitraLabels = jenisMitraData.map(item => item.jenis_mitra);
+                const jenisMitraValues = jenisMitraData.map(item => item.jumlah_mitra);
+                buildChartDoughnut(jenisMitraValues, jenisMitraLabels);
+            }
+
+            const jenisDokumenData = [{"jenis_dokumen":"Implementation of Arrangement (IA)","kerjasama_count":57},{"jenis_dokumen":"Memorandum of Agreement (MoA)","kerjasama_count":35},{"jenis_dokumen":"Memorandum of Understanding (MoU)","kerjasama_count":8}];
+            if (jenisDokumenData && jenisDokumenData.length > 0) {
+                const jenisDokumenLabels = jenisDokumenData.map(item => item.jenis_dokumen);
+                const jenisDokumenValues = jenisDokumenData.map(item => item.kerjasama_count);
+                buildChartBar(jenisDokumenValues, jenisDokumenLabels);
+            }
+
+            const bentukKegiatanData = [];
+            if (bentukKegiatanData && bentukKegiatanData.length > 0) {
+                const bentukKegiatanLabels = bentukKegiatanData.map(item => item.merge);
+                const bentukKegiatanValues = bentukKegiatanData.map(item => item.total);
+                buildChartBarBentukKegiatan(bentukKegiatanValues, bentukKegiatanLabels);
+            }
+
+            const unitKerjaData = [{"unit_kerja_id":4,"nama_unit":"Universitas Sevima Testing - f","total_kerjasama":81},{"unit_kerja_id":5,"nama_unit":"PSKGJ Pendidikan Matematika","total_kerjasama":4},{"unit_kerja_id":14,"nama_unit":"FAKULTAS ILMU SOSIAL DAN ILMU POLITIK","total_kerjasama":2},{"unit_kerja_id":63,"nama_unit":"Universitas Foxtrot","total_kerjasama":2},{"unit_kerja_id":13,"nama_unit":"Ilmu Hukum","total_kerjasama":1}];
+            if (unitKerjaData && unitKerjaData.length > 0) {
+                const unitKerjaLabels = unitKerjaData.map(item => item.nama_unit);
+                const unitKerjaValues = unitKerjaData.map(item => item.total_kerjasama);
+                buildChartBarUnitKerja(unitKerjaValues, unitKerjaLabels);
+            }
+
+            const ruangLingkupData = [{"tingkat_mitra":"Lokal","jumlah_mitra":67},{"tingkat_mitra":"Nasional","jumlah_mitra":1},{"tingkat_mitra":"Regional","jumlah_mitra":6}];
+            if (ruangLingkupData && ruangLingkupData.length > 0) {
+                const lingkupKerjaLabels = ruangLingkupData.map(item => item.tingkat_mitra);
+                const lingkupKerjaValues = ruangLingkupData.map(item => item.jumlah_mitra);
+                buildChartPieRuangLingkup(lingkupKerjaValues, lingkupKerjaLabels);
+            }
+
+            const kriteriaMitraData = [{"klasifikasi_mitra":"Perguruan tinggi dalam negeri dalam daftar QS200 berdasarkan bidang ilmu","jumlah_mitra":14},{"klasifikasi_mitra":"Institusi Pendidikan","jumlah_mitra":12},{"klasifikasi_mitra":"Perguruan tinggi luar negeri dalam daftar QS200 berdasarkan bidang ilmu","jumlah_mitra":10},{"klasifikasi_mitra":"Dunia Usaha","jumlah_mitra":10},{"klasifikasi_mitra":"Rumah Sakit","jumlah_mitra":8}];
+            if (kriteriaMitraData && kriteriaMitraData.length > 0) {
+                const kriteriaMitraLabels = kriteriaMitraData.map(item => item.klasifikasi_mitra);
+                const kriteriaMitraValues = kriteriaMitraData.map(item => item.jumlah_mitra);
+                buildChartBarKriteriaMitra(kriteriaMitraValues, kriteriaMitraLabels);
+            }
+
+
+            const provinsiData = [{"provinsi":"JAWA BARAT","jumlah_mitra":34},{"provinsi":"DKI JAKARTA","jumlah_mitra":13},{"provinsi":"Lain-lain","jumlah_mitra":10},{"provinsi":"DI YOGYAKARTA","jumlah_mitra":6},{"provinsi":"RIAU","jumlah_mitra":2}];
+            if (provinsiData && provinsiData.length > 0) {
+                const provinsiLabels = provinsiData.map(item => item.provinsi);
+                const provinsiValues = provinsiData.map(item => item.jumlah_mitra);
+                buildChartBarWilayah(provinsiValues, provinsiLabels);
+            }
+
+            const implementasiKerjasamaData = [{"label":"Dengan Hasil Pelaksanaan","jumlah":0},{"label":"Tanpa Hasil Pelaksanaan","jumlah":100}];
+            if (implementasiKerjasamaData && implementasiKerjasamaData.length > 0) {
+                const implementasiKerjasamaLabels = implementasiKerjasamaData.map(item => item.label);
+                const implementasiKerjasamaValues = implementasiKerjasamaData.map(item => item.jumlah);
+                buildChartPieImplementasiKerjasama(implementasiKerjasamaValues, implementasiKerjasamaLabels);
+            }
+
+            const implementasiKegiatanData = [{"label":"Dengan Hasil Pelaksanaan","jumlah":0},{"label":"Tanpa Hasil Pelaksanaan","jumlah":0}];
+            if (implementasiKegiatanData && implementasiKegiatanData.length > 0) {
+                const implementasiKegiatanLabels = implementasiKegiatanData.map(item => item.label);
+                const implementasiKegiatanValues = implementasiKegiatanData.map(item => item.jumlah);
+                buildChartPieImplementasiKegiatan(implementasiKegiatanValues, implementasiKegiatanLabels);
+            }
+        });
+    </script><script src="assets/mockup-interactions.js"></script></body></html>

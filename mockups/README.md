@@ -5,44 +5,60 @@
 > alasan teknis di baliknya, untuk yang mengembangkan/merawat alur ini.
 
 Alur untuk mengubah hasil "Save outerHTML" dari halaman produk (SEVIMA Platform)
-menjadi mockup statis yang bersih dan langsung sync dengan design system
-[`QUANTUM/`](../QUANTUM) — bukan salinan beku, tapi ditautkan langsung ke CSS
-QUANTUM sehingga kalau QUANTUM berubah, mockup ikut berubah.
+menjadi mockup statis yang bersih, dirender dari CSS capture aslinya sendiri
+(ground truth, dijamin identik produksi) - lihat "Kenapa begini" di bawah
+untuk alasannya.
+
+Output-nya mengikuti pola versioning yang sama dengan project adik
+[`tracer-study`](../../Tracer%20Study/tracer-study): dijelaskan lengkap di
+[README.md root](../README.md) (kenapa `v1/`, pola `<base href="/v1/">`,
+cara deploy ke Vercel). Ringkasan yang relevan untuk alur mockup-sync ini:
 
 ## Struktur folder
 
-Halaman dikelompokkan **satu folder per modul**, bukan satu folder per
-halaman — semua halaman kerjasama (daftar, detail, create, dst) berbagi satu
-folder `pages/kerjasama/` dan satu salinan CSS/JS/font (`_assets/`), karena
-itu memang bundle QUANTUM/app yang sama persis untuk halaman manapun:
+Semua halaman untuk versi desain yang sedang berjalan (`v1` saat ini — lihat
+`CURRENT_VERSION` di `build_mockup.py`) ditulis **flat** ke `v1/` di root
+project, bukan dikelompokkan per modul — `v1/kerjasama-daftar.html`,
+`v1/kerjasama-detail.html`, dst semuanya sibling file, berbagi satu
+`v1/assets/` (dideduplikasi otomatis):
 
 ```
-mockups/
-  raw/<nama-capture>/           <- intake mentah, tetap per-capture (bukan per-modul)
-    <Nama Halaman>.html
-    <Nama Halaman>_files/
-  pages/<modul>/
-    <halaman>.html              <- mockup bersih, auto-generated (jangan edit manual)
-    <halaman>.manifest.md       <- laporan per halaman
-    _assets/                    <- SATU salinan CSS/JS/font, dipakai bersama semua
-                                    halaman di modul ini (dideduplikasi otomatis)
-      captured/*.css
-      vendor/local-assets/*     <- font/pattern QUANTUM (quantum-symbols, dst)
+simkerma_ui/
+  v1/
+    index.html                  <- dashboard/home versi ini (lihat HOME_PAGE_ID)
+    index.manifest.md
+    kerjasama-daftar.html       <- mockup bersih, auto-generated (jangan edit manual)
+    kerjasama-daftar.manifest.md
+    kerjasama-detail.html, kerjasama-create.html, dst.
+    assets/
+      captured/*.css            <- CSS produksi asli hasil capture - SUMBER RENDER UTAMA
+      vendors/quantum-v2.2.1-202310260001/   <- bundle QUANTUM ter-vendor, dipakai HANYA kalau
+        assets/release/qn-202310260001.css     capture-nya tidak ada folder `_files` (fallback
+        assets/fonts/, assets/images/, dst.     terakhir - lihat "Kenapa begini" soal batasannya)
+      vendors/local-assets/     <- font/pattern QUANTUM tambahan (quantum-symbols, dst)
       chart.js, chart-settings.js, chartjs-plugin-datalabels.min.js
       mockup-interactions.js
-  pages/route-map.json          <- auto-generated: peta "halaman ini = route apa" untuk semua mockup
-  tokens/
-    design-tokens.json          <- auto-generated: semua --qn-* variable dari QUANTUM
-    component-classes.json      <- auto-generated: semua class yang dikenal QUANTUM
-  scripts/
-    extract_tokens.py           <- scan QUANTUM/ -> update tokens/*.json
-    build_mockup.py             <- raw HTML -> mockup bersih + manifest
+      css/main.css              <- override manual (opsional, mulai kosong)
+  mockups/
+    raw/<nama-capture>/         <- intake mentah, tetap per-capture (bukan per-modul/versi)
+      <Nama Halaman>.html
+      <Nama Halaman>_files/
+    route-map/v1.json           <- auto-generated: peta "halaman ini = route apa", per versi
+    tokens/
+      design-tokens.json        <- auto-generated: semua --qn-* variable dari QUANTUM
+      component-classes.json    <- auto-generated: semua class yang dikenal QUANTUM
+    scripts/
+      extract_tokens.py         <- scan QUANTUM/ -> update tokens/*.json
+      build_mockup.py           <- raw HTML -> mockup bersih + manifest, ke v1/
 ```
 
-Contoh nyata: `mockups/pages/kerjasama/daftar.html`,
-`mockups/pages/kerjasama/detail.html`, `.../create.html`, dst — semuanya
-sibling file di folder `kerjasama/` yang sama, saling link pakai nama file
-biasa (`detail.html`), bukan `../detail/index.html`.
+Contoh nyata: `v1/kerjasama-daftar.html`, `v1/kerjasama-detail.html`,
+`v1/kerjasama-create.html`, dst — semuanya sibling file langsung di `v1/`,
+saling link pakai nama file biasa (`kerjasama-detail.html`), bukan
+`../kerjasama/detail.html` atau path bersarang lain. `module/page` yang kamu
+ketik ke `build_mockup.py` (mis. `kerjasama/daftar`) menentukan nama file
+ini lewat `output_stem()` — lihat [SKILL.md](../.claude/skills/mockup-sync/SKILL.md)
+untuk aturan lengkapnya.
 
 `QUANTUM/` sendiri tidak pernah diubah oleh alur ini — dia tetap murni sebagai
 sumber kebenaran (source of truth) untuk komponen dan token.
@@ -53,9 +69,11 @@ QUANTUM (`@quantum/web`) adalah package **privat**, di-host di GitLab
 internal SEVIMA (`gitlab.sevima.com`), bukan di npm registry publik maupun
 registry privat yang bisa diakses dari sini — jadi `npm install @quantum/web`
 tidak akan berhasil di lingkungan mockup ini. Solusinya tetap menyalin
-langsung dari checkout lokal `QUANTUM/` (sudah ada di project ini), tapi
-sekarang cukup **satu kali per modul**, bukan satu kali per halaman — itulah
-fungsi folder `_assets/`. Kalau nanti QUANTUM memang dipasang sebagai
+langsung dari checkout lokal `QUANTUM/` — spesifiknya
+`QUANTUM/pwa-laravel/public/vendors/quantum-v2.2.1-202310260001/`, bundle
+pre-built terbaru yang tersedia di semua checkout QUANTUM lokal — tapi
+cukup **satu kali per versi**, bukan satu kali per halaman — itulah fungsi
+folder `v1/assets/vendors/`. Kalau nanti QUANTUM memang dipasang sebagai
 dependency asli di project produksi (bukan di flow mockup ini), `npm install
 @quantum/web` tetap valid asalkan `.npmrc` project sudah dikonfigurasi ke
 registry internal SEVIMA tersebut.
@@ -72,22 +90,21 @@ registry internal SEVIMA tersebut.
    python mockups/scripts/build_mockup.py raw/<nama-capture>/<nama-file>.html kerjasama/daftar
    ```
    Kalau argumen kedua cuma satu kata tanpa `/` (misalnya `login`), itu
-   dianggap modul dengan satu halaman saja, ditulis sebagai `index.html`
-   (`pages/login/index.html`).
+   dianggap modul dengan satu halaman saja, ditulis sebagai `v1/login.html`.
 
    **Penting:** modul ditentukan oleh URL asli halaman itu, bukan oleh nama
    yang "kelihatan pas". Contoh nyata dari project ini: halaman yang secara
    visual terlihat seperti "dashboard" ternyata di-capture dari
    `/v2/kerjasama/dashboard` — jadi dia bagian dari modul **kerjasama**
-   (ditulis sebagai `kerjasama/index.html`, bukan folder `dashboard/`
-   sendiri). Sebelum menentukan nama modul, cek komentar
+   (ditulis sebagai `v1/index.html`, karena itu dashboard/home versi ini —
+   lihat `HOME_PAGE_ID`). Sebelum menentukan nama modul, cek komentar
    `saved from url=(...)` di baris pertama file capture-nya untuk tahu route
    aslinya. Script juga otomatis membandingkan ini — kalau modul yang dipakai
    tidak cocok dengan segmen URL-nya, `manifest.md` akan menampilkan
    peringatan di bagian paling atas.
-3. Buka `mockups/pages/<modul>/<halaman>.html` di browser untuk lihat
-   hasilnya, dan baca `mockups/pages/<modul>/<halaman>.manifest.md` untuk
-   laporan:
+3. Buka `v1/<halaman>.html` di browser (lewat local server, lihat "Preview
+   Lokal" di README.md root — bukan double-click, karena `<base href="/v1/">`)
+   untuk lihat hasilnya, dan baca `v1/<halaman>.manifest.md` untuk laporan:
    - **Interactions** — dropdown, collapse (navbar toggler/filter/accordion),
      modal, offcanvas, tab, alert-dismiss apa saja yang terdeteksi di halaman
      ini dan sudah otomatis dibuat berfungsi (lihat bagian "Semua interaksi
@@ -115,7 +132,7 @@ detail, form create, halaman sukses), navbar dan tombol-tombol di dalamnya
 1. Setiap capture yang dibuat lewat "Save As... Webpage, Complete" menyimpan
    komentar `saved from url=(...)https://.../path/asli` di baris pertama.
    `build_mockup.py` membaca path itu dan mencatatnya ke
-   `mockups/pages/route-map.json` sebagai "halaman ini mewakili route apa".
+   `mockups/route-map/v1.json` sebagai "halaman ini mewakili route apa".
 2. Semua `<a href>`/`<form action>` yang mengarah ke domain
    testing/production dicek path-nya terhadap `route-map.json`. Kalau sudah
    ada mockup untuk path itu (persis sama, atau pola yang sama — misalnya
@@ -162,31 +179,35 @@ cuma pakai `wire:confirm="..."` dari Livewire 3), baru fallback ke dialog
 
 ## Kenapa begini
 
-- **CSS asli hasil capture selalu diprioritaskan.** Kalau folder `_files`
-  hasil "Save Complete" ikut disertakan, script menyalin persis stylesheet
-  yang tadinya dipakai halaman itu (`captured/*.css`) — ini yang paling
-  akurat karena itu betul-betul CSS yang merender halaman waktu di-capture,
-  jadi tidak mungkin beda dari production. `QUANTUM/quantum` di repo ini
-  sendiri ternyata sudah agak basi dibanding CSS yang jalan di production
-  (lihat bagian drift di manifest) — jadi kalau dipaksa jadi sumber render,
-  hasilnya salah/polos. QUANTUM tetap dipakai, tapi murni untuk *membandingkan*
-  class/token apa yang cocok (laporan drift), bukan untuk merender.
-- Kalau capture tidak menyertakan folder `_files` (misalnya mockup baru yang
-  dibangun dari nol, bukan hasil save), baru fallback ke CSS QUANTUM lokal
-  (`QUANTUM/quantum/assets/release/app-20230510001.css`, disalin ke
-  `quantum.css` + `vendor/` di folder mockup) sebagai pendekatan terbaik yang
-  ada — manifest akan menandai ini sebagai "fallback, mungkin sedikit beda
-  dari production" karena tidak ada capture asli untuk memverifikasinya.
+- **CSS asli hasil capture selalu diprioritaskan sebagai sumber render.**
+  Kalau folder `_files` hasil "Save Complete" ikut disertakan, script
+  menyalin persis stylesheet yang tadinya dipakai halaman itu
+  (`v1/assets/captured/*.css`) — ini yang paling akurat karena itu betul-betul
+  CSS yang merender halaman waktu di-capture. **Sempat dicoba sebaliknya**
+  (bundle QUANTUM ter-vendor sebagai CSS utama, persis seperti tracer-study)
+  lalu dibatalkan setelah dicek langsung: bundle
+  `quantum-v2.2.1-202310260001` (Oktober 2023 — sudah dikonfirmasi yang
+  terbaru yang tersedia pre-built di semua checkout QUANTUM lokal) ternyata
+  cuma cocok dengan **~9% class** yang benar-benar dipakai halaman produksi
+  saat ini, dibanding **~94%** kalau pakai CSS capture — beda generasi design
+  system yang tidak nyambung, bukan sekadar "agak basi". (tracer-study
+  cocok pakai bundle itu karena mockup-nya memang dibuat langsung di era
+  QUANTUM 2023 itu; capture di project ini dari produksi yang jauh lebih
+  baru.) Kalau capture tidak menyertakan folder `_files` (mockup baru yang
+  dibangun dari nol), baru fallback ke bundle vendor tersebut sebagai
+  pendekatan terakhir — manifest akan menandai ini jelas-jelas sebagai
+  kemungkinan tampil rusak/polos, bukan cuma "sedikit beda".
 - File CSS hasil capture kadang mereferensikan file font/gambar ber-hash
   (`/build/assets/quantum-symbols-xxxx.woff`, pattern header/sidebar) yang
   **tidak ikut** ke-save browser. Script TIDAK mengarahkannya ke server
   testing/production — semua harus lokal. Sebagai gantinya, script mencari
   aset first-party yang cocok di `QUANTUM/quantum-ai/source/quantum-v3.4/`
   (source font `quantum-symbols` dan pattern `sevima-header`/`sevima-sidebar`
-  ternyata ada di sana, persis nama filenya) dan menyalinnya ke
-  `vendor/local-assets/`. Kalau suatu url `/...` atau `https://...` tidak ada
-  padanan lokalnya, url itu diganti `none` (bukan dibiarkan menunjuk ke
-  domain luar) — icon/pattern itu akan tampil kosong, dicatat di manifest.
+  ternyata ada di sana, persis
+  nama filenya) dan menyalinnya ke `v1/assets/vendors/local-assets/`. Kalau
+  suatu url `/...` atau `https://...` tidak ada padanan lokalnya, url itu
+  diganti `none` (bukan dibiarkan menunjuk ke domain luar) — icon/pattern itu
+  akan tampil kosong, dicatat di manifest.
 - **Tidak ada satu pun `href`/`action`/`url()` yang mengarah ke domain
   testing/production.** Semua `<a href="https://...">` dan
   `<form action="https://...">` diproses lewat pencocokan route (lihat
@@ -217,13 +238,13 @@ cuma pakai `wire:confirm="..."` dari Livewire 3), baru fallback ke dialog
   sungguhan tidak bisa dipicu di mockup statis (tidak ada backend). Kalau
   butuh state itu persis, capture ulang halaman tepat setelah aksi itu terjadi
   di aplikasi asli, lalu jalankan ulang script.
-- Semua stylesheet/script hasil vendoring disalin **ke dalam folder modul itu
-  sendiri** (`<modul>/_assets/`, bukan ditautkan lintas folder ke `QUANTUM/`)
-  — supaya mockup bisa dibuka dengan cara apa pun (double click, Live
-  Server, webview VSCode) tanpa bergantung pada konfigurasi root server.
-  Halaman berikutnya di modul yang sama otomatis memakai ulang salinan yang
-  sudah ada (dicek dulu apakah filenya sudah ada sebelum menyalin) — tidak
-  ada duplikasi per halaman.
+- Semua stylesheet/script hasil vendoring disalin **ke dalam `v1/assets/`
+  versi itu sendiri** (bukan ditautkan lintas folder ke `QUANTUM/`) — supaya
+  versi ini self-contained persis seperti tracer-study (tidak bergantung ke
+  luar folder versinya, cuma butuh `<base href="/v1/">` + server lokal, lihat
+  README.md root). Halaman berikutnya di versi yang sama otomatis memakai
+  ulang salinan yang sudah ada (dicek dulu apakah filenya sudah ada sebelum
+  menyalin) — tidak ada duplikasi per halaman.
 - **Noise dibuang otomatis**: atribut Livewire/Alpine, atribut wiring
   Turbo/CSRF (`data-turbo-eval`, `data-csrf`, dst — tidak ada gunanya di
   mockup statis dan cuma mengotori markup kalau di-slicing), debug toolbar
