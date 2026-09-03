@@ -136,16 +136,24 @@ Tunggu sampai Claude bilang selesai (biasanya beberapa detik).
 
 ## Langkah 4 — Lihat hasilnya
 
-Hasilnya ada di folder `mockups/pages/<modul>/`, isinya (semua halaman satu
-modul dikumpulkan di sini, jadi kalau modulnya "kerjasama" folder ini akan
-berisi `daftar.html`, `detail.html`, `create.html`, dst — bukan folder
-terpisah per halaman):
+Hasilnya ada di folder `v1/` (langsung di root project — semua halaman
+untuk versi mockup yang sedang berjalan dikumpulkan flat di sini, jadi kalau
+modulnya "kerjasama" akan muncul `kerjasama-daftar.html`,
+`kerjasama-detail.html`, `kerjasama-create.html`, dst sebagai file sibling,
+bukan folder terpisah per modul/halaman):
 
 | File | Isinya |
 |---|---|
-| `<halaman>.html` | Mockup-nya (misal `daftar.html`). Buka file ini pakai browser (double-click) untuk melihat & mencoba tampilannya. |
+| `<halaman>.html` | Mockup-nya (misal `kerjasama-daftar.html`). **Tidak bisa** dibuka dengan double-click biasa — lihat catatan "Cara buka" di bawah. |
 | `<halaman>.manifest.md` | Laporan singkat untuk halaman itu, dalam bahasa yang mudah dibaca — lihat panduan di bawah. |
-| `_assets/` | File CSS/JS/font QUANTUM yang dipakai bersama oleh semua halaman di modul ini — tidak perlu dibuka manual. |
+| `assets/` | File CSS/JS/font QUANTUM yang dipakai bersama oleh semua halaman versi ini — tidak perlu dibuka manual. |
+
+**Cara buka**: setiap halaman butuh sebuah local server (tidak bisa
+double-click file-nya langsung) — termudah pakai extension **Live Preview**
+di VS Code (sudah otomatis diarahkan ke `v1/index.html`), atau minta tim
+engineering menjalankan `npx serve .` dari root project lalu buka
+`http://localhost:<port>/v1/<halaman>.html`. Detail lengkapnya ada di
+`README.md` root project.
 
 ### Cara baca `manifest.md`
 
@@ -153,9 +161,13 @@ File ini akan berisi beberapa bagian. Berikut artinya dalam bahasa awam:
 
 - **"Rendering CSS source"** — kalau tulisannya `captured`, artinya tampilan
   mockup dijamin identik dengan aplikasi asli. Kalau tulisannya
-  `QUANTUM fallback`, artinya file CSS asli tidak ikut tersimpan (biasanya
-  karena pakai Cara B di Langkah 1), jadi tampilannya kemungkinan sedikit
-  beda dan sebaiknya ulangi pakai Cara A.
+  `QUANTUM vendor fallback`, artinya file CSS asli tidak ikut tersimpan
+  (biasanya karena pakai Cara B di Langkah 1), jadi mockup terpaksa pakai
+  CSS QUANTUM cadangan yang ternyata beda generasi design system dari
+  aplikasi produksi saat ini — tampilannya kemungkinan besar terlihat rusak
+  atau tidak ter-style sama sekali (bukan cuma "sedikit beda"). Kalau ini
+  terjadi, sebaiknya ulangi Langkah 1 pakai Cara A ("Webpage, Complete")
+  supaya CSS asli ikut tersimpan.
 - **"Internal navigation"** — daftar tombol/link yang berhasil disambungkan
   ke mockup halaman lain (contoh: "Tambah" -> mockup form create), dan
   daftar link yang masih menunggu (belum ada mockup tujuannya). Kalau ada
@@ -196,18 +208,21 @@ File ini akan berisi beberapa bagian. Berikut artinya dalam bahasa awam:
   di-refresh, datanya akan muncul lagi seperti semula.
 - **Chart-nya beneran jalan** (bisa hover, animasi muncul), tapi datanya
   tetap data pada saat capture, bukan data real-time.
-- **Satu file = satu halaman**, tapi halaman yang satu modul dikumpulkan
-  jadi satu folder. Kalau mau buat mockup untuk beberapa halaman modul yang
-  sama (misal: daftar, detail, form tambah kerjasama), ulangi Langkah 1-3
-  untuk tiap halaman dengan `<modul>` yang **sama** dan `<halaman>` yang
-  beda-beda (`kerjasama/daftar`, `kerjasama/detail`, `kerjasama/create`).
+- **Satu file = satu halaman**, dan nama filenya mengikuti modulnya (mis.
+  `kerjasama-daftar.html`, `kerjasama-detail.html`) walau semuanya sibling
+  file di `v1/`, bukan folder terpisah. Kalau mau buat mockup untuk beberapa
+  halaman modul yang sama (misal: daftar, detail, form tambah kerjasama),
+  ulangi Langkah 1-3 untuk tiap halaman dengan `<modul>` yang **sama** dan
+  `<halaman>` yang beda-beda (`kerjasama/daftar`, `kerjasama/detail`,
+  `kerjasama/create`).
 - **Modul ditentukan dari alamat asli halamannya, bukan dari kelihatannya
   seperti apa.** Contoh nyata: halaman yang tampilannya seperti "dashboard"
   di project ini ternyata alamat aslinya `.../kerjasama/dashboard` — jadi dia
-  tetap bagian dari modul **kerjasama** (`kerjasama/index`), bukan modul
+  tetap bagian dari modul **kerjasama** (`kerjasama/index`, ditulis sebagai
+  `v1/index.html` karena itu dashboard/home versi ini), bukan modul
   "dashboard" sendiri. Kalau ragu, cek dulu ke Claude "ini halaman bagian
   dari modul apa?" sebelum menentukan nama modulnya — salah kelompok berarti
-  file CSS/JS-nya jadi tidak ke-share dan tombol navigasinya bisa salah
+  nama filenya jadi tidak konsisten dan tombol navigasinya bisa salah
   sambung.
 - **Boleh diulang kapan saja.** Kalau ada perubahan di aplikasi asli, capture
   ulang halamannya dan minta Claude proses lagi dengan `<modul>/<halaman>`
@@ -219,7 +234,7 @@ File ini akan berisi beberapa bagian. Berikut artinya dalam bahasa awam:
 - **Tidak perlu `npm install` apapun.** QUANTUM adalah design system privat
   SEVIMA (bukan package publik), jadi semua file CSS/JS/font-nya disalin
   langsung dari folder `QUANTUM/` yang sudah ada di project ini — sekali per
-  modul, dipakai bersama semua halamannya (folder `_assets/`), bukan
+  versi mockup, dipakai bersama semua halamannya (folder `v1/assets/`), bukan
   disalin ulang tiap halaman.
 
 ---
@@ -244,5 +259,6 @@ File ini akan berisi beberapa bagian. Berikut artinya dalam bahasa awam:
 3. Ketik ke Claude: `/mockup-sync raw/<nama-capture>/<nama-file>.html <modul>/<halaman>`
    (contoh: `kerjasama/daftar` — pakai nama modul yang sama untuk halaman
    satu grup supaya saling terhubung dan berbagi file QUANTUM).
-4. Buka `mockups/pages/<modul>/<halaman>.html` untuk lihat hasilnya.
-5. Baca `mockups/pages/<modul>/<halaman>.manifest.md` untuk laporannya.
+4. Buka `v1/<halaman>.html` (lewat local server / Live Preview, lihat "Cara
+   buka" di Langkah 4) untuk lihat hasilnya.
+5. Baca `v1/<halaman>.manifest.md` untuk laporannya.

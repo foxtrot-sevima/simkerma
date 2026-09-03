@@ -8,7 +8,10 @@ description: Convert a saved outerHTML capture of a SEVIMA Platform page into a 
 Full background and rationale: [`mockups/README.md`](../../../mockups/README.md).
 Non-technical step-by-step guide for designers/PMs (how to capture a page,
 what to type, how to read the report): [`mockups/TUTORIAL.md`](../../../mockups/TUTORIAL.md).
-This skill operationalizes that flow so it runs end-to-end from one prompt.
+Root-level versioning/deploy conventions (why pages end up in `v1/`, the
+`<base href="/v1/">` pattern, how Vercel serves it): [`README.md`](../../../README.md).
+This skill operationalizes the mockup-sync flow so it runs end-to-end from
+one prompt.
 
 ## When invoked
 
@@ -17,12 +20,19 @@ usually sitting under `mockups/raw/<name>/`, or newly dropped at the project
 root. `args` may contain the path and optionally a `module/page` target, e.g.
 `/mockup-sync raw/kerjasama-daftar/Daftar Kerjasama.html kerjasama/daftar`.
 
-Pages are grouped **one folder per module** under `mockups/pages/`, not one
-folder per page - `mockups/pages/kerjasama/daftar.html`,
-`mockups/pages/kerjasama/detail.html`, `.../create.html`, etc. all live
-together and share a single `_assets/` folder, since they're always built
-from the exact same QUANTUM/app CSS+JS bundle regardless of which page it's
-attached to.
+Output follows the same versioned-folder convention as the sibling
+`tracer-study` project: every page for the current design iteration
+(`v1` right now - see `CURRENT_VERSION` in `build_mockup.py`) is written
+**flat** into `v1/` at the repo root, not grouped into per-module
+subfolders - `v1/kerjasama-daftar.html`, `v1/kerjasama-detail.html`,
+`v1/index.html`, etc. all sit as siblings, sharing one `v1/assets/` (vendored
+QUANTUM CSS/JS/fonts, chart scripts, archived capture CSS - copied once,
+reused by every page). The `module/page` target you pass (e.g.
+`kerjasama/daftar`) still matters - it's the route-map key AND it decides
+the output filename via `output_stem()` in `build_mockup.py`:
+- `kerjasama/index` (this version's home/dashboard - see `HOME_PAGE_ID`) -> `v1/index.html`
+- any other `<module>/index` (that module's own main/list page) -> `v1/<module>.html`
+- anything else -> `v1/<module>-<page>.html`
 
 **Determine the module from the captured URL, not from what the page looks
 like.** Read the `saved from url=(NNN)https://host/path` comment on the raw
@@ -30,14 +40,20 @@ capture's first line - the module is the first real path segment (skip
 `v1`/`v2`/`api`). A page that visually looks like a "dashboard" can still
 belong to another module: in this project, the page that *looks* like a
 dashboard was captured from `/v2/kerjasama/dashboard`, so it's
-`kerjasama/index`, NOT its own standalone `dashboard/` module - don't be
+`kerjasama/index`, NOT its own standalone `dashboard` module - don't be
 fooled by the page's title or content. If a page's URL doesn't fit any
 existing module, a single-segment target (e.g. `login`) is fine and becomes
-`mockups/pages/login/index.html`. The build itself also cross-checks this:
-if the module you pass doesn't match the URL's segment, it prints a WARNING
-and adds a banner at the top of that page's `manifest.md` - don't ignore it,
-rebuild with the suggested module so the page joins its real siblings
-instead of sitting isolated in its own folder.
+`v1/login.html`. The build itself also cross-checks this: if the module you
+pass doesn't match the URL's segment, it prints a WARNING and adds a banner
+at the top of that page's `manifest.md` - don't ignore it, rebuild with the
+suggested module so the page's filename groups with its real siblings
+(`<module>-<page>.html`) instead of a mismatched name.
+
+To start a new design iteration (`v2`, `v3`, ...): bump `CURRENT_VERSION` in
+`mockups/scripts/build_mockup.py`, add a row to the root `README.md`, and
+re-run the build for whichever pages belong to that version - see
+"Menambah Versi Baru" in the root `README.md` for the full pattern
+(mirrors tracer-study exactly).
 
 ## Steps
 
@@ -45,9 +61,10 @@ instead of sitting isolated in its own folder.
    yet under `mockups/raw/`, first move it (and its sibling `<name>_files/`
    folder, if present — that's a browser "Save Complete" asset dump) into
    `mockups/raw/<name>/` so future runs stay organized (raw capture folders
-   stay one-per-capture even though the generated output groups by module).
-   Confirm with the user before moving files that live outside `mockups/` or
-   `QUANTUM/` if it's ambiguous which capture they belong to.
+   stay one-per-capture even though the generated output goes flat into
+   `v1/`, not grouped by module). Confirm with the user before moving files
+   that live outside `mockups/` or `QUANTUM/` if it's ambiguous which
+   capture they belong to.
 
 2. **Make sure the token registry is fresh.** If `mockups/tokens/design-tokens.json`
    or `mockups/tokens/component-classes.json` don't exist yet, or the user
@@ -60,30 +77,37 @@ instead of sitting isolated in its own folder.
    ```
    python mockups/scripts/build_mockup.py raw/<name>/<filename>.html <module>/<page>
    ```
-   This writes `mockups/pages/<module>/<page>.html` (cleaned, static). For
-   rendering CSS it prefers the page's own captured stylesheets (copied to
-   `mockups/pages/<module>/_assets/captured/` — ground truth, guaranteed to
-   match production) and only falls back to a vendored copy of QUANTUM's
-   compiled CSS (`_assets/quantum.css` + `_assets/vendor/`) when no `_files`
-   capture folder exists. Either way the CSS lives inside the module's own
-   `_assets/` folder — no cross-directory links — so it renders correctly
-   whether opened by double-click, Live Server, or a VSCode webview, AND is
-   shared/deduplicated across every page in that module (copied once, reused
-   by the rest - check-before-copy, so building a second page in the same
-   module doesn't duplicate anything). It also writes
-   `mockups/pages/<module>/<page>.manifest.md` (the component/token report).
-   Never hand-edit anything under `pages/` — re-run the script if the source
-   capture or QUANTUM changes; direct edits get silently overwritten/ignored
-   next run.
+   This writes `v1/<output_stem(module, page)>.html` (cleaned, static — see
+   the filename rule above). For rendering CSS it prefers the page's own
+   captured stylesheets (copied to `v1/assets/captured/` — ground truth,
+   guaranteed to match production) and only falls back to the vendored
+   QUANTUM release bundle (`v1/assets/vendors/quantum-v2.2.1-202310260001/assets/release/qn-202310260001.css`)
+   when no `_files` capture folder exists. **Don't expect the fallback to
+   look right**: that bundle is an Oct-2023 release that turned out to share
+   almost no class-level CSS with this app's actual production markup
+   (~9% of classes matched vs ~94% for captured CSS, checked directly) — a
+   different, unrelated generation of the design system, not a "slightly
+   behind" one. Always push for a proper "Save Complete" capture over
+   relying on this fallback. Either way the vendored/captured CSS lives
+   inside `v1/assets/` (shared/deduplicated across every page in the version
+   — check-before-copy, so building the next page doesn't duplicate
+   anything). It also writes `v1/<output_stem(module, page)>.manifest.md`
+   (the component/token report) alongside the page. Never hand-edit
+   anything under `v1/` — re-run the script if the source capture or
+   QUANTUM changes; direct edits get silently overwritten/ignored next run.
    Check the manifest's "Rendering CSS source" line: if it says "QUANTUM
-   fallback", warn the user the visuals may not exactly match production
-   since there was no capture to render from.
+   vendor fallback", warn the user the visuals will likely look badly
+   unstyled, not just slightly off, since there was no capture to render
+   from — get a real capture instead if at all possible.
 
    There's no `npm install` shortcut here: QUANTUM (`@quantum/web`) is a
    private package hosted on SEVIMA's internal GitLab, not any registry this
    environment can reach, so vendoring a local copy from the `QUANTUM/`
-   checkout is the only offline-friendly option — that's what `_assets/`
-   is, just deduplicated per module instead of per page.
+   checkout (specifically `QUANTUM/pwa-laravel/public/vendors/quantum-v2.2.1-202310260001/`,
+   the newest pre-built bundle available in any local QUANTUM checkout, used
+   only as the last-resort fallback above) is the only offline-friendly
+   option — that's what `v1/assets/vendors/` is, deduplicated across the
+   whole version instead of per page.
 
    The build is offline-only by design: it vendors Chart.js + the real
    chart-init script (so charts render from actual data, not a screenshot),
@@ -107,7 +131,7 @@ instead of sitting isolated in its own folder.
    **Cross-page navigation is dynamic, not hardcoded.** Every capture made
    via "Save Complete" carries a `saved from url=(...)` comment recording
    the real route it came from; the build records that in
-   `mockups/pages/route-map.json` and rewrites every `<a href>`/`<form
+   `mockups/route-map/v1.json` and rewrites every `<a href>`/`<form
    action>` pointing at the live domain into a real link to whichever
    sibling mockup matches that route (navbar tabs, "Tambah", row-level
    Detail/Edit buttons - all of it, not special-cased per page). Links with
@@ -171,9 +195,14 @@ instead of sitting isolated in its own folder.
      whether each looks like a legitimate one-off or something worth
      promoting into QUANTUM.
 
-5. **Offer to open the mockup** (`mockups/pages/<module>/<page>.html`) so the
+5. **Offer to open the mockup** (`v1/<output_stem(module, page)>.html`) so the
    user can eyeball it in a browser. It's a self-contained static file: no
-   Livewire, no build step, just double-click or open with a Live Server.
+   Livewire, no build step - but it does need a local server, NOT a plain
+   double-click (`file://`), because every page carries a `<base
+   href="/v1/">` tag (see the root `README.md`) that requires an origin to
+   resolve against. VS Code's **Live Preview** extension is easiest (its
+   `.vscode/settings.json` default path is already `/v1/index.html`), or
+   `npx serve .` from the repo root, then open `http://localhost:<port>/v1/<file>.html`.
 
 ## Repeat for new pages
 

@@ -4,27 +4,50 @@ static mockup that is wired to the QUANTUM design system, plus a manifest
 report showing which QUANTUM tokens/components were used (and what wasn't
 found in the local QUANTUM copy).
 
-Pages are grouped one folder per MODULE, not one folder per page - all pages
-belonging to the same module (e.g. every "kerjasama" screen) share a single
-folder and a single copy of the vendored CSS/JS/fonts (`_assets/`), since
-that's always the exact same QUANTUM/app bundle regardless of which page it's
-attached to. There's nothing to `npm install` here - QUANTUM is a private
-package (`@quantum/web`, hosted on SEVIMA's internal GitLab, not any
-registry this environment can reach) - vendoring a local copy is the only
-offline-friendly option, this just avoids doing it once per page.
+Output follows the same versioned-folder convention as the sibling
+`tracer-study` project: every page for the current design iteration
+(`CURRENT_VERSION`, e.g. "v1") is written flat into `<version>/` at the repo
+root - `v1/index.html`, `v1/kerjasama-daftar.html`, etc. - alongside a single
+self-contained `v1/assets/` (vendored QUANTUM CSS/JS/fonts, chart scripts,
+archived capture CSS). Each page gets a `<base href="/v1/">` tag so plain
+relative asset/link paths resolve correctly once deployed (or previewed)
+from the repo root - no `vercel.json` or rewrite rules needed, the folder
+IS the URL. `module`/`page` (the CLI target, e.g. "kerjasama/daftar") is
+still used to key `mockups/route-map/<version>.json` and to pick the output
+filename (see `output_stem()`) - it just no longer determines a folder.
+
+There's nothing to `npm install` here - QUANTUM is a private package
+(`@quantum/web`, hosted on SEVIMA's internal GitLab, not any registry this
+environment can reach) - vendoring a local copy is the only offline-friendly
+option. The page's own captured production CSS (`assets/captured/`) is the
+PRIMARY rendering CSS whenever a `_files` capture folder is available -
+ground truth, guaranteed to match production. The vendored bundle
+(`QUANTUM_VENDOR_SRC`) is only a last-resort fallback for a page with no
+capture at all: it was tried as the primary source once (matching
+tracer-study's own choice) and reverted after checking directly that it
+shares almost no class-level CSS with this app's actual production markup
+(~9% of classes matched vs ~94% for captured CSS) - a different, unrelated
+generation of the design system, not a "slightly stale" one. tracer-study's
+own bundle matches because its mockups were authored directly against that
+same era; this app's captures are current production.
 
 Usage:
     python mockups/scripts/build_mockup.py <path-to-raw-html> [module[/page]]
 
     <path-to-raw-html>  Absolute path, or a path relative to mockups/raw/
-    [module[/page]]     Where to put the output: mockups/pages/<module>/<page>.html
-                         - "kerjasama/daftar" -> mockups/pages/kerjasama/daftar.html
-                         - "dashboard" (no slash) -> mockups/pages/dashboard/index.html
+    [module[/page]]     Route-map key + filename source: <version>/<output_stem(module, page)>.html
+                         - "kerjasama/daftar" -> v1/kerjasama-daftar.html
+                         - "kerjasama/index" -> v1/index.html (this version's home/dashboard - see HOME_PAGE_ID)
+                         - "login" (no slash) -> v1/login.html
                          Defaults to a slugified version of the html filename
                          (as a single-segment module, page "index").
 
 Example:
     python mockups/scripts/build_mockup.py "raw/kerjasama-daftar/Daftar Kerjasama.html" kerjasama/daftar
+
+To start a new version (v2, v3, ...): bump CURRENT_VERSION below, add a row
+to the root README.md, and re-run the build for each page against the new
+version - see "Menambah Versi Baru" in the root README.md.
 """
 import json
 import os
@@ -40,13 +63,37 @@ from bs4 import BeautifulSoup, Comment
 ROOT = Path(__file__).resolve().parents[2]
 MOCKUPS = ROOT / "mockups"
 TOKENS_DIR = MOCKUPS / "tokens"
-PAGES_DIR = MOCKUPS / "pages"
-ROUTE_MAP_PATH = PAGES_DIR / "route-map.json"
 
-# The most current Bootstrap+Quantum bundle available in the local QUANTUM
-# checkout. Update this if QUANTUM ships a newer assets/release/*.css.
-QUANTUM_LIVE_CSS = ROOT / "QUANTUM" / "quantum" / "assets" / "release" / "app-20230510001.css"
-QUANTUM_ASSET_ROOT = ROOT / "QUANTUM" / "quantum"  # root that leading "/assets/..." urls resolve against
+# The current design iteration - every page is written flat into this folder
+# at the repo root (see module docstring). Bump this (and add a new root
+# README.md row) to start a new version instead of overwriting v1.
+CURRENT_VERSION = "v1"
+VERSION_DIR = ROOT / CURRENT_VERSION
+ROUTE_MAP_PATH = MOCKUPS / "route-map" / f"{CURRENT_VERSION}.json"
+
+# "module/page" that doubles as this version's home page - the one page that
+# maps to bare "index.html" instead of "<module>.html"/"<module>-<page>.html"
+# (see output_stem()). Currently the kerjasama dashboard, since it's this
+# app's actual landing screen (captured from /v2/kerjasama/dashboard).
+HOME_PAGE_ID = "kerjasama/index"
+
+# The pre-built QUANTUM release bundle vendored into every version's own
+# assets/vendors/<name>/ folder, exactly like tracer-study - checked to be
+# the newest pre-built CSS+JS bundle available across every local QUANTUM
+# checkout (QUANTUM/quantum, QUANTUM/quantum-monorepo, QUANTUM/quantum-ai
+# only have older releases; QUANTUM/quantum-monorepo would need a build step
+# to produce anything newer, which isn't available offline here).
+QUANTUM_VENDOR_NAME = "quantum-v2.2.1-202310260001"
+QUANTUM_VENDOR_SRC = ROOT / "QUANTUM" / "pwa-laravel" / "public" / "vendors" / QUANTUM_VENDOR_NAME
+
+# Separate from the versioned vendor bundle above: quantum-symbols font and
+# header/sidebar pattern files referenced by a page's own inline <style>
+# block (copied verbatim from the capture, present regardless of which
+# stylesheet renders the rest of the page) under a hashed/versioned filename
+# the browser capture never saved. These come from a newer QUANTUM source
+# tree than QUANTUM_VENDOR_SRC, so they're kept in their own
+# assets/vendors/local-assets/ folder rather than nested under the bundle's
+# version name.
 QUANTUM_V34 = ROOT / "QUANTUM" / "quantum-ai" / "source" / "quantum-v3.4"
 
 # Assets production references by a hashed/versioned filename that the browser
@@ -311,7 +358,7 @@ def localize_css_urls(css_text, out_dir):
     first-party QUANTUM asset if we have one, otherwise `none` - never left
     pointing at an external domain."""
     stats = Counter()
-    vendor_dir = out_dir / "_assets" / "vendor" / "local-assets"
+    vendor_dir = out_dir / "assets" / "vendors" / "local-assets"
 
     def _sub(m):
         raw_url = m.group(2)
@@ -453,6 +500,19 @@ def page_id(module, page):
     return f"{module}/{page}"
 
 
+def output_stem(module, page):
+    """Flat filename (no extension) a given module/page target writes to
+    inside VERSION_DIR - "kerjasama/daftar" -> "kerjasama-daftar" (module's
+    sub-page), "kerjasama/index" -> "index" (this version's home page, see
+    HOME_PAGE_ID), any other "<module>/index" -> "<module>" (that module's
+    own main/list page, bare-named like tracer-study's "alumni.html")."""
+    if page_id(module, page) == HOME_PAGE_ID:
+        return "index"
+    if page == "index":
+        return module
+    return f"{module}-{page}"
+
+
 API_VERSION_SEGMENTS = {"v1", "v2", "v3", "api"}
 
 
@@ -471,12 +531,10 @@ def suggest_module(capture_path):
     return slugify(segments[0]) if segments else None
 
 
-def relative_link(current_module, target_module, target_page):
-    """href from the page being written to the target page's .html file -
-    same-module links stay a bare filename (sibling in the same folder),
-    cross-module links go up one level into the other module's folder."""
-    filename = f"{target_page}.html"
-    return filename if target_module == current_module else f"../{target_module}/{filename}"
+def relative_link(target_module, target_page):
+    """href from any page to another - every page lives flat in the same
+    VERSION_DIR now, so this is just that target's own filename."""
+    return f"{output_stem(target_module, target_page)}.html"
 
 
 def load_json(path):
@@ -653,25 +711,37 @@ def strip_noise(soup):
 
 
 def vendor_quantum_css(out_dir):
-    """Copy the QUANTUM CSS bundle *and* every font/icon it references into
-    out_dir/_assets/vendor, rewriting url()s to match. Regenerated on every
-    run (but skipped once already present - shared by every page in this
-    module), so it stays synced with QUANTUM - but unlike a bare
-    cross-directory <link>, it also works when the mockup is opened from a
-    sandboxed webview or a dev server rooted at (or below) the mockup's own
-    folder, since nothing needs to be reached by climbing back out to
-    QUANTUM/ at view-time.
+    """Copy the vendored QUANTUM release bundle (QUANTUM_VENDOR_SRC) into
+    out_dir/assets/vendors/<QUANTUM_VENDOR_NAME>/, preserving its own
+    internal folder layout (assets/release/*.css, assets/fonts/*, etc. -
+    same relative paths tracer-study uses) and rewriting the CSS's url()s to
+    match. This is the PRIMARY rendering stylesheet for every page (matching
+    tracer-study), not a fallback. Regenerated on first call, then reused -
+    shared by every page in this version, copied once. The bundle's .js is
+    copied alongside for structural parity with tracer-study but not wired
+    into a <script> tag: it predates the ES-module production bundle and
+    could plausibly be loaded directly, but mixing it with
+    `mockup-interactions.js` risks double-handling the same data-bs-*
+    events, which wasn't part of this migration's scope.
     """
     stats = Counter()
-    if not QUANTUM_LIVE_CSS.exists():
+    vendor_root = out_dir / "assets" / "vendors" / QUANTUM_VENDOR_NAME
+    release_src_dir = QUANTUM_VENDOR_SRC / "assets" / "release"
+    src_css = next(iter(sorted(release_src_dir.glob("qn-*.css"))), None) if release_src_dir.exists() else None
+    if src_css is None:
         return None, stats
 
-    out_css = out_dir / "_assets" / "quantum.css"
+    out_css = vendor_root / "assets" / "release" / src_css.name
+    href = Path(os.path.relpath(out_css, out_dir)).as_posix()
     if out_css.exists():
-        return "_assets/quantum.css", stats  # already vendored for this module
+        return href, stats  # already vendored for this version
 
-    text = QUANTUM_LIVE_CSS.read_text(encoding="utf-8", errors="ignore")
-    vendor_dir = out_dir / "_assets" / "vendor"
+    for js_src in release_src_dir.glob("qn-*.js"):
+        js_dest = vendor_root / "assets" / "release" / js_src.name
+        js_dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(js_src, js_dest)
+
+    text = src_css.read_text(encoding="utf-8", errors="ignore")
     replacements = {}
 
     for m in CSS_URL_RE.finditer(text):
@@ -680,18 +750,18 @@ def vendor_quantum_css(out_dir):
             continue
         clean_url = raw_url.split("#")[0].split("?")[0]
         if clean_url.startswith("/"):
-            src = QUANTUM_ASSET_ROOT / clean_url.lstrip("/")
+            src = QUANTUM_VENDOR_SRC / clean_url.lstrip("/")
             mirror_rel = Path(clean_url.lstrip("/"))
         else:
-            src = (QUANTUM_LIVE_CSS.parent / clean_url).resolve()
+            src = (src_css.parent / clean_url).resolve()
             try:
-                mirror_rel = src.relative_to(QUANTUM_ASSET_ROOT.resolve())
+                mirror_rel = src.relative_to(QUANTUM_VENDOR_SRC.resolve())
             except ValueError:
                 mirror_rel = Path("external") / src.name
         if not src.exists():
             stats["assets_not_found"] += 1
             continue
-        dest = vendor_dir / mirror_rel
+        dest = vendor_root / mirror_rel
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, dest)
         stats["assets_copied"] += 1
@@ -700,21 +770,30 @@ def vendor_quantum_css(out_dir):
     for old, new in replacements.items():
         text = text.replace(old, new)
 
+    out_css.parent.mkdir(parents=True, exist_ok=True)
     out_css.write_text(text, encoding="utf-8")
-    return "_assets/quantum.css", stats
+    return href, stats
 
 
 def vendor_captured_stylesheets(soup, out_dir, capture_assets_dir):
     """The browser capture's own CSS is the ground truth for how the page
-    actually looked in production - always prefer it over the (possibly
-    stale) local QUANTUM checkout when it's available. Collect the original
-    <link rel=stylesheet> hrefs before they're dropped, copy any that exist
-    in the capture's asset folder into out_dir/_assets/captured/ (shared by
-    every page in this module - skipped if another page already vendored the
-    identical filename, which is the normal case since it's the same app
-    CSS bundle for every page), and return the new hrefs in original order
-    (dedup by filename - captures sometimes repeat a link, e.g. from a
-    client-side navigation re-render)."""
+    actually looked in production - it's the PRIMARY rendering CSS
+    (rewrite_head_assets links these hrefs), preferred over the vendored
+    QUANTUM bundle whenever a capture is available. This was tried the other
+    way round once (vendor bundle as primary, matching tracer-study's own
+    choice) and reverted: `QUANTUM_VENDOR_SRC` (quantum-v2.2.1-202310260001,
+    Oct 2023) turned out to share almost no class-level CSS with this app's
+    actual production markup (~9% of classes on a real page had any matching
+    selector, vs ~94% for the captured CSS) - a different, unrelated
+    generation of the design system, not just "a bit stale". tracer-study's
+    own bundle matches because its mockups were authored directly against
+    that same 2023 era; this app's captures are current production, so
+    captured CSS is what's actually reliable here. Drop the original <link
+    rel=stylesheet> tags and copy any that exist in the capture's asset
+    folder into out_dir/assets/captured/ (shared by every page in this
+    version - skipped once a filename's already vendored, the normal case
+    since it's the same app CSS bundle for every page), returning the new
+    hrefs in original order (dedup by filename)."""
     stats = Counter()
     seen, ordered_filenames = set(), []
     for tag in soup.find_all("link", rel="stylesheet"):
@@ -727,19 +806,19 @@ def vendor_captured_stylesheets(soup, out_dir, capture_assets_dir):
 
     hrefs = []
     if capture_assets_dir is not None:
-        dest_dir = out_dir / "_assets" / "captured"
+        dest_dir = out_dir / "assets" / "captured"
         for fname in ordered_filenames:
             src = capture_assets_dir / fname
             if not src.exists():
                 continue
             # Some captures save a stylesheet at an extensionless URL (e.g. a
-            # dynamic route) - force a .css name so file:// MIME sniffing
-            # still treats it as a stylesheet.
+            # dynamic route) - force a .css name so MIME sniffing still
+            # treats it as a stylesheet.
             out_name = fname if fname.lower().endswith(".css") else f"{fname}.css"
             dest = dest_dir / out_name
-            href = f"_assets/captured/{out_name}"
+            href = f"assets/captured/{out_name}"
             if dest.exists():
-                hrefs.append(href)  # already vendored by an earlier page in this module
+                hrefs.append(href)  # already vendored by an earlier page in this version
                 continue
             dest.parent.mkdir(parents=True, exist_ok=True)
             text = src.read_text(encoding="utf-8", errors="ignore")
@@ -762,18 +841,25 @@ def ensure_head(soup):
             soup.html.insert(0, head)
         else:
             soup.insert(0, head)
+    # Every relative path on the page (assets, sibling-page links) is plain
+    # (e.g. "assets/css/main.css", "kerjasama-daftar.html") and resolves
+    # against this <base>, exactly like tracer-study's "<base href=/vX/>"
+    # convention - no per-path "../" or leading "/" needed, and it stays
+    # correct whether previewed locally or deployed to /{CURRENT_VERSION}/.
+    if head.find("base") is None:
+        head.insert(0, soup.new_tag("base", href=f"/{CURRENT_VERSION}/"))
     return head
 
 
 def restore_functional_scripts(soup, out_dir, capture_assets_dir, kept_inline_scripts):
     """Drop every captured <script src> except the Chart.js stack (verified
     self-contained, no further imports) - copy those locally under a clean
-    name into out_dir/_assets (shared across the module's pages, copied once),
-    keep the tag, and re-append the chart-init inline script (with its real
-    data, always page-specific) plus our own interaction layer at the end of
-    body."""
+    name into out_dir/assets (shared across every page in this version,
+    copied once), keep the tag, and re-append the chart-init inline script
+    (with its real data, always page-specific) plus our own interaction
+    layer at the end of body."""
     stats = Counter()
-    js_dir = out_dir / "_assets"
+    js_dir = out_dir / "assets"
 
     kept_names = []
     for tag in soup.find_all("script", src=True):
@@ -794,7 +880,7 @@ def restore_functional_scripts(soup, out_dir, capture_assets_dir, kept_inline_sc
     if body is None:
         return stats
     for name in kept_names:
-        body.append(soup.new_tag("script", src=f"_assets/{name}"))
+        body.append(soup.new_tag("script", src=f"assets/{name}"))
     for content in kept_inline_scripts:
         tag = soup.new_tag("script")
         tag.string = content
@@ -804,7 +890,7 @@ def restore_functional_scripts(soup, out_dir, capture_assets_dir, kept_inline_sc
     if not interactions_path.exists():
         interactions_path.parent.mkdir(parents=True, exist_ok=True)
         interactions_path.write_text(INTERACTIONS_JS, encoding="utf-8")
-    body.append(soup.new_tag("script", src="_assets/mockup-interactions.js"))
+    body.append(soup.new_tag("script", src="assets/mockup-interactions.js"))
     stats["functional_scripts_vendored"] += 1 if kept_inline_scripts else 0
 
     return stats
@@ -846,7 +932,7 @@ def resolve_internal_links(soup, module, page, route_map):
         target = resolve_route(path, route_map, self_id=self_id)
         if target:
             target_module, target_page = target.split("/", 1)
-            tag[attr] = relative_link(module, target_module, target_page)
+            tag[attr] = relative_link(target_module, target_page)
             stats["internal_links_resolved"] += 1
         else:
             tag[attr] = "#"
@@ -863,43 +949,43 @@ def resolve_internal_links(soup, module, page, route_map):
 
 def relink_existing_mockups(route_map, just_built_id):
     """Run after every build: sweep all OTHER previously-generated mockups
-    for links that couldn't be resolved at the time (data-mockup-unresolved)
-    and re-check them against the now-current route map. This is what makes
-    the whole set self-healing as new pages get added - build the "detail"
-    page today and every earlier mockup's dead "Detail" button starts working
-    without re-running anything for those pages."""
+    (flat *.html files in VERSION_DIR) for links that couldn't be resolved at
+    the time (data-mockup-unresolved) and re-check them against the
+    now-current route map. This is what makes the whole set self-healing as
+    new pages get added - build the "detail" page today and every earlier
+    mockup's dead "Detail" button starts working without re-running anything
+    for those pages. Each generated page carries its own "module/page" id in
+    a `data-mockup-page-id` attribute on <html> (see main()), so this can
+    identify itself without needing a per-module folder to read the name from."""
     stats = Counter()
-    if not PAGES_DIR.exists():
+    if not VERSION_DIR.exists():
         return stats
 
-    for module_dir in sorted(PAGES_DIR.iterdir()):
-        if not module_dir.is_dir() or module_dir.name.startswith("_"):
+    for html_path in sorted(VERSION_DIR.glob("*.html")):
+        html = html_path.read_text(encoding="utf-8", errors="ignore")
+        if "data-mockup-unresolved" not in html:
             continue
-        for html_path in sorted(module_dir.glob("*.html")):
-            module, page = module_dir.name, html_path.stem
-            if page_id(module, page) == just_built_id:
-                continue
-            html = html_path.read_text(encoding="utf-8", errors="ignore")
-            if "data-mockup-unresolved" not in html:
-                continue
 
-            soup = BeautifulSoup(html, "lxml")
-            changed = False
-            for tag in soup.find_all(attrs={"data-mockup-unresolved": True}):
-                path = tag["data-mockup-unresolved"]
-                target = resolve_route(path, route_map, self_id=page_id(module, page))
-                if not target:
-                    continue
-                target_module, target_page = target.split("/", 1)
-                attr = "href" if tag.has_attr("href") else "action"
-                tag[attr] = relative_link(module, target_module, target_page)
-                del tag["data-mockup-unresolved"]
-                changed = True
-                stats["links_relinked"] += 1
+        soup = BeautifulSoup(html, "lxml")
+        self_id = soup.html.get("data-mockup-page-id") if soup.html else None
+        if self_id == just_built_id:
+            continue
+        changed = False
+        for tag in soup.find_all(attrs={"data-mockup-unresolved": True}):
+            path = tag["data-mockup-unresolved"]
+            target = resolve_route(path, route_map, self_id=self_id)
+            if not target:
+                continue
+            target_module, target_page = target.split("/", 1)
+            attr = "href" if tag.has_attr("href") else "action"
+            tag[attr] = relative_link(target_module, target_page)
+            del tag["data-mockup-unresolved"]
+            changed = True
+            stats["links_relinked"] += 1
 
-            if changed:
-                html_path.write_text(str(soup), encoding="utf-8")
-                stats["pages_updated"] += 1
+        if changed:
+            html_path.write_text(str(soup), encoding="utf-8")
+            stats["pages_updated"] += 1
 
     return stats
 
@@ -913,18 +999,31 @@ def rewrite_head_assets(soup, out_dir, capture_assets_dir):
     head = ensure_head(soup)
     if captured_hrefs:
         # Ground-truth CSS from the real page - use it as-is, don't also mix
-        # in the (possibly stale) QUANTUM bundle to avoid cascade conflicts.
+        # in the vendor bundle to avoid cascade conflicts (see
+        # vendor_captured_stylesheets' docstring for why this is primary).
         for href in captured_hrefs:
             head.append(soup.new_tag("link", rel="stylesheet", href=href))
         stats["render_css_source"] = f"captured ({len(captured_hrefs)} file(s))"
     else:
-        # No capture available (e.g. a mockup built from scratch) - best
-        # effort: fall back to whatever QUANTUM bundle is in the local repo.
+        # No capture available (e.g. a mockup built from scratch) - fall
+        # back to the vendored QUANTUM bundle, same folder convention as
+        # tracer-study (assets/vendors/<name>/...), best effort only.
         vendored_href, vendor_stats = vendor_quantum_css(out_dir)
         stats.update(vendor_stats)
         if vendored_href:
             head.append(soup.new_tag("link", rel="stylesheet", href=vendored_href))
-            stats["render_css_source"] = f"QUANTUM fallback ({vendored_href}) - may be stale, no capture to verify against"
+            stats["render_css_source"] = (
+                f"QUANTUM vendor fallback ({vendored_href}) - Oct-2023 release, "
+                f"no capture to verify against, may not match this app's current classes at all"
+            )
+
+    # Optional hand-authored override CSS for this version, layered on top -
+    # same role as tracer-study's assets/css/main.css. Only linked if it's
+    # actually been created (starts out absent; add it if/when a visual gap
+    # needs patching).
+    overrides_path = VERSION_DIR / "assets" / "css" / "main.css"
+    if overrides_path.exists():
+        head.append(soup.new_tag("link", rel="stylesheet", href="assets/css/main.css"))
 
     if capture_assets_dir is not None:
         rel_assets = Path(
@@ -1052,8 +1151,11 @@ def render_manifest(slug, raw_path, out_html, cleanup_stats, head_stats, classes
     if "captured" in head_stats.get("render_css_source", ""):
         lines.append("  (this page's own captured stylesheet was used, so visuals should match production exactly)")
     elif head_stats.get("assets_copied") is not None:
-        lines.append(f"  ({head_stats.get('assets_copied', 0)} fonts/icons copied from QUANTUM, "
-                      f"{head_stats.get('assets_not_found', 0)} referenced but not found - may render slightly off)")
+        lines.append(f"  ({head_stats.get('assets_copied', 0)} fonts/icons copied from the vendor bundle, "
+                      f"{head_stats.get('assets_not_found', 0)} referenced but not found - this bundle is a Oct-2023 "
+                      f"release that shares very little class-level CSS with current production, so expect it to "
+                      f"look substantially unstyled, not just \"slightly off\" - capture this page properly (Save "
+                      f"Complete) instead of relying on this fallback if at all possible)")
     lines.append(f"- Everything is local now - {head_stats.get('local_assets_matched', 0)} font/pattern url()s "
                   f"resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), "
                   f"{head_stats.get('external_urls_dropped', 0)} unresolvable external url()s dropped to `none`.")
@@ -1119,7 +1221,7 @@ def render_manifest(slug, raw_path, out_html, cleanup_stats, head_stats, classes
         ("comments_removed", "HTML comments stripped"),
     ]:
         lines.append(f"- {label}: {cleanup_stats.get(key, 0)}")
-    lines.append(f"- Captured `<link rel=stylesheet>` dropped (replaced by the vendored copies above): "
+    lines.append(f"- Captured `<link rel=stylesheet>` dropped (replaced by the QUANTUM vendor bundle above): "
                   f"{head_stats.get('captured_stylesheets_dropped', 0)}")
     lines.append(f"- Captured `<script src>` dropped: {head_stats.get('captured_scripts_dropped', 0)} "
                   f"({head_stats.get('functional_scripts_vendored', 0)} of those kept - see Charts/Dropdowns above)")
@@ -1211,10 +1313,11 @@ def main():
 
     module, page = parse_target(raw_path, sys.argv[2] if len(sys.argv) > 2 else None)
     pid = page_id(module, page)
-    out_dir = PAGES_DIR / module
+    out_dir = VERSION_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_html = out_dir / f"{page}.html"
-    out_manifest = out_dir / f"{page}.manifest.md"
+    stem = output_stem(module, page)
+    out_html = out_dir / f"{stem}.html"
+    out_manifest = out_dir / f"{stem}.manifest.md"
 
     tokens_data = load_json(TOKENS_DIR / "design-tokens.json")
     classes_data = load_json(TOKENS_DIR / "component-classes.json")
@@ -1236,9 +1339,9 @@ def main():
     if module_mismatch:
         module_warning = (
             f"Captured URL `{capture_path}` looks like it belongs to module **{suggested_module}**, "
-            f"but this page was built as `{module}/{page}`. If other pages of that module already "
-            f"exist, rebuild this one as `{suggested_module}/{page}` so they share one folder "
-            f"instead of sitting isolated in their own."
+            f"but this page was built as `{module}/{page}`. Rebuild this one as "
+            f"`{suggested_module}/{page}` so its filename groups with that module's other pages "
+            f"(`{suggested_module}-{page}.html`) instead of a mismatched name."
         )
         print(f"WARNING: {module_warning}")
 
@@ -1254,6 +1357,11 @@ def main():
     classes = classify_classes(soup, known_classes)
     colors = find_colors(soup, reverse_lookup)
     interactions = detect_interactions(soup)
+
+    if soup.html is not None:
+        # Lets relink_existing_mockups() identify a flat *.html file's own
+        # module/page without needing a per-module folder to read it from.
+        soup.html["data-mockup-page-id"] = pid
 
     out_html.write_text(str(soup), encoding="utf-8")
     relink_stats = relink_existing_mockups(route_map, just_built_id=pid)
