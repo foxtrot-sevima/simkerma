@@ -38,6 +38,7 @@ simkerma_ui/
       vendors/local-assets/     <- font/pattern QUANTUM tambahan (quantum-symbols, dst)
       chart.js, chart-settings.js, chartjs-plugin-datalabels.min.js
       mockup-interactions.js
+      set-header-height.js     <- set --qn-header-height dari tinggi <header> asli (lihat "Kenapa begini")
       css/main.css              <- override manual (opsional, mulai kosong)
   mockups/
     raw/<nama-capture>/         <- intake mentah, tetap per-capture (bukan per-modul/versi)
@@ -238,6 +239,21 @@ cuma pakai `wire:confirm="..."` dari Livewire 3), baru fallback ke dialog
   sungguhan tidak bisa dipicu di mockup statis (tidak ada backend). Kalau
   butuh state itu persis, capture ulang halaman tepat setelah aksi itu terjadi
   di aplikasi asli, lalu jalankan ulang script.
+- **`--qn-header-height` di-set lewat `set-header-height.js`, bukan cuma
+  fallback ke 0.** CSS produksi punya aturan seperti
+  `.qn-sidebar.offcanvas{top:var(--qn-header-height, 0)}` — variabel ini
+  aslinya di-set oleh JS produksi (mengukur tinggi `<header class="qn-header">`
+  yang sebenarnya, yang bisa berubah-ubah, mis. nama kampus yang wrap jadi 2
+  baris), tapi JS itu tidak ikut ke-save browser. Tanpa perbaikan, `var(...,
+  0)` diam-diam jatuh ke `0` — bukan error yang kelihatan, tapi sidebar
+  offcanvas (kalau halamannya punya satu, mis. halaman Detail Mitra) jadi
+  render menempel di `top:0`, TERTUTUP TOTAL di belakang header yang sticky
+  (sudah dibuktikan langsung lewat inspeksi computed-style: setelah
+  `--qn-header-height` di-set manual, sidebar yang tadinya "hilang" langsung
+  muncul normal). `set-header-height.js` mereplikasi ini generik untuk semua
+  halaman (bukan cuma yang kelihatan butuh saat ini) - ukur tinggi
+  `.qn-header` lalu simpan sebagai custom property di `:root`, jalan ulang
+  tiap resize.
 - Semua stylesheet/script hasil vendoring disalin **ke dalam `v1/assets/`
   versi itu sendiri** (bukan ditautkan lintas folder ke `QUANTUM/`) — supaya
   versi ini self-contained persis seperti tracer-study (tidak bergantung ke
@@ -267,7 +283,8 @@ nyata:
   (lihat "Noise dibuang otomatis" di atas) — yang tersisa adalah markup polos
   plus `data-bs-*` standar Bootstrap, yang di project nyata tinggal disambung
   lagi ke `wire:` masing-masing kalau perlu.
-- `mockup-interactions.js` **jangan ikut di-copy ke project** — itu cuma
-  pengganti sementara karena project asli sudah punya bundle JS Bootstrap
-  penuh. File ini ditandai jelas di komentar headernya ("mockup scaffolding
-  only").
+- `mockup-interactions.js` dan `set-header-height.js` **jangan ikut
+  di-copy ke project** — keduanya cuma pengganti sementara karena project
+  asli sudah punya JS produksi sendiri yang melakukan hal yang sama (bundle
+  Bootstrap penuh, dan logika pengukur tinggi header). Kedua file ditandai
+  jelas di komentar headernya ("mockup scaffolding only").

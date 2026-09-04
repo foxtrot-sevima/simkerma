@@ -8,25 +8,14 @@
 
 ## Internal navigation
 
-- Links pointing to other app pages that already have a mockup built: **6** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
-- Links with no matching mockup yet: **28** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
+- Links pointing to other app pages that already have a mockup built: **19** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
+- Links with no matching mockup yet: **15** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
 
   - `/gate/menu`
   - `/v2/gate/sessions/logout`
   - `/v2/gate/sessions/switch-role`
   - `/v2/kerjasama`
   - `/v2/kerjasama/bentuk-kegiatan`
-  - `/v2/kerjasama/data-kerjasama/100`
-  - `/v2/kerjasama/data-kerjasama/88`
-  - `/v2/kerjasama/data-kerjasama/90`
-  - `/v2/kerjasama/data-kerjasama/92`
-  - `/v2/kerjasama/data-kerjasama/94`
-  - `/v2/kerjasama/data-kerjasama/95`
-  - `/v2/kerjasama/data-kerjasama/96`
-  - `/v2/kerjasama/data-kerjasama/97`
-  - `/v2/kerjasama/data-kerjasama/98`
-  - `/v2/kerjasama/data-kerjasama/99`
-  - `/v2/kerjasama/data-kerjasama/create`
   - `/v2/kerjasama/data-kerjasama/export`
   - `/v2/kerjasama/data-kerjasama/export-format`
   - `/v2/kerjasama/data-kerjasama/import`
@@ -34,12 +23,8 @@
   - `/v2/kerjasama/kegiatan`
   - `/v2/kerjasama/kriteria-mitra`
   - `/v2/kerjasama/laporan-kerjasama`
-  - `/v2/kerjasama/mitra`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
-  - `/v2/kerjasama/unit-kerja`
-
-- Building this page also fixed **2** previously-dead link(s) across **1** earlier mockup(s) that were waiting for this route to exist.
 
 ## Interactions
 

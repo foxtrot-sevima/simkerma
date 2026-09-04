@@ -343,6 +343,36 @@ INTERACTIONS_JS = """// Local Bootstrap-5-compatible interaction layer for this 
 })();
 """
 
+# Production sets --qn-header-height via JS (measuring the real sticky header's
+# rendered height, which varies - e.g. the campus name line wrapping to 2 lines
+# at narrow widths) - that script isn't part of the static capture. Without it,
+# every var(--qn-header-height, 0) in the captured CSS falls back to 0, which is
+# silently wrong rather than missing: the offcanvas .qn-sidebar's `top` offset
+# becomes 0 instead of the header's real height, so the sidebar renders pinned
+# under the sticky header (z-index below it) instead of starting beneath it -
+# its content ends up completely hidden behind the header with no visible
+# error. Confirmed by hand with computed-style inspection (Playwright) on
+# kerjasama-mitra-detail.html: setting this property after the fact made the
+# sidebar's "Mitra" nav appear exactly as expected. Mockup scaffolding only -
+# the real project already sets this from its own JS.
+HEADER_HEIGHT_JS = """// Keeps --qn-header-height in sync with the real .qn-header's rendered
+// height - production sets this via JS the static capture never saved (see
+// build_mockup.py for why it matters: without it, the offcanvas .qn-sidebar
+// renders hidden behind the sticky header, not just "slightly off").
+// Mockup scaffolding only - do not copy into the real project.
+(function () {
+    function sync() {
+        var header = document.querySelector('.qn-header');
+        if (header) {
+            document.documentElement.style.setProperty('--qn-header-height', header.offsetHeight + 'px');
+        }
+    }
+    sync();
+    window.addEventListener('load', sync);
+    window.addEventListener('resize', sync);
+})();
+"""
+
 CSS_URL_RE = re.compile(r"url\(\s*(['\"]?)(?!data:)([^'\")]+)\1\s*\)")
 
 
@@ -885,6 +915,12 @@ def restore_functional_scripts(soup, out_dir, capture_assets_dir, kept_inline_sc
         tag = soup.new_tag("script")
         tag.string = content
         body.append(tag)
+
+    header_height_path = js_dir / "set-header-height.js"
+    if not header_height_path.exists():
+        header_height_path.parent.mkdir(parents=True, exist_ok=True)
+        header_height_path.write_text(HEADER_HEIGHT_JS, encoding="utf-8")
+    body.append(soup.new_tag("script", src="assets/set-header-height.js"))
 
     interactions_path = js_dir / "mockup-interactions.js"
     if not interactions_path.exists():

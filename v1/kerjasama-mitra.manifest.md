@@ -8,8 +8,8 @@
 
 ## Internal navigation
 
-- Links pointing to other app pages that already have a mockup built: **7** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
-- Links with no matching mockup yet: **25** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
+- Links pointing to other app pages that already have a mockup built: **18** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
+- Links with no matching mockup yet: **14** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
 
   - `/gate/menu`
   - `/v2/gate/sessions/logout`
@@ -20,23 +20,10 @@
   - `/v2/kerjasama/kegiatan`
   - `/v2/kerjasama/kriteria-mitra`
   - `/v2/kerjasama/laporan-kerjasama`
-  - `/v2/kerjasama/mitra/58`
-  - `/v2/kerjasama/mitra/59`
-  - `/v2/kerjasama/mitra/60`
-  - `/v2/kerjasama/mitra/61`
-  - `/v2/kerjasama/mitra/62`
-  - `/v2/kerjasama/mitra/63`
-  - `/v2/kerjasama/mitra/64`
-  - `/v2/kerjasama/mitra/65`
-  - `/v2/kerjasama/mitra/66`
-  - `/v2/kerjasama/mitra/75`
   - `/v2/kerjasama/mitra/create`
   - `/v2/kerjasama/mitra/export`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
-  - `/v2/kerjasama/unit-kerja`
-
-- Building this page also fixed **7** previously-dead link(s) across **7** earlier mockup(s) that were waiting for this route to exist.
 
 ## Interactions
 

@@ -8,8 +8,8 @@
 
 ## Internal navigation
 
-- Links pointing to other app pages that already have a mockup built: **9** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
-- Links with no matching mockup yet: **15** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
+- Links pointing to other app pages that already have a mockup built: **12** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
+- Links with no matching mockup yet: **12** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
 
   - `/gate/menu`
   - `/v2/gate/sessions/logout`
@@ -18,15 +18,10 @@
   - `/v2/kerjasama/bentuk-kegiatan`
   - `/v2/kerjasama/jenis-dokumen`
   - `/v2/kerjasama/kegiatan`
-  - `/v2/kerjasama/kerjasama-mitra/62`
   - `/v2/kerjasama/kriteria-mitra`
   - `/v2/kerjasama/laporan-kerjasama`
-  - `/v2/kerjasama/mitra/62/edit`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
-  - `/v2/kerjasama/unit-kerja`
-
-- Building this page also fixed **13** previously-dead link(s) across **4** earlier mockup(s) that were waiting for this route to exist.
 
 ## Interactions
 

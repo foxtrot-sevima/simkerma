@@ -5,6 +5,7 @@
 <meta content="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo" name="csrf-token"/>
 <title>SEVIMA Platform - Mitra</title>
 <link href="../mockups/raw/Kerjasama/SEVIMA Platform - Edit Mitra_files/logo-sevimaplatform-small.png" rel="icon"/>
+
 <style>
         .full-page-loader {
             display: flex;
@@ -22,6 +23,8 @@
             display: none !important;
         }
     </style>
+
+
 <style>
         .qn-header-pattern {
             background-image: url(assets/vendors/local-assets/sevima-header.webp);
@@ -137,6 +140,7 @@
 </a>
 </div>
 <hr class="d-none d-md-block vr mx-2"/>
+
 <div class="dropdown d-none d-md-block rounded-4 bg-white text-black p-1">
 <a aria-expanded="false" class="d-flex gap-1 align-items-center link-body-emphasis text-decoration-none dropdown-toggle pe-1" data-bs-toggle="dropdown" href="kerjasama-mitra-edit.html">
 <div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
@@ -292,8 +296,10 @@
 </ol>
 </nav>
 <div class="d-flex gap-3 align-items-center">
+
 <span class="d-flex d-xl-none gap-1 text-body-tertiary" data-bs-placement="left" data-bs-title="Tersimpan 2 menit yang lalu" data-bs-toggle="tooltip">
 <i class="sym sym-check"></i>
+
 </span>
 <button class="d-none d-md-block btn btn-primary">
                         Simpan
@@ -301,11 +307,11 @@
 </div>
 </div>
 </header>
-<div class="qn-toc-collapse col-md-3 col-xxl-2 collapse collapse-horizontal show p-0">
+ <div class="qn-toc-collapse col-md-3 col-xxl-2 collapse collapse-horizontal show p-0">
 <div class="qn-toc d-none d-md-block ps-3 ps-xl-5 pe-1 py-3 sticky-top z-0" style="top: 50px; width: 253px;">
 <h6 class="mb-3">Table of Content</h6>
 <ul class="list-unstyled ps-3 d-flex flex-column gap-1 overflow-hidden">
-<li>
+ <li>
 <a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="kerjasama-mitra-edit.html">
                     Informasi Mitra
                 </a>
@@ -315,9 +321,11 @@
                     Informasi Kontak Mitra
                 </a>
 </li>
+
 </ul>
 </div>
 </div>
+
 <form class="qn-form needs-validation py-3 ps-3 position-relative col-xl-6 col-md-9 offset-xxl-1" novalidate="">
 <div class="row px-3 row-cols-1 gy-4">
 <div class="d-md-block d-none">
@@ -338,27 +346,37 @@
 </div>
 </div>
 </div>
-<div class="card shadow-sm border-0 rounded-4" id="informasi-mitra">
+
+ <div class="card shadow-sm border-0 rounded-4" id="informasi-mitra">
+
 <div class="card-header bg-white border-light-subtle rounded-top-4 border-2">
 <div class="d-flex gap-2 align-items-center">
 <div class="ratio ratio-1x1" style="width: 2rem; min-width: 2rem;">
 <span class="d-flex align-items-center justify-content-center rounded-circle p-2 border">
-<i class="sym sym-building-05"></i>
+ <i class="sym sym-building-05"></i>
+
 </span>
 </div>
 <h5 class="mb-0">Informasi Mitra</h5>
 </div>
 </div>
+
 <div class="card-body">
+ 
+ 
 <div class="row row-cols-1 row-cols-md-3 g-3">
+  
 <div class="form-group col-md-12">
-<label class="form-label" for="jenis_mitra">
+ <label class="form-label" for="jenis_mitra">
             Jenis Mitra
              <span class="text-danger">*</span>
+
 </label>
 <br/>
-<div data-testid="radio_jenis_mitra">
-<div class="form-check form-check-inline">
+
+   <div data-testid="radio_jenis_mitra">
+ 
+ <div class="form-check form-check-inline">
 <input checked="" class="form-check-input" id="jenis_mitra_pt" name="jenis_mitra" required="required" type="radio" value="PT"/>
 <label class="form-check-label" for="jenis_mitra_pt">Perguruan Tinggi</label>
 </div>
@@ -366,23 +384,41 @@
 <input class="form-check-input" id="jenis_mitra_ins" name="jenis_mitra" required="required" type="radio" value="INS"/>
 <label class="form-check-label" for="jenis_mitra_ins">Non Perguruan Tinggi</label>
 </div>
+
 </div>
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="nama_mitra">
+ <label class="form-label" for="nama_mitra">
             Nama Mitra
              <span class="text-danger">*</span>
+
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-nama_mitra" maxlength="255" name="nama_mitra" placeholder="Masukkan Nama Mitra" required="required" type="text" value="UPN “Veteran” Yogyakarta"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="id_kriteria_mitra">
+ <label class="form-label" for="id_kriteria_mitra">
             Kriteria Mitra
              <span class="text-danger">*</span>
+
 </label>
 <br/>
-<select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kriteria_mitra" id="form-control-id_kriteria_mitra" name="id_kriteria_mitra" required="required" tabindex="-1">
+
+    <select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kriteria_mitra" id="form-control-id_kriteria_mitra" name="id_kriteria_mitra" required="required" tabindex="-1">
 <option disabled="" selected="" value=""></option>
 <option value="">
                     Pilih Kriteria Mitra</option>
@@ -421,31 +457,58 @@
 </select><span class="select2 select2-container select2-container--quantum3" data-select2-id="select2-data-26-nv4p" dir="ltr" style="width: 671.2px;"><span class="selection"><span aria-controls="select2-form-control-id_kriteria_mitra-container" aria-disabled="false" aria-expanded="false" aria-haspopup="true" aria-labelledby="select2-form-control-id_kriteria_mitra-container" class="select2-selection select2-selection--single" role="combobox" tabindex="0"><span aria-readonly="true" class="select2-selection__rendered" id="select2-form-control-id_kriteria_mitra-container" role="textbox" title="
                     Perguruan tinggi dalam negeri dalam daftar QS200 berdasarkan bidang ilmu">
                     Perguruan tinggi dalam negeri dalam daftar QS200 berdasarkan bidang ilmu</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span aria-hidden="true" class="dropdown-wrapper"></span></span>
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="kode_mitra">
+ <label class="form-label" for="kode_mitra">
             Nomor Surat Izin Usaha / Perguruan Tinggi
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-kode_mitra" maxlength="255" name="kode_mitra" placeholder="(opsional)" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="npwp_mitra">
+ <label class="form-label" for="npwp_mitra">
             NPWP Mitra
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-npwp_mitra" maxlength="255" name="npwp_mitra" placeholder="(opsional)" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="tingkat_mitra">
+ <label class="form-label" for="tingkat_mitra">
             Lingkup Mitra
              <span class="text-danger">*</span>
+
 </label>
 <br/>
-<div data-testid="radio_tingkat_mitra">
-<div class="form-check">
+
+   <div data-testid="radio_tingkat_mitra">
+ 
+ <div class="form-check">
 <input checked="" class="form-check-input" id="tingkat_mitra_l" name="tingkat_mitra" required="required" type="radio" value="L"/>
 <label class="form-check-label" for="tingkat_mitra_l">Lokal</label>
 </div>
@@ -461,15 +524,22 @@
 <input class="form-check-input" id="tingkat_mitra_i" name="tingkat_mitra" required="required" type="radio" value="I"/>
 <label class="form-check-label" for="tingkat_mitra_i">Internasional</label>
 </div>
+
 </div>
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="id_provinsi">
+ <label class="form-label" for="id_provinsi">
             Provinsi
              
 </label>
 <br/>
-<select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_provinsi" id="form-control-id_provinsi" name="id_provinsi" tabindex="-1">
+
+    <select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_provinsi" id="form-control-id_provinsi" name="id_provinsi" tabindex="-1">
 <option disabled="" selected="" value=""></option>
 <option value="">
                     Pilih Provinsi</option>
@@ -546,14 +616,21 @@
 </select><span class="select2 select2-container select2-container--quantum3" data-select2-id="select2-data-64-36ej" dir="ltr" style="width: 327.6px;"><span class="selection"><span aria-controls="select2-form-control-id_provinsi-container" aria-disabled="false" aria-expanded="false" aria-haspopup="true" aria-labelledby="select2-form-control-id_provinsi-container" class="select2-selection select2-selection--single" role="combobox" tabindex="0"><span aria-readonly="true" class="select2-selection__rendered" id="select2-form-control-id_provinsi-container" role="textbox" title="
                     DI YOGYAKARTA">
                     DI YOGYAKARTA</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span aria-hidden="true" class="dropdown-wrapper"></span></span>
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="id_kota">
+ <label class="form-label" for="id_kota">
             Kota / Kabupaten
              
 </label>
 <br/>
-<select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kota" id="form-control-id_kota" name="id_kota" tabindex="-1">
+
+    <select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kota" id="form-control-id_kota" name="id_kota" tabindex="-1">
 <option disabled="" selected="" value=""></option>
 <option data-select2-id="select2-data-73-o4ra" selected="" value="">
                     Pilih Kota / Kabupaten</option>
@@ -570,79 +647,143 @@
 </select><span class="select2 select2-container select2-container--quantum3" data-select2-id="select2-data-72-xr3f" dir="ltr" style="width: 327.6px;"><span class="selection"><span aria-controls="select2-form-control-id_kota-container" aria-disabled="false" aria-expanded="false" aria-haspopup="true" aria-labelledby="select2-form-control-id_kota-container" class="select2-selection select2-selection--single" role="combobox" tabindex="0"><span aria-readonly="true" class="select2-selection__rendered" id="select2-form-control-id_kota-container" role="textbox" title="
                     Pilih Kota / Kabupaten">
                     Pilih Kota / Kabupaten</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span aria-hidden="true" class="dropdown-wrapper"></span></span>
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="id_kecamatan">
+ <label class="form-label" for="id_kecamatan">
             Kecamatan
              
 </label>
 <br/>
-<select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kecamatan" id="form-control-id_kecamatan" name="id_kecamatan" tabindex="-1">
+
+    <select aria-hidden="true" class="form-select select-search select2-hidden-accessible" data-select2-id="select2-data-form-control-id_kecamatan" id="form-control-id_kecamatan" name="id_kecamatan" tabindex="-1">
 <option disabled="" selected="" value=""></option>
 <option data-select2-id="select2-data-76-65av" selected="" value="">
                     Pilih Kecamatan</option>
 </select><span class="select2 select2-container select2-container--quantum3" data-select2-id="select2-data-75-0w0q" dir="ltr" style="width: 327.6px;"><span class="selection"><span aria-controls="select2-form-control-id_kecamatan-container" aria-disabled="false" aria-expanded="false" aria-haspopup="true" aria-labelledby="select2-form-control-id_kecamatan-container" class="select2-selection select2-selection--single" role="combobox" tabindex="0"><span aria-readonly="true" class="select2-selection__rendered" id="select2-form-control-id_kecamatan-container" role="textbox" title="
                     Pilih Kecamatan">
                     Pilih Kecamatan</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span aria-hidden="true" class="dropdown-wrapper"></span></span>
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="kode_pos">
+ <label class="form-label" for="kode_pos">
             Kode POS
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-kode_pos" name="kode_pos" placeholder="Masukkan Kode POS (opsional)" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="alamat">
+ <label class="form-label" for="alamat">
             Alamat
              
 </label>
 <br/>
-<textarea class="form-control" id="form-control-alamat" name="alamat" placeholder="Masukkan Alamat (opsional)" style="height: 80px"></textarea>
+
+   <textarea class="form-control" id="form-control-alamat" name="alamat" placeholder="Masukkan Alamat (opsional)" style="height: 80px"></textarea>
 <span data-clear="input"></span>
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="email">
+ <label class="form-label" for="email">
             Email
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-email" maxlength="255" name="email" placeholder="Masukkan Email (opsional)" type="email"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="telepon">
+ <label class="form-label" for="telepon">
             Nomor Telepon
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-telepon" maxlength="20" name="telepon" numeric="numeric" placeholder="Masukkan Nomor Telepon (opsional)" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-12">
-<label class="form-label" for="website">
+ <label class="form-label" for="website">
             Link Website
              
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" component="component" id="form-control-website" maxlength="255" name="website" placeholder="Masukkan Link Website (opsional)" type="text"/>
+ 
+
+
+ 
+ 
+</div>
+
+
+
+</div>
+ 
 </div>
 </div>
-</div>
-</div>
-<div class="card shadow-sm border-0 rounded-4" id="informasi-kontak-mitra">
+
+ <div class="card shadow-sm border-0 rounded-4" id="informasi-kontak-mitra">
+
 <div class="card-header bg-white border-light-subtle rounded-top-4 border-2">
 <div class="d-flex gap-2 align-items-center">
 <div class="ratio ratio-1x1" style="width: 2rem; min-width: 2rem;">
 <span class="d-flex align-items-center justify-content-center rounded-circle p-2 border">
-<i class="sym sym-phone"></i>
+ <i class="sym sym-phone"></i>
+
 </span>
 </div>
 <h5 class="mb-0">Informasi Kontak Mitra</h5>
 </div>
 </div>
+
 <div class="card-body">
+ 
+ 
 <div class="row row-cols-1 row-cols-md-3 g-3">
-<div class="col-md-12">
+  <div class="col-md-12">
+ 
 <div class="d-flex justify-content-between align-items-center pb-3">
 <span class="fw-semibold fs-5">Kontak 1</span>
 <button class="btn gap-2 d-md-flex btn-danger" data-mockup-confirm="Yakin ingin menghapus data ini? (mockup - tidak tersambung ke server)" style="" type="button">
@@ -651,55 +792,102 @@ Hapus
     </button>
 </div>
 <div class="row row-cols-1 row-cols-md-3 g-3">
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="record.kontak.0.nama_kontak">
+ <label class="form-label" for="record.kontak.0.nama_kontak">
             Nama Kontak
              <span class="text-danger">*</span>
+
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.nama_kontak" max="255" name="record.kontak.0.nama_kontak" placeholder="Masukkan Nama Kontak" required="required" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="record.kontak.0.jabatan">
+ <label class="form-label" for="record.kontak.0.jabatan">
             Jabatan
              <span class="text-danger">*</span>
+
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.jabatan" max="255" name="record.kontak.0.jabatan" placeholder="Masukkan Jabatan" required="required" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="record.kontak.0.telepon">
+ <label class="form-label" for="record.kontak.0.telepon">
             Nomor Handphone
              <span class="text-danger">*</span>
+
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.telepon" name="record.kontak.0.telepon" placeholder="Masukkan Nomor Handphone" required="required" type="text"/>
+ 
+
+
+ 
+ 
 </div>
+
+
 <div class="form-group col-md-6">
-<label class="form-label" for="record.kontak.0.email">
+ <label class="form-label" for="record.kontak.0.email">
             Email
              <span class="text-danger">*</span>
+
 </label>
 <br/>
+
+     
 <input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.email" max="255" name="record.kontak.0.email" placeholder="Masukkan Email" required="required" type="text"/>
+ 
+
+
+ 
+ 
+</div>
+
+
 </div>
 </div>
-</div>
+
 <div class="col-md-12 mt-3 d-flex justify-content-center">
 <button class="btn gap-2 d-md-flex btn-light" style="" type="button">
 <i class="sym sym-plus"></i>
 Tambah Kontak
     </button>
 </div>
+
+</div>
+ 
 </div>
 </div>
-</div>
+
+
 </div>
 </form>
 </div>
 </div>
 <div class="d-block d-md-none rounded-top-4 shadow-lg sticky-bottom">
-<div class="w-100 border-bottom collapse" id="tocMobile">
+ <div class="w-100 border-bottom collapse" id="tocMobile">
 <div class="qn-toc p-3 bg-white rounded-top-4" style="width: 253px;">
 <div class="d-flex gap-2 justify-content-between">
 <h6 class="mb-3">Table of Content</h6>
@@ -707,7 +895,7 @@ Tambah Kontak
 </button>
 </div>
 <ul class="list-unstyled m-0 ps-3 d-flex flex-column gap-1 overflow-hidden">
-<li>
+ <li>
 <a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="kerjasama-mitra-edit.html">
                     Informasi Mitra
                 </a>
@@ -717,13 +905,15 @@ Tambah Kontak
                     Informasi Kontak Mitra
                 </a>
 </li>
+
 </ul>
 </div>
-</div>
+</div> 
 <div class="w-100 d-flex bg-white gap-2 p-3">
-<button aria-controls="tocMobile" aria-expanded="false" aria-label="Table of Content" class="btn btn-icon btn-light" data-bs-target="#tocMobile" data-bs-toggle="collapse" type="button">
+ <button aria-controls="tocMobile" aria-expanded="false" aria-label="Table of Content" class="btn btn-icon btn-light" data-bs-target="#tocMobile" data-bs-toggle="collapse" type="button">
 <i class="sym sym-list"></i>
 </button>
+
 <button class="btn gap-2 d-md-flex btn-primary w-100" color="primary" style="" type="button">
 Simpan
     </button>
@@ -747,4 +937,8 @@ Simpan
 <span class="visually-hidden">Loading...</span>
 </div>
 </div>
-<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/mockup-interactions.js"></script></body></html>
+  
+
+
+
+<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script></body></html>

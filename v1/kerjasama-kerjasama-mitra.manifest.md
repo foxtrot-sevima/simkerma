@@ -24,8 +24,6 @@
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
 
-- Building this page also fixed **1** previously-dead link(s) across **1** earlier mockup(s) that were waiting for this route to exist.
-
 ## Interactions
 
 Detected on this page and wired up via `mockup-interactions.js` (a small local Bootstrap-5-compatible re-implementation - the real production JS bundle isn't reusable from a static capture, but the CSS state classes it drives are the same ones already in the captured stylesheet, so behavior matches production):

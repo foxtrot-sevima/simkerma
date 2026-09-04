@@ -34,7 +34,8 @@ simkerma_ui/
 │       │                                           terakhir kalau suatu halaman tidak punya capture CSS-nya)
 │       ├── vendors/local-assets/                 (font/pattern QUANTUM tambahan - quantum-symbols, dll.)
 │       ├── css/main.css                          (override manual, opsional)
-│       └── chart.js, mockup-interactions.js, dll. (scaffolding mockup)
+│       └── chart.js, mockup-interactions.js,
+│           set-header-height.js, dll.            (scaffolding mockup)
 ├── mockups/               <- tooling AI (skill mockup-sync): intake capture mentah,
 │                              token registry, script build - lihat mockups/README.md
 ├── QUANTUM/                <- checkout lokal design system QUANTUM (read-only, sumber vendor)
@@ -164,3 +165,13 @@ satu-kali yang masih manual (di luar jangkauan tooling di repo ini):
   tidak ada. Solusinya: capture ulang halaman itu pakai "Save As... Webpage,
   Complete" (bukan "Copy outerHTML") supaya folder `_files`-nya ikut, lalu
   build ulang - itu akan otomatis pindah ke CSS capture asli yang cocok.
+- **Ada bagian yang seharusnya ada (sidebar, panel) tapi tidak kelihatan
+  sama sekali** → jangan buru-buru simpulkan markup-nya hilang - cek dulu
+  apakah `v1/assets/set-header-height.js` ke-load (lihat tab Network). CSS
+  produksi banyak yang posisinya bergantung ke `var(--qn-header-height, 0)`
+  (mis. sidebar offcanvas yang seharusnya menempel di bawah header) - kalau
+  variabel ini tidak ke-set, elemen itu diam-diam menempel di `top:0` dan
+  ketutup total di belakang header yang sticky, tanpa error apa pun yang
+  kelihatan di console. `set-header-height.js` menambal ini dengan mengukur
+  tinggi `.qn-header` asli - kalau skrip ini sudah ada tapi tetap tidak
+  membantu, baru itu bug beneran yang perlu ditelusuri lebih lanjut.

@@ -233,6 +233,15 @@ got relinked).
   you need to hand-adjust anything for a specific ask, prefer extending
   `build_mockup.py`'s cleanup rules over editing the generated HTML directly
   - direct edits get silently discarded next time the script re-runs.
-- `mockup-interactions.js` is scaffolding for the mockup only - never suggest
-  copying it into the real project, which already ships full Bootstrap JS.
-  Say so explicitly if a user asks to "take the whole mockup" into the repo.
+- `mockup-interactions.js` and `set-header-height.js` are scaffolding for the
+  mockup only - never suggest copying either into the real project, which
+  already ships full Bootstrap JS and its own header-height logic. Say so
+  explicitly if a user asks to "take the whole mockup" into the repo.
+  `set-header-height.js` measures `.qn-header`'s real rendered height and
+  sets it as `--qn-header-height` on load/resize - without it, anything the
+  captured CSS positions with `var(--qn-header-height, 0)` (e.g. an
+  offcanvas `.qn-sidebar`'s `top` offset) silently falls back to `0` and
+  renders hidden behind the sticky header instead of below it, with no
+  visible error. If a page looks like it's missing a whole section (a
+  sidebar, a panel) that the capture clearly has markup for, check this
+  before assuming the section itself is broken.
