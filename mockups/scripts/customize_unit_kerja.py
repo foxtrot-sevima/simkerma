@@ -23,17 +23,20 @@ data taken directly from SPMI's own capture (not just Kerjasama's flat
     flat gray at every depth, which is the "row color" this was asked to
     improve on
 
-No detail page exists for a single unit kerja (SPMI's own eye icon links to
-one, but its content wasn't part of the capture) - "preview" opens a modal
-populated from that row's own already-known fields instead, using the same
-modal skeleton (`modal fade` > `modal-dialog` > `modal-content` > ...) and
-label:value layout already used on v1/mitra-detail.html.
+Eye/edit actions link to v1/unit-kerja-detail.html / v1/unit-kerja-edit.html
+(built by build_unit_kerja_detail_edit.py, run separately - see that
+script's docstring) - every row points at the same single pair of pages,
+same accepted limitation as Mitra's own list. (Earlier revision: no detail
+page existed yet, so eye opened a generic preview modal and edit was an
+inert enabled button - both dropped once real pages existed to link to.)
 
 This is a hand-authored transformation, not something build_mockup.py's
 generic per-page pipeline can derive - re-run this script after
 unit-kerja.html if it's ever rebuilt from a fresh capture (build_mockup.py
 would silently overwrite this customization otherwise, per this repo's
 "never hand-edit generated pages, only sanctioned scripts touch them" rule).
+Re-running this AFTER build_unit_kerja_detail_edit.py is safe - the action
+links it builds already point at the real pages, nothing to redo.
 
 Usage:
     python mockups/scripts/customize_unit_kerja.py
@@ -45,8 +48,6 @@ from bs4 import BeautifulSoup, NavigableString
 ROOT = Path(__file__).resolve().parents[2]
 PAGE = ROOT / "v1" / "unit-kerja.html"
 SPMI_RAW = ROOT / "mockups" / "raw" / "SPMI" / "SEVIMA Platform - Unit Kerja.html"
-
-PREVIEW_MODAL_ID = "modal-preview-unit-kerja"
 
 # Column headers matched to SPMI's own wording exactly (Kerjasama originally
 # had its own shorter labels - "Kode Unit", "Nama Unit", "Apakah Aktif",
@@ -68,28 +69,17 @@ COLUMN_LABELS = {
 DEPTH_BG = {0: "#EAF1FE", 1: "#E9ECEE"}
 DEPTH_INDENT_PX = 18  # per level, applied to the name cell
 
-PREVIEW_SCRIPT = """// Populates #modal-preview-unit-kerja from the clicked row's own
-// data-preview-* attributes, and expands/collapses a parent row's
-// descendants (see customize_unit_kerja.py). Page-specific scaffolding,
-// same spirit as mockup-interactions.js (which still handles the actual
-// data-bs-toggle="modal" open/close - this only fills in the content).
+PREVIEW_SCRIPT = """// Expands/collapses a parent row's descendants (see
+// customize_unit_kerja.py). Page-specific scaffolding, same spirit as
+// mockup-interactions.js. The eye/edit actions are plain <a href> links to
+// real pages (unit-kerja-detail.html / unit-kerja-edit.html, built by
+// build_unit_kerja_detail_edit.py) - no JS needed for those.
 (function () {
-    var FIELDS = ["kode", "nama", "aktif", "jenis"];
-
     document.addEventListener("click", function (event) {
-        // Action buttons sit inside a row that may ALSO be a group toggle
-        // (data-group-toggle on the <tr> itself) - handle the button's own
-        // job and stop there, so clicking "preview" on a parent row's own
-        // action cell doesn't also collapse/expand it.
-        var trigger = event.target.closest("[data-preview-kode]");
-        if (trigger) {
-            FIELDS.forEach(function (field) {
-                var el = document.querySelector('[data-preview-value="' + field + '"]');
-                if (el) el.textContent = trigger.getAttribute("data-preview-" + field) || "-";
-            });
-            return;
-        }
-        if (event.target.closest("button, a")) return;
+        // Action links/buttons sit inside a row that may ALSO be a group
+        // toggle (data-group-toggle on the <tr> itself) - let them navigate
+        // normally instead of also collapsing/expanding the row.
+        if (event.target.closest("a, button")) return;
 
         var toggle = event.target.closest("[data-group-toggle]");
         if (toggle) {
@@ -169,88 +159,35 @@ def badge_html(status_text):
     return f'<div class="w-100 d-flex justify-content-center"><span class="badge {cls} badge-sm">{status_text}</span></div>'
 
 
-def build_preview_modal(soup):
-    modal = soup.new_tag("div", **{
-        "class": "modal fade", "id": PREVIEW_MODAL_ID, "tabindex": "-1",
-        "aria-hidden": "true", "aria-labelledby": f"{PREVIEW_MODAL_ID}-label",
-    })
-    dialog = soup.new_tag("div", **{"class": "modal-dialog"})
-    content = soup.new_tag("div", **{"class": "modal-content"})
-
-    header = soup.new_tag("div", **{"class": "modal-header"})
-    header_wrap = soup.new_tag("div", **{"class": "modal__header-wrapper"})
-    title = soup.new_tag("h5", **{"class": "modal-title", "id": f"{PREVIEW_MODAL_ID}-label"})
-    title.string = "Preview Unit Kerja"
-    header_wrap.append(title)
-    header.append(header_wrap)
-    header.append(soup.new_tag("button", type="button", **{
-        "class": "btn-close", "data-bs-dismiss": "modal", "aria-label": "Close",
-    }))
-    content.append(header)
-
-    body = soup.new_tag("div", **{"class": "modal-body"})
-    row = soup.new_tag("div", **{"class": "row gx-1 gy-3"})
-    for label, field in [
-        (COLUMN_LABELS["Kode Unit"], "kode"), (COLUMN_LABELS["Nama Unit"], "nama"),
-        (COLUMN_LABELS["Apakah Aktif"], "aktif"), (COLUMN_LABELS["Jenis Unit"], "jenis"),
-    ]:
-        col4 = soup.new_tag("div", **{"class": "col-4"})
-        inner = soup.new_tag("div", **{"class": "d-flex gap-1 justify-content-between"})
-        label_span = soup.new_tag("span", **{"class": "text-secondary"})
-        label_span.string = label
-        inner.append(label_span)
-        colon_span = soup.new_tag("span")
-        colon_span.string = ":"
-        inner.append(colon_span)
-        col4.append(inner)
-        row.append(col4)
-
-        col8 = soup.new_tag("div", **{"class": "col-8"})
-        value_span = soup.new_tag("span", **{"data-preview-value": field})
-        value_span.string = "-"
-        col8.append(value_span)
-        row.append(col8)
-    body.append(row)
-    content.append(body)
-
-    dialog.append(content)
-    modal.append(dialog)
-    return modal
-
-
 def build_action_cell(soup, node):
+    """Eye/edit link to the real Detail/Edit pages (built by
+    build_unit_kerja_detail_edit.py from one sample record) - every row
+    points at the same single pair of pages, same accepted limitation as
+    Mitra's own list (every row's eye icon there also points at the one
+    static mitra-detail.html, not per-id data). Previously the eye button
+    opened a generic preview modal and edit was an inert enabled button;
+    both were superseded once real Detail/Edit pages existed."""
     td = soup.new_tag("td")
     wrap = soup.new_tag("div", **{"class": "d-flex align-items-center justify-content-center gap-1"})
+    btn_classes = ("btn btn-icon d-md-flex justify-content-center align-items-center "
+                   "btn-outline-secondary btn-sm")
 
-    eye_btn = soup.new_tag("button", type="button", **{
-        "class": "btn btn-icon d-md-flex justify-content-center align-items-center "
-                 "btn-outline-secondary btn-sm",
-        "data-bs-toggle": "modal", "data-bs-target": f"#{PREVIEW_MODAL_ID}",
-        "data-preview-kode": node["kode"], "data-preview-nama": node["nama"],
-        "data-preview-aktif": node["aktif"], "data-preview-jenis": node["jenis"],
-        "aria-label": "Preview",
+    eye_link = soup.new_tag("a", href="unit-kerja-detail.html", **{
+        "class": btn_classes, "aria-label": "Preview",
     })
-    eye_btn.append(soup.new_tag("i", **{"class": "sym sym-eye-solid"}))
-    wrap.append(eye_btn)
+    eye_link.append(soup.new_tag("i", **{"class": "sym sym-eye-solid"}))
+    wrap.append(eye_link)
 
-    # Edit: enabled (unlike SPMI's own capture, where it's disabled) - no
-    # edit form was captured for this data, so it's a real, clickable
-    # button but with nowhere to navigate yet, same honest-limitation
-    # treatment as an unresolved nav link elsewhere in this pipeline.
-    edit_btn = soup.new_tag("button", type="button", **{
-        "class": "btn btn-icon d-md-flex justify-content-center align-items-center "
-                 "btn-outline-secondary btn-sm",
-        "aria-label": "Ubah",
+    edit_link = soup.new_tag("a", href="unit-kerja-edit.html", **{
+        "class": btn_classes, "aria-label": "Ubah",
     })
-    edit_btn.append(soup.new_tag("i", **{"class": "sym sym-pencil-solid"}))
-    wrap.append(edit_btn)
+    edit_link.append(soup.new_tag("i", **{"class": "sym sym-pencil-solid"}))
+    wrap.append(edit_link)
 
-    # Delete stays disabled - matches SPMI's own capture, and unlike edit
-    # this wasn't asked to change.
+    # Delete stays disabled - matches SPMI's own capture, and unlike eye/edit
+    # this wasn't asked to change (no delete page/flow exists either).
     delete_btn = soup.new_tag("button", type="button", disabled="", **{
-        "class": "btn btn-icon d-md-flex justify-content-center align-items-center "
-                 "btn-outline-secondary btn-sm",
-        "aria-label": "Hapus",
+        "class": btn_classes, "aria-label": "Hapus",
     })
     delete_btn.append(soup.new_tag("i", **{"class": "sym sym-trash-solid"}))
     wrap.append(delete_btn)
@@ -369,10 +306,11 @@ def main():
         tbody.append(build_row(soup, node))
 
     body = soup.body
-    old_modal = soup.find(id=PREVIEW_MODAL_ID)
+    # Stale artifact from before eye/edit linked to real pages - remove if
+    # this is re-run against a page still carrying the old preview modal.
+    old_modal = soup.find(id="modal-preview-unit-kerja")
     if old_modal:
         old_modal.decompose()
-    body.append(build_preview_modal(soup))
 
     for old_script in soup.find_all("script", string=lambda s: s and "data-group-toggle" in s):
         old_script.decompose()
