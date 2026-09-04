@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="sf-js-enabled" data-mockup-page-id="unit-kerja/edit" lang="en"><head><base href="/v1/"/><link href="assets/captured/app-1960aad9.css" rel="stylesheet"/><link href="assets/captured/app-627c9488.css" rel="stylesheet"/><link href="assets/captured/stylesheets.css" rel="stylesheet"/></head><body><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo" name="csrf-token"/>
+<title>SEVIMA Platform - Edit Unit Kerja</title>
+<link href="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevimaplatform-small.png" rel="icon"/>
+<style>
+        .full-page-loader {
+            display: flex;
+            position: fixed;
+            left: 0;
+            top: 0;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: #ffffff90;
+            z-index: 9999;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+<style>
+        .qn-header-pattern {
+            background-image: url(assets/vendors/local-assets/sevima-header.webp);
+        }
+
+        .qn-sidebar {
+            background-image: url(assets/vendors/local-assets/sevima-sidebar.svg);
+        }
+
+        @font-face {
+            font-display: block;
+            font-family: "quantum-symbols";
+            src: url(assets/vendors/local-assets/quantum-symbols.woff2) format("woff2"),
+            url(assets/vendors/local-assets/quantum-symbols.woff) format("woff");
+        }
+    </style><style>/* Make clicks pass-through */
+
+    #nprogress {
+      pointer-events: none;
+    }
+
+    #nprogress .bar {
+      background: var(--livewire-progress-bar-color, #29d);
+
+      position: fixed;
+      z-index: 1031;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 2px;
+    }
+
+    /* Fancy blur effect */
+    #nprogress .peg {
+      display: block;
+      position: absolute;
+      right: 0px;
+      width: 100px;
+      height: 100%;
+      box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+      opacity: 1.0;
+
+      -webkit-transform: rotate(3deg) translate(0px, -4px);
+          -ms-transform: rotate(3deg) translate(0px, -4px);
+              transform: rotate(3deg) translate(0px, -4px);
+    }
+
+    /* Remove these to get rid of the spinner */
+    #nprogress .spinner {
+      display: block;
+      position: fixed;
+      z-index: 1031;
+      top: 15px;
+      right: 15px;
+    }
+
+    #nprogress .spinner-icon {
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+
+      border: solid 2px transparent;
+      border-top-color: var(--livewire-progress-bar-color, #29d);
+      border-left-color: var(--livewire-progress-bar-color, #29d);
+      border-radius: 50%;
+
+      -webkit-animation: nprogress-spinner 400ms linear infinite;
+              animation: nprogress-spinner 400ms linear infinite;
+    }
+
+    .nprogress-custom-parent {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+      position: absolute;
+    }
+
+    @-webkit-keyframes nprogress-spinner {
+      0%   { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes nprogress-spinner {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style><style></style>
+<div class="">
+<header class="qn-header z-2 sticky-top position-static">
+<div class="qn-header-pattern p-md-3 py-3 px-xl-5 bg-primary text-white">
+<div class="container-fluid">
+<div class="d-flex flex-wrap align-items-center justify-content-start">
+<div class="d-flex gap-2 gap-md-3 align-items-center">
+<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-icon btn-lg btn-light rounded-1 d-block d-lg-none bg-transparent text-white" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<i class="sym sym-menu-03"></i>
+</button>
+<a class="qn-identity d-flex align-items-center link-body-emphasis text-decoration-none rounded-3 bg-white" data-mockup-unresolved="/v2/kerjasama" href="#">
+<img alt="Example Campus Logo" class="img-fluid w-auto h-100 object-fit-contain" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevimaplatform-small.png"/>
+</a>
+<div class="d-flex flex-column">
+<span>SIM Kerjasama</span>
+<h5 class="m-0">Universitas Foxtrot</h5>
+</div>
+</div>
+<div class="ms-auto d-flex align-items-center gap-1">
+<div class="d-none d-md-flex align-items-center gap-1">
+<a aria-label="Pindah Modul" class="btn btn-light p-2 py-1 bg-transparent text-white border-0" data-mockup-unresolved="/gate/menu" href="#">
+<i class="sym sym-dots-grid-solid"></i>
+<span class="d-none d-lg-inline-block ms-2">Modul</span>
+</a>
+</div>
+<hr class="d-none d-md-block vr mx-2"/>
+<div class="dropdown d-none d-md-block rounded-4 bg-white text-black p-1">
+<a aria-expanded="false" class="d-flex gap-1 align-items-center link-body-emphasis text-decoration-none dropdown-toggle pe-1" data-bs-toggle="dropdown" href="mitra-edit.html">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<span class="qn-avatar-name d-none d-lg-block text-truncate">Dimas Sevima</span>
+</a>
+<ul class="dropdown-menu pt-0 text-small" style="width: 296px;">
+<li>
+<div class="d-flex flex-column gap-2 p-3 py-4 pb-3 text-nowrap">
+<div class="d-flex align-items-center gap-3">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<div class="d-block">
+<h6 class="mb-1">Dimas Sevima</h6>
+<span class="text-muted">Superadmin</span>
+</div>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<button class="dropdown-item d-flex flex-nowrap justify-content-between" data-bs-target="#modal-switch-role" data-bs-toggle="modal">
+                                    Ganti Role
+                                    <i class="sym sym-refresh-ccw-02"></i>
+</button>
+</li>
+<li>
+<a class="dropdown-item text-danger" data-mockup-unresolved="/v2/gate/sessions/logout" href="#">
+<i class="sym sym-arrow-left-solid me-2"></i>
+                                    Keluar
+                                </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md-3 py-md-0 px-xl-5 border-bottom shadow-sm bg-white">
+<div class="container-fluid">
+<nav class="navbar navbar-expand-lg p-0 bg-white">
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="w-100 navbar-nav py-1 gap-1">
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="index.html">Dashboard</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="kerjasama.html">Kerjasama</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/kegiatan" href="#">Kegiatan</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="mitra.html">Mitra</a>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle active text-primary" data-bs-toggle="dropdown" href="unit-kerja.html" role="button">
+                                    Data Referensi
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/bentuk-kegiatan" href="#">Bentuk Kegiatan</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sasaran-kinerja" href="#">Sasaran Kinerja</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/kriteria-mitra" href="#">Kriteria Mitra</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sumber-dana" href="#">Sumber Dana</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/jenis-dokumen" href="#">Jenis Dokumen</a></li>
+<li><a class="dropdown-item active" href="unit-kerja.html">Unit Kerja</a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="unit-kerja.html" role="button">
+                                    Laporan
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/laporan-kerjasama" href="#">Laporan Kerjasama</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<form action="#" data-mockup-unresolved="/v2/gate/sessions/switch-role" enctype="multipart/form-data" id="form-switch" method="POST">
+<input autocomplete="off" name="_token" type="hidden" value="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo"/> <div aria-hidden="true" aria-labelledby="modalDeleteLabel" class="modal fade" id="modal-switch-role" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper">
+<h5 class="modal-title">Ganti Role</h5>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="box-switch selected" data-module="kerjasama" data-name="sa" data-organization="0" onclick="switchRole(this)">
+<h5>
+                        Superadmin
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">SEVIMA</span>
+</h5>
+<div>
+<i class="sym sym-check-circle-solid" style="color:#5d88f6"></i>
+</div>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_perguruan_tinggi" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Administrator PT
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_kerjasama" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Admin Kerjasama
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<div class="">
+<div class="container-fluid">
+<div class="row">
+<header class="qn-header z-1 sticky-top p-md-3 py-2 py-md-2 border-bottom shadow-sm bg-white">
+<div class="container-fluid d-grid d-flex justify-content-between align-items-center position-relative">
+<a class="btn btn-light gap-2 d-none d-md-flex" href="unit-kerja-detail.html" role="button">
+<i class="sym sym-arrow-narrow-left"></i>
+                    Kembali
+                </a>
+<a class="btn btn-icon btn-light d-block d-md-none" href="unit-kerja-detail.html" role="button">
+<i class="sym sym-arrow-narrow-left"></i>
+</a>
+<nav aria-label="breadcrumb" class="position-absolute top-50 start-50 translate-middle">
+<ol class="qn-form-breadcrumb breadcrumb m-0 d-none d-md-flex opacity-0">
+<li class="breadcrumb-item">Unit Kerja</li>
+<li aria-current="page" class="breadcrumb-item active fw-bold">
+                            Edit
+                        </li>
+</ol>
+<ol class="breadcrumb m-0 d-flex d-md-none">
+<li aria-current="page" class="breadcrumb-item active fw-bold">Edit Unit Kerja</li>
+</ol>
+</nav>
+<div class="d-flex gap-3 align-items-center">
+<span class="d-flex d-xl-none gap-1 text-body-tertiary" data-bs-placement="left" data-bs-title="Tersimpan 2 menit yang lalu" data-bs-toggle="tooltip">
+<i class="sym sym-check"></i>
+</span>
+<button class="d-none d-md-block btn btn-primary">
+                        Simpan
+                    </button>
+</div>
+</div>
+</header>
+<div class="qn-toc-collapse col-md-3 col-xxl-2 collapse collapse-horizontal show p-0">
+<div class="qn-toc d-none d-md-block ps-3 ps-xl-5 pe-1 py-3 sticky-top z-0" style="top: 50px; width: 253px;">
+<h6 class="mb-3">Table of Content</h6>
+<ul class="list-unstyled ps-3 d-flex flex-column gap-1 overflow-hidden">
+<li>
+<a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="mitra-edit.html">Informasi Unit Kerja</a>
+</li>
+<li>
+<a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="mitra-edit.html">Informasi Kontak Unit Kerja</a>
+</li>
+</ul>
+</div>
+</div>
+<form class="qn-form needs-validation py-3 ps-3 position-relative col-xl-6 col-md-9 offset-xxl-1" novalidate="">
+<div class="row px-3 row-cols-1 gy-4">
+<div class="d-md-block d-none">
+<div class="d-flex align-items-center justify-content-between gap-1 px-0 mb-2">
+<div class="d-flex flex-column gap-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li class="breadcrumb-item">Unit Kerja</li>
+<li aria-current="page" class="breadcrumb-item active">Edit Unit Kerja</li>
+</ol>
+</nav>
+<div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end gap-2">
+<h4 class="m-0">Edit Unit Kerja</h4>
+</div>
+</div>
+</div>
+</div>
+<div class="card shadow-sm border-0 rounded-4" id="informasi-unit-kerja">
+<div class="card-header bg-white border-light-subtle rounded-top-4 border-2">
+<div class="d-flex gap-2 align-items-center">
+<div class="ratio ratio-1x1" style="width: 2rem; min-width: 2rem;">
+<span class="d-flex align-items-center justify-content-center rounded-circle p-2 border">
+<i class="sym sym-building-05"></i>
+</span>
+</div>
+<h5 class="mb-0">Informasi Unit Kerja</h5>
+</div>
+</div>
+<div class="card-body">
+<div class="row row-cols-1 row-cols-md-3 g-3"><div class="form-group col-md-6"><label class="form-label" for="kode">Kode Unit Kerja <span class="text-danger">*</span></label><br/><input class="form-control placeholder:text-gray-500" id="form-control-kode" name="kode" placeholder="Masukkan Kode Unit Kerja" type="text" value="041008"/></div><div class="form-group col-md-6"><label class="form-label" for="nama">Nama Unit Kerja <span class="text-danger">*</span></label><br/><input class="form-control placeholder:text-gray-500" id="form-control-nama" name="nama" placeholder="Masukkan Nama Unit Kerja" type="text" value="Universitas Sevima Testing - f"/></div><div class="form-group col-md-6"><label class="form-label" for="kategori">Kategori Unit Kerja <span class="text-danger">*</span></label><br/><select class="form-select" id="form-control-kategori" name="kategori"><option value="">Pilih Kategori Unit Kerja</option><option selected="" value="Universitas">Universitas</option><option value="Fakultas">Fakultas</option><option value="Program Studi">Program Studi</option><option value="Unit Non Akademik">Unit Non Akademik</option></select></div><div class="form-group col-md-6"><label class="form-label" for="parent">Parent Unit Kerja </label><br/><select class="form-select" id="form-control-parent" name="parent"><option value="">Pilih Parent Unit Kerja</option></select></div><div class="form-group col-md-6"><label class="form-label" for="standar_iku">Standar IKU </label><br/><select class="form-select" id="form-control-standar_iku" name="standar_iku"><option value="">Pilih Standar IKU</option><option selected="" value="Badan Akreditasi Nasional Perguruan Tinggi">Badan Akreditasi Nasional Perguruan Tinggi</option></select></div><div class="form-group col-md-6"><label class="form-label" for="kebutuhan_lulusan">Kebutuhan Lulusan </label><br/><input class="form-control placeholder:text-gray-500" id="form-control-kebutuhan_lulusan" name="kebutuhan_lulusan" placeholder="Masukkan Kebutuhan Lulusan (opsional)" type="text"/></div><div class="form-group col-md-6"><label class="form-label" for="kelompok_jurusan">Kelompok Jurusan </label><br/><select class="form-select" id="form-control-kelompok_jurusan" name="kelompok_jurusan"><option value="">Pilih Kelompok Jurusan</option></select></div><div class="form-group col-md-6"><label class="form-label" for="tanggal_berdiri">Tanggal Berdiri </label><br/><input class="form-control placeholder:text-gray-500" id="form-control-tanggal_berdiri" name="tanggal_berdiri" placeholder="Masukkan Tanggal Berdiri (opsional)" type="date"/></div><div class="form-group col-md-6"><label class="form-label" for="aktif">Apakah Aktif </label><br/><div><div class="form-check form-check-inline"><input checked="" class="form-check-input" id="aktif_ya" name="aktif" type="radio" value="Ya"/><label class="form-check-label" for="aktif_ya">Ya</label></div><div class="form-check form-check-inline"><input class="form-check-input" id="aktif_tidak" name="aktif" type="radio" value="Tidak"/><label class="form-check-label" for="aktif_tidak">Tidak</label></div></div></div><div class="form-group col-md-6"><label class="form-label" for="jenjang">Jenjang </label><br/><select class="form-select" id="form-control-jenjang" name="jenjang"><option value="">Pilih Jenjang</option></select></div><div class="form-group col-md-6"><label class="form-label" for="ketua_prodi">Ketua Prodi </label><br/><input class="form-control placeholder:text-gray-500" id="form-control-ketua_prodi" name="ketua_prodi" placeholder="Masukkan Ketua Prodi (opsional)" type="text" value="0406026001 - Jack Johnson"/></div></div>
+</div>
+</div>
+<div class="card shadow-sm border-0 rounded-4" id="informasi-kontak-unit-kerja">
+<div class="card-header bg-white border-light-subtle rounded-top-4 border-2">
+<div class="d-flex gap-2 align-items-center">
+<div class="ratio ratio-1x1" style="width: 2rem; min-width: 2rem;">
+<span class="d-flex align-items-center justify-content-center rounded-circle p-2 border">
+<i class="sym sym-phone"></i>
+</span>
+</div>
+<h5 class="mb-0">Informasi Kontak Unit Kerja</h5>
+</div>
+</div>
+<div class="card-body">
+<div class="row row-cols-1 row-cols-md-3 g-3">
+<div class="col-md-12">
+<div class="d-flex justify-content-between align-items-center pb-3">
+<span class="fw-semibold fs-5">Kontak 1</span>
+<button class="btn gap-2 d-md-flex btn-danger" data-mockup-confirm="Yakin ingin menghapus data ini? (mockup - tidak tersambung ke server)" style="" type="button">
+<i class="sym sym-trash"></i>
+Hapus
+    </button>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-3">
+<div class="form-group col-md-6">
+<label class="form-label" for="record.kontak.0.nama_kontak">
+            Nama Kontak
+             <span class="text-danger">*</span>
+</label>
+<br/>
+<input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.nama_kontak" max="255" name="record.kontak.0.nama_kontak" placeholder="Masukkan Nama Kontak" required="required" type="text"/>
+</div>
+<div class="form-group col-md-6">
+<label class="form-label" for="record.kontak.0.jabatan">
+            Jabatan
+             <span class="text-danger">*</span>
+</label>
+<br/>
+<input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.jabatan" max="255" name="record.kontak.0.jabatan" placeholder="Masukkan Jabatan" required="required" type="text"/>
+</div>
+<div class="form-group col-md-6">
+<label class="form-label" for="record.kontak.0.telepon">
+            Nomor Handphone
+             <span class="text-danger">*</span>
+</label>
+<br/>
+<input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.telepon" name="record.kontak.0.telepon" placeholder="Masukkan Nomor Handphone" required="required" type="text"/>
+</div>
+<div class="form-group col-md-6">
+<label class="form-label" for="record.kontak.0.email">
+            Email
+             <span class="text-danger">*</span>
+</label>
+<br/>
+<input class="form-control placeholder:text-gray-500" id="form-control-record.kontak.0.email" max="255" name="record.kontak.0.email" placeholder="Masukkan Email" required="required" type="text"/>
+</div>
+</div>
+</div>
+<div class="col-md-12 mt-3 d-flex justify-content-center">
+<button class="btn gap-2 d-md-flex btn-light" style="" type="button">
+<i class="sym sym-plus"></i>
+Tambah Kontak
+    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+<div class="d-block d-md-none rounded-top-4 shadow-lg sticky-bottom">
+<div class="w-100 border-bottom collapse" id="tocMobile">
+<div class="qn-toc p-3 bg-white rounded-top-4" style="width: 253px;">
+<div class="d-flex gap-2 justify-content-between">
+<h6 class="mb-3">Table of Content</h6>
+<button aria-expanded="true" aria-label="Close Table of Content" class="btn-close" data-bs-target="#tocMobile" data-bs-toggle="collapse" type="button">
+</button>
+</div>
+<ul class="list-unstyled m-0 ps-3 d-flex flex-column gap-1 overflow-hidden">
+<li>
+<a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="mitra-edit.html">Informasi Unit Kerja</a>
+</li>
+<li>
+<a class="qn-toc-item position-relative text-reset text-decoration-none d-block rounded-2 p-2" href="mitra-edit.html">Informasi Kontak Unit Kerja</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="w-100 d-flex bg-white gap-2 p-3">
+<button aria-controls="tocMobile" aria-expanded="false" aria-label="Table of Content" class="btn btn-icon btn-light" data-bs-target="#tocMobile" data-bs-toggle="collapse" type="button">
+<i class="sym sym-list"></i>
+</button>
+<button class="btn gap-2 d-md-flex btn-primary w-100" color="primary" style="" type="button">
+Simpan
+    </button>
+</div>
+</div>
+</div>
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="mitra-edit.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+</main>
+</div>
+<div class="full-page-loader hidden">
+<div class="spinner-border text-primary align-self-center" role="status" style="width: 3rem; height: 3rem;">
+<span class="visually-hidden">Loading...</span>
+</div>
+</div>
+<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script></body></html>

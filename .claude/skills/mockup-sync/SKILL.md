@@ -248,6 +248,15 @@ got relinked).
   you need to hand-adjust anything for a specific ask, prefer extending
   `build_mockup.py`'s cleanup rules over editing the generated HTML directly
   - direct edits get silently discarded next time the script re-runs.
+  Exception: a one-off ask that blends in something from a *different*
+  capture/module (e.g. `v1/unit-kerja.html` porting SPMI's parent/child
+  grouping + preview action onto Kerjasama's own component classes - see
+  `mockups/scripts/customize_unit_kerja.py`) doesn't belong in the generic
+  per-page pipeline. For those, write a small dedicated, re-runnable script
+  under `mockups/scripts/` (not a raw hand-edit) that transforms the
+  generated page deterministically, and re-run it after `unit-kerja.html`
+  if that page ever gets rebuilt from a fresh capture - `build_mockup.py`
+  doesn't know about it and would silently wipe it out otherwise.
 - `mockup-interactions.js` and `set-header-height.js` are scaffolding for the
   mockup only - never suggest copying either into the real project, which
   already ships full Bootstrap JS and its own header-height logic. Say so
