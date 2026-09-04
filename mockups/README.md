@@ -18,7 +18,7 @@ cara deploy ke Vercel). Ringkasan yang relevan untuk alur mockup-sync ini:
 
 Semua halaman untuk versi desain yang sedang berjalan (`v1` saat ini — lihat
 `CURRENT_VERSION` di `build_mockup.py`) ditulis **flat** ke `v1/` di root
-project, bukan dikelompokkan per modul — `v1/kerjasama-daftar.html`,
+project, bukan dikelompokkan per modul — `v1/kerjasama.html`,
 `v1/kerjasama-detail.html`, dst semuanya sibling file, berbagi satu
 `v1/assets/` (dideduplikasi otomatis):
 
@@ -27,9 +27,9 @@ simkerma_ui/
   v1/
     index.html                  <- dashboard/home versi ini (lihat HOME_PAGE_ID)
     index.manifest.md
-    kerjasama-daftar.html       <- mockup bersih, auto-generated (jangan edit manual)
-    kerjasama-daftar.manifest.md
-    kerjasama-detail.html, kerjasama-create.html, dst.
+    kerjasama.html              <- Daftar Kerjasama - mockup bersih, auto-generated (jangan edit manual)
+    kerjasama.manifest.md
+    kerjasama-detail.html, kerjasama-create.html, mitra.html, mitra-detail.html, dst.
     assets/
       captured/*.css            <- CSS produksi asli hasil capture - SUMBER RENDER UTAMA
       vendors/quantum-v2.2.1-202310260001/   <- bundle QUANTUM ter-vendor, dipakai HANYA kalau
@@ -38,6 +38,7 @@ simkerma_ui/
       vendors/local-assets/     <- font/pattern QUANTUM tambahan (quantum-symbols, dst)
       chart.js, chart-settings.js, chartjs-plugin-datalabels.min.js
       mockup-interactions.js
+      set-header-height.js     <- set --qn-header-height dari tinggi <header> asli (lihat "Kenapa begini")
       css/main.css              <- override manual (opsional, mulai kosong)
   mockups/
     raw/<nama-capture>/         <- intake mentah, tetap per-capture (bukan per-modul/versi)
@@ -52,7 +53,7 @@ simkerma_ui/
       build_mockup.py           <- raw HTML -> mockup bersih + manifest, ke v1/
 ```
 
-Contoh nyata: `v1/kerjasama-daftar.html`, `v1/kerjasama-detail.html`,
+Contoh nyata: `v1/kerjasama.html`, `v1/kerjasama-detail.html`,
 `v1/kerjasama-create.html`, dst — semuanya sibling file langsung di `v1/`,
 saling link pakai nama file biasa (`kerjasama-detail.html`), bukan
 `../kerjasama/detail.html` atau path bersarang lain. `module/page` yang kamu
@@ -97,11 +98,16 @@ registry internal SEVIMA tersebut.
    visual terlihat seperti "dashboard" ternyata di-capture dari
    `/v2/kerjasama/dashboard` — jadi dia bagian dari modul **kerjasama**
    (ditulis sebagai `v1/index.html`, karena itu dashboard/home versi ini —
-   lihat `HOME_PAGE_ID`). Sebelum menentukan nama modul, cek komentar
-   `saved from url=(...)` di baris pertama file capture-nya untuk tahu route
-   aslinya. Script juga otomatis membandingkan ini — kalau modul yang dipakai
-   tidak cocok dengan segmen URL-nya, `manifest.md` akan menampilkan
-   peringatan di bagian paling atas.
+   lihat `HOME_PAGE_ID`). Pengecualian: segmen URL kedua yang ada di
+   `SUB_ENTITY_SEGMENTS` (`mitra`, `unit-kerja`) dianggap modulnya sendiri
+   meski hidup di bawah prefix `/kerjasama/...` — `/v2/kerjasama/mitra/62`
+   jadi `mitra/detail` (bukan `kerjasama/mitra-detail`), lihat aturan
+   lengkapnya di [SKILL.md](../.claude/skills/mockup-sync/SKILL.md). Sebelum
+   menentukan nama modul, cek komentar `saved from url=(...)` di baris
+   pertama file capture-nya untuk tahu route aslinya. Script juga otomatis
+   membandingkan ini (termasuk pengecualian sub-entity di atas) — kalau
+   modul yang dipakai tidak cocok, `manifest.md` akan menampilkan peringatan
+   di bagian paling atas.
 3. Buka `v1/<halaman>.html` di browser (lewat local server, lihat "Preview
    Lokal" di README.md root — bukan double-click, karena `<base href="/v1/">`)
    untuk lihat hasilnya, dan baca `v1/<halaman>.manifest.md` untuk laporan:
@@ -238,6 +244,21 @@ cuma pakai `wire:confirm="..."` dari Livewire 3), baru fallback ke dialog
   sungguhan tidak bisa dipicu di mockup statis (tidak ada backend). Kalau
   butuh state itu persis, capture ulang halaman tepat setelah aksi itu terjadi
   di aplikasi asli, lalu jalankan ulang script.
+- **`--qn-header-height` di-set lewat `set-header-height.js`, bukan cuma
+  fallback ke 0.** CSS produksi punya aturan seperti
+  `.qn-sidebar.offcanvas{top:var(--qn-header-height, 0)}` — variabel ini
+  aslinya di-set oleh JS produksi (mengukur tinggi `<header class="qn-header">`
+  yang sebenarnya, yang bisa berubah-ubah, mis. nama kampus yang wrap jadi 2
+  baris), tapi JS itu tidak ikut ke-save browser. Tanpa perbaikan, `var(...,
+  0)` diam-diam jatuh ke `0` — bukan error yang kelihatan, tapi sidebar
+  offcanvas (kalau halamannya punya satu, mis. halaman Detail Mitra) jadi
+  render menempel di `top:0`, TERTUTUP TOTAL di belakang header yang sticky
+  (sudah dibuktikan langsung lewat inspeksi computed-style: setelah
+  `--qn-header-height` di-set manual, sidebar yang tadinya "hilang" langsung
+  muncul normal). `set-header-height.js` mereplikasi ini generik untuk semua
+  halaman (bukan cuma yang kelihatan butuh saat ini) - ukur tinggi
+  `.qn-header` lalu simpan sebagai custom property di `:root`, jalan ulang
+  tiap resize.
 - Semua stylesheet/script hasil vendoring disalin **ke dalam `v1/assets/`
   versi itu sendiri** (bukan ditautkan lintas folder ke `QUANTUM/`) — supaya
   versi ini self-contained persis seperti tracer-study (tidak bergantung ke
@@ -267,7 +288,8 @@ nyata:
   (lihat "Noise dibuang otomatis" di atas) — yang tersisa adalah markup polos
   plus `data-bs-*` standar Bootstrap, yang di project nyata tinggal disambung
   lagi ke `wire:` masing-masing kalau perlu.
-- `mockup-interactions.js` **jangan ikut di-copy ke project** — itu cuma
-  pengganti sementara karena project asli sudah punya bundle JS Bootstrap
-  penuh. File ini ditandai jelas di komentar headernya ("mockup scaffolding
-  only").
+- `mockup-interactions.js` dan `set-header-height.js` **jangan ikut
+  di-copy ke project** — keduanya cuma pengganti sementara karena project
+  asli sudah punya JS produksi sendiri yang melakukan hal yang sama (bundle
+  Bootstrap penuh, dan logika pengukur tinggi header). Kedua file ditandai
+  jelas di komentar headernya ("mockup scaffolding only").

@@ -24,30 +24,45 @@ Output follows the same versioned-folder convention as the sibling
 `tracer-study` project: every page for the current design iteration
 (`v1` right now - see `CURRENT_VERSION` in `build_mockup.py`) is written
 **flat** into `v1/` at the repo root, not grouped into per-module
-subfolders - `v1/kerjasama-daftar.html`, `v1/kerjasama-detail.html`,
+subfolders - `v1/kerjasama.html`, `v1/kerjasama-detail.html`, `v1/mitra.html`,
 `v1/index.html`, etc. all sit as siblings, sharing one `v1/assets/` (vendored
 QUANTUM CSS/JS/fonts, chart scripts, archived capture CSS - copied once,
 reused by every page). The `module/page` target you pass (e.g.
 `kerjasama/daftar`) still matters - it's the route-map key AND it decides
 the output filename via `output_stem()` in `build_mockup.py`:
 - `kerjasama/index` (this version's home/dashboard - see `HOME_PAGE_ID`) -> `v1/index.html`
-- any other `<module>/index` (that module's own main/list page) -> `v1/<module>.html`
+- any other `<module>/index` or `<module>/daftar` (that module's own
+  main/list page) -> `v1/<module>.html`
+- `<module>/<page>` where `<page>` already starts with `<module>-` ->
+  `v1/<page>.html` as-is (avoids a stutter like
+  `kerjasama-kerjasama-mitra.html`)
 - anything else -> `v1/<module>-<page>.html`
 
 **Determine the module from the captured URL, not from what the page looks
-like.** Read the `saved from url=(NNN)https://host/path` comment on the raw
-capture's first line - the module is the first real path segment (skip
-`v1`/`v2`/`api`). A page that visually looks like a "dashboard" can still
-belong to another module: in this project, the page that *looks* like a
-dashboard was captured from `/v2/kerjasama/dashboard`, so it's
-`kerjasama/index`, NOT its own standalone `dashboard` module - don't be
-fooled by the page's title or content. If a page's URL doesn't fit any
-existing module, a single-segment target (e.g. `login`) is fine and becomes
-`v1/login.html`. The build itself also cross-checks this: if the module you
-pass doesn't match the URL's segment, it prints a WARNING and adds a banner
-at the top of that page's `manifest.md` - don't ignore it, rebuild with the
-suggested module so the page's filename groups with its real siblings
-(`<module>-<page>.html`) instead of a mismatched name.
+like** - but a few second-level URL segments are the exception, because
+they're their own reference-data entity even though they live under a
+broader module's URL prefix. Read the `saved from url=(NNN)https://host/path`
+comment on the raw capture's first line: the module is normally the first
+real path segment (skip `v1`/`v2`/`api`), UNLESS the *second* segment is
+listed in `SUB_ENTITY_SEGMENTS` in `build_mockup.py` (currently `mitra` and
+`unit-kerja`) - then that second segment IS the module. Concretely, in this
+project: `/v2/kerjasama/dashboard` -> `kerjasama/index` (a page that *looks*
+like a dashboard, but it's this app's actual home page, not its own
+`dashboard` module - don't be fooled by the page's title); `/v2/kerjasama/mitra/62`
+-> `mitra/detail` (NOT `kerjasama/mitra-detail` - `mitra` is a sub-entity,
+so it gets its own module identity: `v1/mitra.html`, `v1/mitra-detail.html`,
+...); `/v2/kerjasama/kerjasama-mitra/63` -> `kerjasama/kerjasama-mitra`
+(NOT treated as a `mitra` sub-entity - `kerjasama-mitra` isn't in
+`SUB_ENTITY_SEGMENTS`, so it stays grouped under `kerjasama`, landing on
+`v1/kerjasama-mitra.html` via the de-stutter rule above). If a page's URL
+doesn't fit any existing module, a single-segment target (e.g. `login`) is
+fine and becomes `v1/login.html`. The build itself also cross-checks this:
+if the module you pass doesn't match what `suggest_module()` derives from
+the URL (including the sub-entity exception), it prints a WARNING and adds
+a banner at the top of that page's `manifest.md` - don't ignore it, rebuild
+with the suggested module. If a future page needs a new sub-entity
+recognized this way, add its URL segment to `SUB_ENTITY_SEGMENTS` rather
+than hand-picking a filename for just that one page.
 
 To start a new design iteration (`v2`, `v3`, ...): bump `CURRENT_VERSION` in
 `mockups/scripts/build_mockup.py`, add a row to the root `README.md`, and
@@ -233,6 +248,15 @@ got relinked).
   you need to hand-adjust anything for a specific ask, prefer extending
   `build_mockup.py`'s cleanup rules over editing the generated HTML directly
   - direct edits get silently discarded next time the script re-runs.
-- `mockup-interactions.js` is scaffolding for the mockup only - never suggest
-  copying it into the real project, which already ships full Bootstrap JS.
-  Say so explicitly if a user asks to "take the whole mockup" into the repo.
+- `mockup-interactions.js` and `set-header-height.js` are scaffolding for the
+  mockup only - never suggest copying either into the real project, which
+  already ships full Bootstrap JS and its own header-height logic. Say so
+  explicitly if a user asks to "take the whole mockup" into the repo.
+  `set-header-height.js` measures `.qn-header`'s real rendered height and
+  sets it as `--qn-header-height` on load/resize - without it, anything the
+  captured CSS positions with `var(--qn-header-height, 0)` (e.g. an
+  offcanvas `.qn-sidebar`'s `top` offset) silently falls back to `0` and
+  renders hidden behind the sticky header instead of below it, with no
+  visible error. If a page looks like it's missing a whole section (a
+  sidebar, a panel) that the capture clearly has markup for, check this
+  before assuming the section itself is broken.

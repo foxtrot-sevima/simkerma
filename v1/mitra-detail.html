@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="sf-js-enabled" data-mockup-page-id="mitra/detail" lang="en"><head><base href="/v1/"/><link href="assets/captured/app-1960aad9.css" rel="stylesheet"/><link href="assets/captured/app-627c9488.css" rel="stylesheet"/><link href="assets/captured/stylesheets.css" rel="stylesheet"/></head><body><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo" name="csrf-token"/>
+<title>SEVIMA Platform - Detail Mitra</title>
+<link href="../mockups/raw/Kerjasama/SEVIMA Platform - Detail Mitra_files/logo-sevimaplatform-small.png" rel="icon"/>
+<style>
+
+        .empty-list__bordered {
+            border-width: var(--bs-border-width);
+            border-style: solid;
+            border-color: rgb(196.8, 198.4, 200);
+            border-top: none;
+        }
+
+        .empty-list__inner {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            width: 38%;
+            height: 100%;
+        }
+
+        .empty-list__inner p {
+            text-align: start;
+        }
+
+        .empty-list__inner h1 {
+            text-align: start;
+        }
+
+        .a-link {
+            color: var(--qn-primary-400);
+            text-decoration: underline;
+        }
+
+        .text-responsive {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 1440px) {
+            .text-responsive {
+                font-size: .75rem;
+            }
+        }
+    </style>
+<style>
+        .qn-header-pattern {
+            background-image: url(assets/vendors/local-assets/sevima-header.webp);
+        }
+
+        .qn-sidebar {
+            background-image: url(assets/vendors/local-assets/sevima-sidebar.svg);
+        }
+
+        @font-face {
+            font-display: block;
+            font-family: "quantum-symbols";
+            src: url(assets/vendors/local-assets/quantum-symbols.woff2) format("woff2"),
+            url(assets/vendors/local-assets/quantum-symbols.woff) format("woff");
+        }
+    </style><style>/* Make clicks pass-through */
+
+    #nprogress {
+      pointer-events: none;
+    }
+
+    #nprogress .bar {
+      background: var(--livewire-progress-bar-color, #29d);
+
+      position: fixed;
+      z-index: 1031;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 2px;
+    }
+
+    /* Fancy blur effect */
+    #nprogress .peg {
+      display: block;
+      position: absolute;
+      right: 0px;
+      width: 100px;
+      height: 100%;
+      box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+      opacity: 1.0;
+
+      -webkit-transform: rotate(3deg) translate(0px, -4px);
+          -ms-transform: rotate(3deg) translate(0px, -4px);
+              transform: rotate(3deg) translate(0px, -4px);
+    }
+
+    /* Remove these to get rid of the spinner */
+    #nprogress .spinner {
+      display: block;
+      position: fixed;
+      z-index: 1031;
+      top: 15px;
+      right: 15px;
+    }
+
+    #nprogress .spinner-icon {
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+
+      border: solid 2px transparent;
+      border-top-color: var(--livewire-progress-bar-color, #29d);
+      border-left-color: var(--livewire-progress-bar-color, #29d);
+      border-radius: 50%;
+
+      -webkit-animation: nprogress-spinner 400ms linear infinite;
+              animation: nprogress-spinner 400ms linear infinite;
+    }
+
+    .nprogress-custom-parent {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+      position: absolute;
+    }
+
+    @-webkit-keyframes nprogress-spinner {
+      0%   { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes nprogress-spinner {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style><style></style>
+<div class="">
+<header class="qn-header z-2 sticky-top">
+<div class="qn-header-pattern p-md-3 py-3 px-xl-5 bg-primary text-white">
+<div class="container-fluid">
+<div class="d-flex flex-wrap align-items-center justify-content-start">
+<div class="d-flex gap-2 gap-md-3 align-items-center">
+<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-icon btn-lg btn-light rounded-1 d-block d-lg-none bg-transparent text-white" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<i class="sym sym-menu-03"></i>
+</button>
+<a class="qn-identity d-flex align-items-center link-body-emphasis text-decoration-none rounded-3 bg-white" data-mockup-unresolved="/v2/kerjasama" href="#">
+<img alt="Example Campus Logo" class="img-fluid w-auto h-100 object-fit-contain" src="../mockups/raw/Kerjasama/SEVIMA Platform - Detail Mitra_files/logo-sevimaplatform-small.png"/>
+</a>
+<div class="d-flex flex-column">
+<span>SIM Kerjasama</span>
+<h5 class="m-0">Universitas Foxtrot</h5>
+</div>
+</div>
+<div class="ms-auto d-flex align-items-center gap-1">
+<div class="d-none d-md-flex align-items-center gap-1">
+<a aria-label="Pindah Modul" class="btn btn-light p-2 py-1 bg-transparent text-white border-0" data-mockup-unresolved="/gate/menu" href="#">
+<i class="sym sym-dots-grid-solid"></i>
+<span class="d-none d-lg-inline-block ms-2">Modul</span>
+</a>
+</div>
+<hr class="d-none d-md-block vr mx-2"/>
+<div class="dropdown d-none d-md-block rounded-4 bg-white text-black p-1">
+<a aria-expanded="false" class="d-flex gap-1 align-items-center link-body-emphasis text-decoration-none dropdown-toggle pe-1" data-bs-toggle="dropdown" href="mitra-detail.html">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<span class="qn-avatar-name d-none d-lg-block text-truncate">Dimas Sevima</span>
+</a>
+<ul class="dropdown-menu pt-0 text-small" style="width: 296px;">
+<li>
+<div class="d-flex flex-column gap-2 p-3 py-4 pb-3 text-nowrap">
+<div class="d-flex align-items-center gap-3">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<div class="d-block">
+<h6 class="mb-1">Dimas Sevima</h6>
+<span class="text-muted">Superadmin</span>
+</div>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<button class="dropdown-item d-flex flex-nowrap justify-content-between" data-bs-target="#modal-switch-role" data-bs-toggle="modal">
+                                    Ganti Role
+                                    <i class="sym sym-refresh-ccw-02"></i>
+</button>
+</li>
+<li>
+<a class="dropdown-item text-danger" data-mockup-unresolved="/v2/gate/sessions/logout" href="#">
+<i class="sym sym-arrow-left-solid me-2"></i>
+                                    Keluar
+                                </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md-3 py-md-0 px-xl-5 border-bottom shadow-sm bg-white">
+<div class="container-fluid">
+<nav class="navbar navbar-expand-lg p-0 bg-white">
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="w-100 navbar-nav py-1 gap-1">
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="index.html">Dashboard</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="kerjasama.html">Kerjasama</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/kegiatan" href="#">Kegiatan</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link text-primary active" href="mitra.html">Mitra</a>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="mitra-detail.html" role="button">
+                                    Data Referensi
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/bentuk-kegiatan" href="#">Bentuk Kegiatan</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sasaran-kinerja" href="#">Sasaran Kinerja</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/kriteria-mitra" href="#">Kriteria Mitra</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sumber-dana" href="#">Sumber Dana</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/jenis-dokumen" href="#">Jenis Dokumen</a></li>
+<li><a class="dropdown-item" href="unit-kerja.html">Unit Kerja</a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="mitra-detail.html" role="button">
+                                    Laporan
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/laporan-kerjasama" href="#">Laporan Kerjasama</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<form action="#" data-mockup-unresolved="/v2/gate/sessions/switch-role" enctype="multipart/form-data" id="form-switch" method="POST">
+<input autocomplete="off" name="_token" type="hidden" value="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo"/> <div aria-hidden="true" aria-labelledby="modalDeleteLabel" class="modal fade" id="modal-switch-role" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper">
+<h5 class="modal-title">Ganti Role</h5>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="box-switch selected" data-module="kerjasama" data-name="sa" data-organization="0" onclick="switchRole(this)">
+<h5>
+                        Superadmin
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">SEVIMA</span>
+</h5>
+<div>
+<i class="sym sym-check-circle-solid" style="color:#5d88f6"></i>
+</div>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_perguruan_tinggi" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Administrator PT
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_kerjasama" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Admin Kerjasama
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+<aside class="qn-sidebar offcanvas offcanvas-start position-fixed overflow-x-hidden overflow-y-auto start-0 bg-white border-end" data-bs-scroll="false" id="sidebar" tabindex="-1">
+<div class="offcanvas-body">
+<div class="d-flex flex-column pb-5">
+<ul class="nav nav-pills flex-column gap-2" style="--bs-nav-link-color: var(--bs-body-color);">
+<li class="nav-item-title">
+                            Mitra
+                        </li>
+<li class="nav-item">
+<a class="nav-link bg-primary-subtle text-primary fw-medium" href="mitra-detail.html">
+<div class="d-flex align-items-center">
+<span class="align-self-end">
+                                        Detail Mitra
+                                    </span>
+</div>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="kerjasama-mitra.html">
+<div class="d-flex align-items-center">
+<span class="align-self-end">
+                                        Daftar Kerjasama
+                                    </span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+<div class="qn-sidebar-toggle position-fixed d-block d-xl-none mt-3">
+<button aria-label="Toggle sidebar menu" class="btn btn-light btn-sm rounded-3 border rounded-start-0 bg-white" data-bs-target="#sidebar" data-bs-toggle="offcanvas" type="button">
+<i class="sym sym-chevron-right-double show"></i>
+<i class="sym sym-chevron-left-double"></i>
+</button>
+</div>
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<div class="container">
+<div class="row row-cols-1 gy-3 p-3 p-lg-4">
+<div class="d-flex align-items-center justify-content-between gap-1 px-0 mb-2">
+<div class="d-flex flex-column gap-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li class="breadcrumb-item"><a href="mitra.html">Mitra</a></li>
+<li aria-current="page" class="breadcrumb-item active">Detail Mitra</li>
+</ol>
+</nav>
+<div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-end gap-2">
+<h4 class="m-0">Detail Mitra</h4>
+</div>
+</div>
+</div>
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header d-flex gap-2 align-items-center justify-content-between bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<div class="d-flex gap-3 align-items-center">
+<div class="ratio ratio-1x1" style="width: 42px; min-width: 42px;">
+<span class="d-flex align-items-center justify-content-center rounded-circle p-2 border">
+<i class="sym sym-building-02"></i>
+</span>
+</div>
+<div class="d-block ms-1">
+<h5 class="m-0 text-wrap truncate-2">
+                    UPN “Veteran” Yogyakarta
+                </h5>
+<span class="fs-6 text-secondary">Detail informasi terkait data mitra dan kontak</span>
+</div>
+</div>
+<div class="d-flex flex-shrink-0 gap-3">
+<a class="btn gap-2 d-md-flex btn-light" href="mitra-edit.html" style="">
+<i class="sym sym-edit-02"></i>
+Ubah Data
+    </a>
+</div>
+</div>
+<div class="card-body">
+<div class="row gy-3">
+<div class="col-md-6">
+<div class="row gx-1 gy-3">
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Jenis Mitra</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+                                    Perguruan Tinggi
+                            </span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Nama Mitra</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+                                    UPN “Veteran” Yogyakarta
+                            </span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Nomor Surat Izin Usaha / Perguruan Tinggi</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">NPWP Mitra</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Kriteria Mitra</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+                                    Perguruan tinggi dalam negeri dalam daftar QS200 berdasarkan bidang ilmu
+                            </span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Lingkup Mitra</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+                                    Lokal
+                            </span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Provinsi</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+                                    DI YOGYAKARTA
+                            </span>
+</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="row gx-1 gy-3">
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Kota / Kabupaten</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Kecamatan</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Kode POS</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Alamat</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Nomor Telepon</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Email</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+</span>
+</div>
+<div class="col-4">
+<div class="d-flex gap-1 justify-content-between">
+<span class="text-secondary">Link Website</span>
+<span>: </span>
+</div>
+</div>
+<div class="col-8">
+<span>
+<div class="w-100 d-flex text-wrap justify-content-start">
+</div> </span>
+</div>
+</div>
+</div>
+<div class="pt-3">
+<div class="table-responsive mb-3 pb-1">
+<table class="table table-bordered align-middle mb-0">
+<thead class="align-middle">
+<tr class="table-light">
+<th class="cell-check text-center" style="width: 40px">
+                            No
+                        </th>
+<th class="text-nowrap" data-no="1" style="cursor: pointer;">
+<div class="d-flex gap-3">
+                                                                Nama Kontak
+                                                            </div>
+</th>
+<th class="text-nowrap" data-no="2" style="cursor: pointer;">
+<div class="d-flex gap-3">
+                                                                Jabatan
+                                                            </div>
+</th>
+<th class="text-nowrap" data-no="3" style="cursor: pointer;">
+<div class="d-flex gap-3">
+                                                                Email
+                                                            </div>
+</th>
+<th class="text-nowrap" data-no="4" style="cursor: pointer;">
+<div class="d-flex gap-3">
+                                                                Nomor Handphone
+                                                            </div>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="cell-check text-center">
+            1
+        </td>
+<td rowspan="1">
+            Raden Wijaya
+    </td>
+<td rowspan="1">
+            Dosen
+    </td>
+<td rowspan="1">
+            raden.wijaya@email.com
+    </td>
+<td rowspan="1">
+            082199840021
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="mitra-detail.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/Kerjasama/SEVIMA Platform - Detail Mitra_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+</main>
+</div>
+<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script></body></html>

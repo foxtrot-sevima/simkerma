@@ -343,6 +343,36 @@ INTERACTIONS_JS = """// Local Bootstrap-5-compatible interaction layer for this 
 })();
 """
 
+# Production sets --qn-header-height via JS (measuring the real sticky header's
+# rendered height, which varies - e.g. the campus name line wrapping to 2 lines
+# at narrow widths) - that script isn't part of the static capture. Without it,
+# every var(--qn-header-height, 0) in the captured CSS falls back to 0, which is
+# silently wrong rather than missing: the offcanvas .qn-sidebar's `top` offset
+# becomes 0 instead of the header's real height, so the sidebar renders pinned
+# under the sticky header (z-index below it) instead of starting beneath it -
+# its content ends up completely hidden behind the header with no visible
+# error. Confirmed by hand with computed-style inspection (Playwright) on
+# kerjasama-mitra-detail.html: setting this property after the fact made the
+# sidebar's "Mitra" nav appear exactly as expected. Mockup scaffolding only -
+# the real project already sets this from its own JS.
+HEADER_HEIGHT_JS = """// Keeps --qn-header-height in sync with the real .qn-header's rendered
+// height - production sets this via JS the static capture never saved (see
+// build_mockup.py for why it matters: without it, the offcanvas .qn-sidebar
+// renders hidden behind the sticky header, not just "slightly off").
+// Mockup scaffolding only - do not copy into the real project.
+(function () {
+    function sync() {
+        var header = document.querySelector('.qn-header');
+        if (header) {
+            document.documentElement.style.setProperty('--qn-header-height', header.offsetHeight + 'px');
+        }
+    }
+    sync();
+    window.addEventListener('load', sync);
+    window.addEventListener('resize', sync);
+})();
+"""
+
 CSS_URL_RE = re.compile(r"url\(\s*(['\"]?)(?!data:)([^'\")]+)\1\s*\)")
 
 
@@ -502,18 +532,38 @@ def page_id(module, page):
 
 def output_stem(module, page):
     """Flat filename (no extension) a given module/page target writes to
-    inside VERSION_DIR - "kerjasama/daftar" -> "kerjasama-daftar" (module's
-    sub-page), "kerjasama/index" -> "index" (this version's home page, see
-    HOME_PAGE_ID), any other "<module>/index" -> "<module>" (that module's
-    own main/list page, bare-named like tracer-study's "alumni.html")."""
+    inside VERSION_DIR:
+    - "kerjasama/index" -> "index" (this version's home page, see HOME_PAGE_ID)
+    - any other "<module>/index" or "<module>/daftar" -> "<module>" (that
+      module's own main/list page, bare-named like tracer-study's
+      "alumni.html" - "daftar" counts too since it's this app's usual name
+      for a list view, same role as "index")
+    - "<module>/<page>" where <page> already starts with "<module>-" ->
+      "<page>" as-is, not "<module>-<page>" - avoids a stutter like
+      "kerjasama-kerjasama-mitra" when the page name itself already repeats
+      the module (e.g. module "kerjasama", page "kerjasama-mitra")
+    - anything else -> "<module>-<page>" (module's sub-page)
+    """
     if page_id(module, page) == HOME_PAGE_ID:
         return "index"
-    if page == "index":
+    if page in ("index", "daftar"):
         return module
+    if page.startswith(f"{module}-"):
+        return page
     return f"{module}-{page}"
 
 
 API_VERSION_SEGMENTS = {"v1", "v2", "v3", "api"}
+
+# Some second-level URL segments are their own reference-data entity nested
+# under a broader module's URL prefix (e.g. "mitra", "unit-kerja" living
+# under /kerjasama/...) - distinctive enough on their own to deserve their
+# own file identity (mitra.html, mitra-detail.html, ...) rather than being
+# lumped under "kerjasama-...". Listed here so suggest_module() (and thus the
+# module-mismatch warning) steers new captures of these straight to the
+# right module the first time - e.g. /kerjasama/mitra/62 should be built as
+# `mitra/detail`, not `kerjasama/mitra-detail`.
+SUB_ENTITY_SEGMENTS = {"mitra", "unit-kerja"}
 
 
 def suggest_module(capture_path):
@@ -522,13 +572,20 @@ def suggest_module(capture_path):
     though the page itself is a "dashboard". Used only to sanity-check the
     module the build was actually asked to use (never overrides it), so a
     page doesn't accidentally end up isolated in its own module folder
-    just because of what it happened to be named."""
+    just because of what it happened to be named. Exception: a second
+    segment matching SUB_ENTITY_SEGMENTS is suggested instead of the first -
+    those are meant to be their own module regardless of which broader
+    module's URL prefix they're nested under."""
     if not capture_path:
         return None
     segments = [s for s in capture_path.split("/") if s]
     while segments and segments[0].lower() in API_VERSION_SEGMENTS:
         segments = segments[1:]
-    return slugify(segments[0]) if segments else None
+    if not segments:
+        return None
+    if len(segments) > 1 and slugify(segments[1]) in SUB_ENTITY_SEGMENTS:
+        return slugify(segments[1])
+    return slugify(segments[0])
 
 
 def relative_link(target_module, target_page):
@@ -885,6 +942,12 @@ def restore_functional_scripts(soup, out_dir, capture_assets_dir, kept_inline_sc
         tag = soup.new_tag("script")
         tag.string = content
         body.append(tag)
+
+    header_height_path = js_dir / "set-header-height.js"
+    if not header_height_path.exists():
+        header_height_path.parent.mkdir(parents=True, exist_ok=True)
+        header_height_path.write_text(HEADER_HEIGHT_JS, encoding="utf-8")
+    body.append(soup.new_tag("script", src="assets/set-header-height.js"))
 
     interactions_path = js_dir / "mockup-interactions.js"
     if not interactions_path.exists():

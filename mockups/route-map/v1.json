@@ -40,5 +40,35 @@
     "page": "index",
     "path": "/v2/kerjasama/dashboard",
     "pattern": "/v2/kerjasama/dashboard"
+  },
+  "kerjasama/kerjasama-mitra": {
+    "module": "kerjasama",
+    "page": "kerjasama-mitra",
+    "path": "/v2/kerjasama/kerjasama-mitra/63",
+    "pattern": "/v2/kerjasama/kerjasama-mitra/{id}"
+  },
+  "mitra/detail": {
+    "module": "mitra",
+    "page": "detail",
+    "path": "/v2/kerjasama/mitra/62",
+    "pattern": "/v2/kerjasama/mitra/{id}"
+  },
+  "mitra/edit": {
+    "module": "mitra",
+    "page": "edit",
+    "path": "/v2/kerjasama/mitra/62/edit",
+    "pattern": "/v2/kerjasama/mitra/{id}/edit"
+  },
+  "mitra/index": {
+    "module": "mitra",
+    "page": "index",
+    "path": "/v2/kerjasama/mitra",
+    "pattern": "/v2/kerjasama/mitra"
+  },
+  "unit-kerja/index": {
+    "module": "unit-kerja",
+    "page": "index",
+    "path": "/v2/kerjasama/unit-kerja",
+    "pattern": "/v2/kerjasama/unit-kerja"
   }
 }

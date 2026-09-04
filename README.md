@@ -6,7 +6,7 @@ Tiap versi mockup punya folder sendiri, diakses lewat URL sederhana:
 
 ```text
 simkerma.vercel.app/v1/index.html              (Dashboard - halaman utama)
-simkerma.vercel.app/v1/kerjasama-daftar.html
+simkerma.vercel.app/v1/kerjasama.html
 simkerma.vercel.app/v1/kerjasama-detail.html
 ```
 
@@ -25,7 +25,7 @@ simkerma_ui/
 ├── index.html            <- redirect otomatis ke /v1/index.html (baru ada 1 versi)
 ├── v1/
 │   ├── index.html        (Dashboard - halaman utama/landing versi ini)
-│   ├── kerjasama-daftar.html
+│   ├── kerjasama.html
 │   ├── kerjasama-detail.html
 │   ├── ...html lainnya
 │   └── assets/
@@ -34,7 +34,8 @@ simkerma_ui/
 │       │                                           terakhir kalau suatu halaman tidak punya capture CSS-nya)
 │       ├── vendors/local-assets/                 (font/pattern QUANTUM tambahan - quantum-symbols, dll.)
 │       ├── css/main.css                          (override manual, opsional)
-│       └── chart.js, mockup-interactions.js, dll. (scaffolding mockup)
+│       └── chart.js, mockup-interactions.js,
+│           set-header-height.js, dll.            (scaffolding mockup)
 ├── mockups/               <- tooling AI (skill mockup-sync): intake capture mentah,
 │                              token registry, script build - lihat mockups/README.md
 ├── QUANTUM/                <- checkout lokal design system QUANTUM (read-only, sumber vendor)
@@ -69,7 +70,7 @@ tanpa awalan apa pun:
 <link rel="stylesheet" href="assets/captured/app-1960aad9.css">
 <script src="assets/mockup-interactions.js"></script>
 <img src="assets/vendors/local-assets/sevima-header.webp">
-<a href="kerjasama-daftar.html">Kerjasama</a>
+<a href="kerjasama.html">Kerjasama</a>
 ```
 
 Karena folder `v1/` **memang** folder yang diakses lewat URL `/v1/`, path
@@ -111,7 +112,7 @@ mis. `npx serve .`, lalu buka `http://localhost:<port>/v1/index.html`.
    ```
 2. Tambahkan `<base href="/v2/">` di awal `<head>` tiap halaman.
 3. Tulis semua path asset & link antar halaman relatif biasa (`assets/...`,
-   `kerjasama-daftar.html`, dll.) - tidak perlu awalan `./`, `../`, atau path
+   `kerjasama.html`, dll.) - tidak perlu awalan `./`, `../`, atau path
    absolut.
 4. Kalau versi baru ini dibangun lewat skill `/mockup-sync`: ubah
    `CURRENT_VERSION` di [`mockups/scripts/build_mockup.py`](mockups/scripts/build_mockup.py)
@@ -164,3 +165,13 @@ satu-kali yang masih manual (di luar jangkauan tooling di repo ini):
   tidak ada. Solusinya: capture ulang halaman itu pakai "Save As... Webpage,
   Complete" (bukan "Copy outerHTML") supaya folder `_files`-nya ikut, lalu
   build ulang - itu akan otomatis pindah ke CSS capture asli yang cocok.
+- **Ada bagian yang seharusnya ada (sidebar, panel) tapi tidak kelihatan
+  sama sekali** → jangan buru-buru simpulkan markup-nya hilang - cek dulu
+  apakah `v1/assets/set-header-height.js` ke-load (lihat tab Network). CSS
+  produksi banyak yang posisinya bergantung ke `var(--qn-header-height, 0)`
+  (mis. sidebar offcanvas yang seharusnya menempel di bawah header) - kalau
+  variabel ini tidak ke-set, elemen itu diam-diam menempel di `top:0` dan
+  ketutup total di belakang header yang sticky, tanpa error apa pun yang
+  kelihatan di console. `set-header-height.js` menambal ini dengan mengukur
+  tinggi `.qn-header` asli - kalau skrip ini sudah ada tapi tetap tidak
+  membantu, baru itu bug beneran yang perlu ditelusuri lebih lanjut.
