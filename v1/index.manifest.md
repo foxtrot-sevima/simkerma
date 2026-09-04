@@ -4,24 +4,27 @@
 - Generated mockup: `v1/index.html`
 - Rendering CSS source: **captured (3 file(s))**
   (this page's own captured stylesheet was used, so visuals should match production exactly)
-- Everything is local now - 4 font/pattern url()s resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), 0 unresolvable external url()s dropped to `none`.
+- Everything is local now - 10 font/pattern url()s resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), 0 unresolvable external url()s dropped to `none`.
 
 ## Internal navigation
 
-- Links pointing to other app pages that already have a mockup built: **9** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
-- Links with no matching mockup yet: **12** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
+- Links pointing to other app pages that already have a mockup built: **5** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
+- Links with no matching mockup yet: **16** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
 
   - `/gate/menu`
   - `/v2/gate/sessions/logout`
   - `/v2/gate/sessions/switch-role`
   - `/v2/kerjasama`
   - `/v2/kerjasama/bentuk-kegiatan`
+  - `/v2/kerjasama/data-kerjasama`
   - `/v2/kerjasama/jenis-dokumen`
   - `/v2/kerjasama/kegiatan`
   - `/v2/kerjasama/kriteria-mitra`
   - `/v2/kerjasama/laporan-kerjasama`
+  - `/v2/kerjasama/mitra`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
+  - `/v2/kerjasama/unit-kerja`
 
 ## Interactions
 

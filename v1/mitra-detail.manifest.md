@@ -1,15 +1,15 @@
-# Mockup sync report - kerjasama/mitra-detail
+# Mockup sync report - mitra/detail
 
 - Source capture: `mockups/raw/Kerjasama/SEVIMA Platform - Detail Mitra.html`
-- Generated mockup: `v1/kerjasama-mitra-detail.html`
+- Generated mockup: `v1/mitra-detail.html`
 - Rendering CSS source: **captured (3 file(s))**
   (this page's own captured stylesheet was used, so visuals should match production exactly)
 - Everything is local now - 4 font/pattern url()s resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), 0 unresolvable external url()s dropped to `none`.
 
 ## Internal navigation
 
-- Links pointing to other app pages that already have a mockup built: **12** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
-- Links with no matching mockup yet: **12** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
+- Links pointing to other app pages that already have a mockup built: **9** - rewritten to open that mockup directly (navbar tabs, "Tambah"/Edit/Detail buttons, etc. actually navigate, same as production).
+- Links with no matching mockup yet: **15** - left as `#` for now. Capture one of these pages next and re-run the build (any slug) to wire them up automatically, on this page AND every other mockup that links to it:
 
   - `/gate/menu`
   - `/v2/gate/sessions/logout`
@@ -18,10 +18,15 @@
   - `/v2/kerjasama/bentuk-kegiatan`
   - `/v2/kerjasama/jenis-dokumen`
   - `/v2/kerjasama/kegiatan`
+  - `/v2/kerjasama/kerjasama-mitra/62`
   - `/v2/kerjasama/kriteria-mitra`
   - `/v2/kerjasama/laporan-kerjasama`
+  - `/v2/kerjasama/mitra/62/edit`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
+  - `/v2/kerjasama/unit-kerja`
+
+- Building this page also fixed **13** previously-dead link(s) across **4** earlier mockup(s) that were waiting for this route to exist.
 
 ## Interactions
 

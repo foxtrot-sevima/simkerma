@@ -1,7 +1,7 @@
-# Mockup sync report - kerjasama/unit-kerja
+# Mockup sync report - unit-kerja/index
 
 - Source capture: `mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja.html`
-- Generated mockup: `v1/kerjasama-unit-kerja.html`
+- Generated mockup: `v1/unit-kerja.html`
 - Rendering CSS source: **captured (3 file(s))**
   (this page's own captured stylesheet was used, so visuals should match production exactly)
 - Everything is local now - 4 font/pattern url()s resolved to first-party QUANTUM files (`quantum-symbols`, header/sidebar patterns), 0 unresolvable external url()s dropped to `none`.
@@ -22,6 +22,8 @@
   - `/v2/kerjasama/laporan-kerjasama`
   - `/v2/kerjasama/sasaran-kinerja`
   - `/v2/kerjasama/sumber-dana`
+
+- Building this page also fixed **10** previously-dead link(s) across **10** earlier mockup(s) that were waiting for this route to exist.
 
 ## Interactions
 

@@ -6,7 +6,7 @@ Tiap versi mockup punya folder sendiri, diakses lewat URL sederhana:
 
 ```text
 simkerma.vercel.app/v1/index.html              (Dashboard - halaman utama)
-simkerma.vercel.app/v1/kerjasama-daftar.html
+simkerma.vercel.app/v1/kerjasama.html
 simkerma.vercel.app/v1/kerjasama-detail.html
 ```
 
@@ -25,7 +25,7 @@ simkerma_ui/
 ├── index.html            <- redirect otomatis ke /v1/index.html (baru ada 1 versi)
 ├── v1/
 │   ├── index.html        (Dashboard - halaman utama/landing versi ini)
-│   ├── kerjasama-daftar.html
+│   ├── kerjasama.html
 │   ├── kerjasama-detail.html
 │   ├── ...html lainnya
 │   └── assets/
@@ -70,7 +70,7 @@ tanpa awalan apa pun:
 <link rel="stylesheet" href="assets/captured/app-1960aad9.css">
 <script src="assets/mockup-interactions.js"></script>
 <img src="assets/vendors/local-assets/sevima-header.webp">
-<a href="kerjasama-daftar.html">Kerjasama</a>
+<a href="kerjasama.html">Kerjasama</a>
 ```
 
 Karena folder `v1/` **memang** folder yang diakses lewat URL `/v1/`, path
@@ -112,7 +112,7 @@ mis. `npx serve .`, lalu buka `http://localhost:<port>/v1/index.html`.
    ```
 2. Tambahkan `<base href="/v2/">` di awal `<head>` tiap halaman.
 3. Tulis semua path asset & link antar halaman relatif biasa (`assets/...`,
-   `kerjasama-daftar.html`, dll.) - tidak perlu awalan `./`, `../`, atau path
+   `kerjasama.html`, dll.) - tidak perlu awalan `./`, `../`, atau path
    absolut.
 4. Kalau versi baru ini dibangun lewat skill `/mockup-sync`: ubah
    `CURRENT_VERSION` di [`mockups/scripts/build_mockup.py`](mockups/scripts/build_mockup.py)

@@ -138,13 +138,13 @@ Tunggu sampai Claude bilang selesai (biasanya beberapa detik).
 
 Hasilnya ada di folder `v1/` (langsung di root project — semua halaman
 untuk versi mockup yang sedang berjalan dikumpulkan flat di sini, jadi kalau
-modulnya "kerjasama" akan muncul `kerjasama-daftar.html`,
+modulnya "kerjasama" akan muncul `kerjasama.html` (daftar/list-nya),
 `kerjasama-detail.html`, `kerjasama-create.html`, dst sebagai file sibling,
 bukan folder terpisah per modul/halaman):
 
 | File | Isinya |
 |---|---|
-| `<halaman>.html` | Mockup-nya (misal `kerjasama-daftar.html`). **Tidak bisa** dibuka dengan double-click biasa — lihat catatan "Cara buka" di bawah. |
+| `<halaman>.html` | Mockup-nya (misal `kerjasama.html`). **Tidak bisa** dibuka dengan double-click biasa — lihat catatan "Cara buka" di bawah. |
 | `<halaman>.manifest.md` | Laporan singkat untuk halaman itu, dalam bahasa yang mudah dibaca — lihat panduan di bawah. |
 | `assets/` | File CSS/JS/font QUANTUM yang dipakai bersama oleh semua halaman versi ini — tidak perlu dibuka manual. |
 
@@ -209,8 +209,9 @@ File ini akan berisi beberapa bagian. Berikut artinya dalam bahasa awam:
 - **Chart-nya beneran jalan** (bisa hover, animasi muncul), tapi datanya
   tetap data pada saat capture, bukan data real-time.
 - **Satu file = satu halaman**, dan nama filenya mengikuti modulnya (mis.
-  `kerjasama-daftar.html`, `kerjasama-detail.html`) walau semuanya sibling
-  file di `v1/`, bukan folder terpisah. Kalau mau buat mockup untuk beberapa
+  `kerjasama.html` untuk daftar/list-nya, `kerjasama-detail.html` untuk
+  sub-halamannya) walau semuanya sibling file di `v1/`, bukan folder
+  terpisah. Kalau mau buat mockup untuk beberapa
   halaman modul yang sama (misal: daftar, detail, form tambah kerjasama),
   ulangi Langkah 1-3 untuk tiap halaman dengan `<modul>` yang **sama** dan
   `<halaman>` yang beda-beda (`kerjasama/daftar`, `kerjasama/detail`,
