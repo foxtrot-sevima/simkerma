@@ -47,6 +47,12 @@
     "path": "/v2/kerjasama/kerjasama-mitra/63",
     "pattern": "/v2/kerjasama/kerjasama-mitra/{id}"
   },
+  "kerjasama/penugasan-role": {
+    "module": "kerjasama",
+    "page": "penugasan-role",
+    "path": "/v2/kerjasama/penugasan-role",
+    "pattern": "/v2/kerjasama/penugasan-role"
+  },
   "mitra/detail": {
     "module": "mitra",
     "page": "detail",
