@@ -1,0 +1,382 @@
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<style>
+    .pr-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 991.98px) { .pr-stats { grid-template-columns: repeat(2, 1fr); } }
+    .pr-stat { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1px solid #e3e8ef; border-radius: 12px; background: #fff; }
+    .pr-stat__icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex: none; }
+    .pr-stat__num { font-size: 1.375rem; font-weight: 600; line-height: 1.1; color: #1f2937; }
+    .pr-stat__lbl { font-size: .8125rem; color: #6b7280; }
+    .pr-unit { border: 1px solid #e3e8ef; border-radius: 12px; background: #fff; overflow: hidden; transition: box-shadow .15s; }
+    .pr-unit:hover { box-shadow: 0 2px 10px rgba(16, 24, 40, .06); }
+    .pr-unit__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: #f8fafc; border-bottom: 1px solid #e3e8ef; }
+    .pr-unit__name { font-weight: 600; color: #1f2937; margin: 0; font-size: .9375rem; }
+    .pr-unit__sub { font-size: .8125rem; color: #6b7280; }
+    .pr-avatar { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 600; flex: none; }
+    .pr-avatar.is-validator { background: #dcf5e7; color: #0f6b3a; }
+    .pr-avatar.is-pic { background: #e0e9ff; color: #2447b8; }
+    .pr-avatar.is-unit { background: #fff; border: 1px solid #e3e8ef; color: #475467; font-size: 1.125rem; width: 40px; height: 40px; border-radius: 10px; }
+    .pr-person { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; gap: 16px; padding: 12px 16px; }
+    .pr-person--head { padding: 8px 16px; font-size: .75rem; font-weight: 500; color: #6b7280; border-bottom: 1px solid #eef1f5; }
+        @media (max-width: 767.98px) { .pr-person { grid-template-columns: 1fr auto; } .pr-person--head { display: none; } }
+    .pr-person + .pr-person { border-top: 1px solid #eef1f5; }
+    .pr-person__name { color: #1f2937; font-weight: 500; }
+    .pr-person__role { justify-self: start; }
+    .pr-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: .75rem; font-weight: 500; white-space: nowrap; }
+    .pr-pill.is-validator { background: #dcf5e7; color: #0f6b3a; }
+    .pr-pill.is-pic { background: #e0e9ff; color: #2447b8; }
+    .pr-pill.is-neutral { background: #eef1f5; color: #475467; }
+    .pr-note { padding: 10px 16px; border-top: 1px dashed #e3e8ef; color: #8a919c; font-size: .8125rem; display: flex; align-items: center; gap: 8px; }
+    .pr-form { border: 1px solid #b6c8f7; border-radius: 12px; background: #fff; box-shadow: 0 0 0 4px rgba(37, 99, 235, .07); overflow: hidden; }
+    .pr-form__head { padding: 14px 16px; background: #f4f7ff; border-bottom: 1px solid #dbe5fb; display: flex; align-items: center; gap: 10px; font-weight: 600; color: #1f2937; }
+    .pr-form__body { padding: 20px 16px; }
+    .pr-form__foot { padding: 12px 16px; border-top: 1px solid #eef1f5; background: #fafbfc; display: flex; justify-content: flex-end; gap: 8px; }
+    .pr-row { display: flex; align-items: center; gap: 8px; }
+    .pr-row .pr-c-peg { flex: 0 0 55%; min-width: 0; }
+    .pr-row .pr-c-role { flex: 1 1 auto; min-width: 0; }
+    .pr-empty { text-align: center; padding: 48px 16px; border: 1px dashed #cdd5df; border-radius: 12px; background: #fff; color: #6b7280; }
+    .pr-empty i { font-size: 2rem; color: #9aa1a9; }
+    .pr-toast { position: fixed; right: 24px; bottom: 24px; z-index: 2000; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: #1f2937; color: #fff; box-shadow: 0 8px 24px rgba(16, 24, 40, .25); transform: translateY(16px); opacity: 0; pointer-events: none; transition: all .2s; }
+    .pr-toast.is-show { transform: none; opacity: 1; }
+    .pr-toast i { color: #4ade80; }
+    @media (max-width: 575.98px) { .pr-row { flex-wrap: wrap; } .pr-row .pr-c-peg { flex-basis: 100%; } }
+</style>
+<div class="container">
+<div class="row row-cols-1 gy-3 p-3 p-lg-4">
+<div class="d-flex align-items-center justify-content-between gap-1 px-0 mb-2">
+<div class="d-flex flex-column gap-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li class="breadcrumb-item">Pengaturan</li>
+<li aria-current="page" class="breadcrumb-item active">Penugasan Role</li>
+</ol>
+</nav>
+<h4 class="m-0">Penugasan Role Kerjasama</h4>
+</div>
+<button class="btn gap-2 btn-primary text-nowrap flex-shrink-0 d-flex align-items-center" id="pr-btn-add" type="button">
+<i class="sym sym-plus"></i>
+<span class="d-none d-lg-block">Tambah Penugasan</span>
+</button>
+</div>
+
+<div class="pr-stats px-0" id="pr-stats"></div>
+
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<div class="d-flex gap-3 align-items-center">
+<div class="ratio ratio-1x1" style="width: 42px; min-width: 42px;">
+<span class="d-flex align-items-center justify-content-center rounded-circle p-2 border"><i class="sym sym-users"></i></span>
+</div>
+<div class="d-block ms-1">
+<h5 class="m-0">Daftar Penugasan</h5>
+<span class="fs-6 text-secondary">Petakan pegawai per unit kerja sebagai Validator dan PIC Kerjasama.</span>
+</div>
+</div>
+<div class="col-12 col-md-4 col-lg-3 ms-md-auto">
+<input class="form-control" id="pr-search" placeholder="Cari unit atau pegawai ..." type="search"/>
+</div>
+</div>
+<div class="card-body p-3 p-lg-4">
+<div class="d-flex flex-column gap-3" id="pr-list"></div>
+<div class="d-none mt-3" id="pr-form">
+<div class="pr-form">
+<div class="pr-form__head"><i class="sym sym-edit-02"></i><span id="pr-form-title">Tambah Penugasan</span></div>
+<div class="pr-form__body">
+<div class="mb-4">
+<label class="form-label" for="pr-unit">Unit Kerja <span class="text-danger">*</span></label>
+<select class="form-select" id="pr-unit"></select>
+<div class="invalid-feedback" id="pr-unit-err"></div>
+</div>
+<div>
+<div class="d-flex align-items-center justify-content-between mb-2">
+<label class="form-label m-0">Nama &amp; Role <span class="text-danger">*</span></label>
+<button class="btn btn-sm btn-light gap-1" id="pr-add-row" type="button"><i class="sym sym-plus"></i>Tambah Nama</button>
+</div>
+<div class="d-flex flex-column gap-2" id="pr-rows"></div>
+<div class="text-danger fs-7 mt-2 d-none" id="pr-pic-err"></div>
+<div class="text-secondary fs-7 mt-2">Minimal 1 PIC Kerjasama per unit kerja. Validator Kerjasama bersifat opsional dan berkedudukan di atas PIC.</div>
+</div>
+</div>
+<div class="pr-form__foot">
+<button class="btn btn-light btn-sm" id="pr-cancel" type="button">Batalkan</button>
+<button class="btn btn-primary btn-sm" id="pr-submit" type="button">Tambahkan</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="pr-toast" id="pr-toast" role="status"><i class="sym sym-check-circle-solid"></i><span id="pr-toast-text"></span></div>
+
+<div class="modal fade" id="pr-modal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper"><h5 class="modal-title" id="pr-modal-title"></h5></div>
+<button aria-label="Close" class="btn-close" data-pr-close type="button"></button>
+</div>
+<div class="modal-body" id="pr-modal-body"></div>
+<div class="modal-footer">
+<button class="btn btn-light" data-pr-close type="button">Batal</button>
+<button class="btn btn-primary" id="pr-modal-ok" type="button">Oke</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="penugasan-role.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+
+<script>
+(function () {
+    var UNITS = [
+        { id: 'f-ft',  nama: 'Fakultas Teknik',                       jenis: 'Fakultas' },
+        { id: 'f-feb', nama: 'Fakultas Ekonomi dan Bisnis',           jenis: 'Fakultas' },
+        { id: 'f-fh',  nama: 'Fakultas Hukum',                        jenis: 'Fakultas' },
+        { id: 'f-fkip',nama: 'Fakultas Keguruan dan Ilmu Pendidikan', jenis: 'Fakultas' },
+        { id: 'p-ti',  nama: 'S1 - Teknik Informatika', jenis: 'Program Studi' },
+        { id: 'p-si',  nama: 'S1 - Sistem Informasi',   jenis: 'Program Studi' },
+        { id: 'p-sp',  nama: 'S1 - Teknik Sipil',       jenis: 'Program Studi' },
+        { id: 'p-mj',  nama: 'S1 - Manajemen',          jenis: 'Program Studi' },
+        { id: 'p-ak',  nama: 'S1 - Akuntansi',          jenis: 'Program Studi' },
+        { id: 'p-ih',  nama: 'S1 - Ilmu Hukum',         jenis: 'Program Studi' },
+        { id: 'p-dr',  nama: 'Prof - Pendidikan Profesi Dokter', jenis: 'Program Studi' }
+    ];
+    var PEGAWAI = [
+        { id: 1,  nama: 'Budi Santoso, S.T., M.T.', nip: '198503122010011002' },
+        { id: 2,  nama: 'Dr. Siti Rahma, M.Kom.', nip: '197908212005012001' },
+        { id: 3,  nama: 'Ahmad Fauzi, S.Kom., M.Cs.', nip: '198809142014031001' },
+        { id: 4,  nama: 'Rina Kartika, S.Kom.', nip: '199106052019032004' },
+        { id: 5,  nama: 'Dewi Lestari, S.E., M.M.', nip: '198201172008012003' },
+        { id: 6,  nama: 'Hendra Wijaya, S.E., M.Ak.', nip: '197705302003121002' },
+        { id: 7,  nama: 'Prof. Dr. Agus Prasetyo, M.Si.', nip: '196907111994031001' },
+        { id: 8,  nama: 'Maya Anggraini, S.H., M.H.', nip: '198412252011012005' },
+        { id: 9,  nama: 'Rizky Pratama, S.T.', nip: '199303182020121001' },
+        { id: 10, nama: 'Nurul Hidayah, S.Pd., M.Pd.', nip: '198702092012012002' },
+        { id: 11, nama: 'Eko Susilo, S.Kom.', nip: '199001202018031003' },
+        { id: 12, nama: 'Lina Marlina, S.Sos.', nip: '198906302016022001' }
+    ];
+    var ROLE = { validator: 'Validator Kerjasama', pic: 'PIC Kerjasama' }; // urutan = hierarki
+    var ORDER = ['validator', 'pic'];
+    var KEY = 'simkema.penugasan-role.v1';
+
+    var state = [
+        { unit: 'f-ft',  members: [{ pid: 2, role: 'validator' }, { pid: 1, role: 'pic' }] },
+        { unit: 'p-ti',  members: [{ pid: 3, role: 'pic' }, { pid: 4, role: 'pic' }] },
+        { unit: 'f-feb', members: [{ pid: 6, role: 'validator' }, { pid: 5, role: 'pic' }] }
+    ];
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(s)) state = s; } catch (e) {}
+    var form = null; // { mode, unit, rows }
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function unitOf(id) { return UNITS.filter(function (u) { return u.id === id; })[0]; }
+    function pegOf(id) { return PEGAWAI.filter(function (p) { return p.id === Number(id); })[0]; }
+    function label(p) { return p.nip + ' - ' + p.nama; }
+    function sorted(m) { return m.slice().sort(function (a, b) { return ORDER.indexOf(a.role) - ORDER.indexOf(b.role); }); }
+    function initials(n) {
+        var w = n.replace(/^(Prof\.|Dr\.)\s*/g, '').replace(/,.*$/, '').trim().split(/\s+/);
+        return ((w[0] || '')[0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase();
+    }
+
+    // ---- Auto save ---------------------------------------------------------
+    var toastTimer;
+    function persist(msg) {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+        $('pr-toast-text').textContent = msg + ' Tersimpan otomatis.';
+        $('pr-toast').classList.add('is-show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { $('pr-toast').classList.remove('is-show'); }, 2600);
+    }
+
+    // ---- Modal konfirmasi --------------------------------------------------
+    var modalOk = null;
+    function openModal(title, body, okLabel, okClass, onOk) {
+        $('pr-modal-title').textContent = title; $('pr-modal-body').textContent = body;
+        var ok = $('pr-modal-ok'); ok.textContent = okLabel; ok.className = 'btn ' + okClass;
+        modalOk = onOk;
+        var m = $('pr-modal'); m.classList.add('show'); m.style.display = 'block';
+        var b = document.createElement('div'); b.className = 'modal-backdrop fade show'; b.id = 'pr-backdrop';
+        document.body.appendChild(b); document.body.classList.add('modal-open');
+    }
+    function closeModal() {
+        var m = $('pr-modal'); m.classList.remove('show'); m.style.display = 'none';
+        var b = $('pr-backdrop'); if (b) b.remove();
+        document.body.classList.remove('modal-open');
+    }
+    $('pr-modal-ok').addEventListener('click', function () { var f = modalOk; closeModal(); if (f) f(); });
+    document.querySelectorAll('[data-pr-close]').forEach(function (b) { b.addEventListener('click', closeModal); });
+
+    // ---- Render ------------------------------------------------------------
+    function renderStats() {
+        var v = 0, p = 0, noVal = 0;
+        state.forEach(function (e) {
+            var cv = e.members.filter(function (m) { return m.role === 'validator'; }).length;
+            v += cv; p += e.members.length - cv; if (!cv) noVal++;
+        });
+        function tile(icon, bg, fg, num, lbl) {
+            return '<div class="pr-stat"><div class="pr-stat__icon" style="background:' + bg + ';color:' + fg + '"><i class="sym ' + icon + '"></i></div><div><div class="pr-stat__num">' + num + '</div><div class="pr-stat__lbl">' + lbl + '</div></div></div>';
+        }
+        $('pr-stats').innerHTML =
+            tile('sym-building-02', '#eef1f5', '#475467', state.length + '<span class="fs-6 text-secondary fw-normal"> / ' + UNITS.length + '</span>', 'Unit kerja terpetakan') +
+            tile('sym-check-circle', '#dcf5e7', '#0f6b3a', v, 'Validator Kerjasama') +
+            tile('sym-user-circle-solid', '#e0e9ff', '#2447b8', p, 'PIC Kerjasama') +
+            tile('sym-info-circle', '#fff1d6', '#a05a00', noVal, 'Unit tanpa Validator');
+    }
+
+    function renderList() {
+        $('pr-list').insertAdjacentElement('afterend', $('pr-form')); // selamatkan form sebelum innerHTML diganti
+        var q = $('pr-search').value.trim().toLowerCase();
+        var html = '', shown = 0;
+        state.forEach(function (e) {
+            var editing = form && form.mode === 'edit' && form.unit === e.unit;
+            var u = unitOf(e.unit);
+            if (!editing && q) {
+                var hay = u.nama.toLowerCase();
+                e.members.forEach(function (m) { hay += ' ' + label(pegOf(m.pid)).toLowerCase(); });
+                if (hay.indexOf(q) < 0) return;
+            }
+            shown++;
+            if (editing) { html += '<div id="pr-edit-slot"></div>'; return; }
+            var ms = sorted(e.members), hasVal = ms.some(function (m) { return m.role === 'validator'; });
+            var rows = ms.map(function (m) {
+                var n = pegOf(m.pid).nama;
+                return '<div class="pr-person"><span class="pr-person__name">' + esc(label(pegOf(m.pid))) + '</span><span class="pr-person__role pr-pill is-' + m.role + '">' + ROLE[m.role] + '</span></div>';
+            }).join('');
+            html += '<div class="pr-unit"><div class="pr-unit__head"><div class="d-flex align-items-center gap-2">' +
+                '<div><div class="pr-unit__sub">' + u.jenis + '</div><h3 class="pr-unit__name">' + esc(u.nama) + '</h3></div></div>' +
+                '<div class="d-flex gap-2">' +
+                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-edit="' + e.unit + '" type="button" aria-label="Ubah"><i class="sym sym-edit-02"></i></button>' +
+                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-del="' + e.unit + '" type="button" aria-label="Hapus"><i class="sym sym-trash-solid"></i></button>' +
+                '</div></div><div class="pr-person pr-person--head"><span>Nama</span><span>Role</span></div>' + rows +
+                (hasVal ? '' : '<div class="pr-note">Unit ini belum memiliki Validator Kerjasama.</div>') + '</div>';
+        });
+        if (!shown && !(form && form.mode === 'add')) {
+            html = '<div class="pr-empty"><i class="sym sym-users"></i><div class="mt-2 fw-medium text-dark">' + (state.length ? 'Tidak ada hasil yang cocok' : 'Belum ada penugasan') + '</div><div class="fs-7">' +
+                (state.length ? 'Coba kata kunci lain.' : 'Klik “Tambah Penugasan” untuk memetakan unit kerja dan pegawai.') + '</div></div>';
+        }
+        $('pr-list').innerHTML = html;
+        var slot = $('pr-edit-slot'), f = $('pr-form');
+        if (slot) { slot.appendChild(f); f.classList.remove('mt-3'); } else { f.classList.add('mt-3'); }
+        $('pr-btn-add').disabled = !!form;
+        renderStats();
+    }
+
+    // ---- Form --------------------------------------------------------------
+    function renderUnitSelect() {
+        var used = state.map(function (e) { return e.unit; });
+        function opt(u) {
+            var dis = form.mode === 'add' && used.indexOf(u.id) > -1;
+            return '<option value="' + u.id + '"' + (form.unit === u.id ? ' selected' : '') + (dis ? ' disabled' : '') + '>' + esc(u.nama) + (dis ? ' (sudah ditugaskan)' : '') + '</option>';
+        }
+        $('pr-unit').innerHTML = '<option value="">Pilih unit kerja</option>' +
+            '<optgroup label="Fakultas">' + UNITS.filter(function (u) { return u.jenis === 'Fakultas'; }).map(opt).join('') + '</optgroup>' +
+            '<optgroup label="Program Studi">' + UNITS.filter(function (u) { return u.jenis !== 'Fakultas'; }).map(opt).join('') + '</optgroup>';
+        $('pr-unit').disabled = form.mode === 'edit';
+    }
+    function renderRows() {
+        var h = '';
+        form.rows.forEach(function (r, i) {
+            var taken = form.rows.filter(function (x, j) { return j !== i && x.pid !== ''; }).map(function (x) { return String(x.pid); });
+            var po = '<option value="">Pilih nama</option>';
+            PEGAWAI.forEach(function (p) {
+                if (taken.indexOf(String(p.id)) > -1) return;
+                po += '<option value="' + p.id + '"' + (String(p.id) === String(r.pid) ? ' selected' : '') + '>' + esc(label(p)) + '</option>';
+            });
+            var ro = ORDER.map(function (k) { return '<option value="' + k + '"' + (r.role === k ? ' selected' : '') + '>' + ROLE[k] + '</option>'; }).join('');
+            h += '<div class="pr-row">' +
+                '<div class="pr-c-peg"><select class="form-select" data-f="pid" data-i="' + i + '" aria-label="Nama">' + po + '</select></div>' +
+                '<div class="pr-c-role"><select class="form-select" data-f="role" data-i="' + i + '" aria-label="Role">' + ro + '</select></div>' +
+                '<div class="pr-c-del"><button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary" data-rm="' + i + '" type="button" aria-label="Hapus baris"' + (form.rows.length === 1 ? ' disabled' : '') + '><i class="sym sym-trash-solid"></i></button></div></div>';
+        });
+        $('pr-rows').innerHTML = h;
+    }
+    function renderForm() {
+        $('pr-form').classList.toggle('d-none', !form);
+        if (!form) return;
+        $('pr-form-title').textContent = form.mode === 'add' ? 'Tambah Penugasan' : 'Ubah Penugasan';
+        $('pr-submit').textContent = form.mode === 'add' ? 'Tambahkan' : 'Ubah';
+        renderUnitSelect(); renderRows();
+    }
+    function clearErrors() {
+        $('pr-unit').classList.remove('is-invalid'); $('pr-unit-err').textContent = '';
+        $('pr-pic-err').classList.add('d-none');
+        document.querySelectorAll('#pr-rows select.is-invalid').forEach(function (s) { s.classList.remove('is-invalid'); });
+    }
+    function openForm(mode, unitId) {
+        var e = state.filter(function (x) { return x.unit === unitId; })[0];
+        form = mode === 'edit'
+            ? { mode: 'edit', unit: unitId, rows: sorted(e.members).map(function (m) { return { pid: m.pid, role: m.role }; }) }
+            : { mode: 'add', unit: '', rows: [{ pid: '', role: 'pic' }] };
+        clearErrors(); renderList(); renderForm();
+        $('pr-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    function closeForm() { form = null; clearErrors(); renderList(); renderForm(); }
+
+    function submitForm() {
+        clearErrors();
+        var ok = true;
+        if (!form.unit) { $('pr-unit').classList.add('is-invalid'); $('pr-unit-err').textContent = 'Unit kerja wajib dipilih.'; ok = false; }
+        form.rows.forEach(function (r, i) {
+            if (r.pid === '') { document.querySelector('#pr-rows select[data-f="pid"][data-i="' + i + '"]').classList.add('is-invalid'); ok = false; }
+        });
+        if (!form.rows.some(function (r) { return r.role === 'pic'; })) {
+            $('pr-pic-err').textContent = 'Minimal 1 PIC Kerjasama wajib ditugaskan pada setiap unit kerja.';
+            $('pr-pic-err').classList.remove('d-none'); ok = false;
+        }
+        if (!ok) return;
+        var entry = { unit: form.unit, members: form.rows.map(function (r) { return { pid: Number(r.pid), role: r.role }; }) };
+        var added = form.mode === 'add';
+        if (added) state.push(entry); else state = state.map(function (e) { return e.unit === entry.unit ? entry : e; });
+        persist(added ? 'Penugasan ditambahkan.' : 'Penugasan diubah.');
+        closeForm();
+    }
+
+    // ---- Event -------------------------------------------------------------
+    $('pr-btn-add').addEventListener('click', function () { openForm('add'); });
+    $('pr-search').addEventListener('input', renderList);
+    $('pr-cancel').addEventListener('click', function () {
+        openModal('Batalkan ' + (form.mode === 'add' ? 'Tambah' : 'Ubah') + ' Data',
+            'Apakah Anda yakin ingin membatalkan? Jika dibatalkan, perubahan pada form ini tidak akan disimpan.', 'Oke', 'btn-primary', closeForm);
+    });
+    $('pr-submit').addEventListener('click', submitForm);
+    $('pr-unit').addEventListener('change', function (e) { form.unit = e.target.value; clearErrors(); });
+    $('pr-add-row').addEventListener('click', function () { form.rows.push({ pid: '', role: 'pic' }); renderRows(); });
+    $('pr-form').addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.matches('select[data-f]')) { form.rows[Number(t.dataset.i)][t.dataset.f] = t.value; clearErrors(); renderRows(); }
+    });
+    $('pr-form').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-rm]');
+        if (b && form.rows.length > 1) { form.rows.splice(Number(b.dataset.rm), 1); renderRows(); }
+    });
+    $('pr-list').addEventListener('click', function (e) {
+        var ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+        if (ed) openForm('edit', ed.dataset.edit);
+        if (del) {
+            var id = del.dataset.del;
+            openModal('Hapus Penugasan', 'Apakah Anda yakin ingin menghapus penugasan untuk ' + unitOf(id).nama + '? Karena data yang telah dihapus tidak dapat dikembalikan lagi.',
+                'Hapus', 'btn-danger', function () {
+                    state = state.filter(function (x) { return x.unit !== id; });
+                    if (form && form.unit === id) form = null;
+                    persist('Penugasan dihapus.'); renderList(); renderForm();
+                });
+        }
+    });
+
+    renderList(); renderForm();
+})();
+</script>
+</main>
