@@ -16,6 +16,8 @@ const OLD_TOP = /\s*<li class="nav-item">\s*<a[^>]*href="penugasan-role\.html">P
 const OLD_DROPDOWN = /\s*<li><a class="dropdown-item[^"]*" href="penugasan-role\.html">Penugasan Role<\/a><\/li>/;
 const OLD_SIDEBAR = /\s*<li class="nav-item">\s*<a class="nav-link[^"]*" href="penugasan-role\.html">[\s\S]*?<\/li>/;
 const LAPORAN_END = /(<li class="nav-item dropdown">\s*<a[^>]*>\s*Laporan\s*<\/a>[\s\S]*?<\/ul>\s*<\/li>)/;
+const MITRA_END = /(<li class="nav-item">\s*<a[^>]*href="mitra\.html">Mitra<\/a>\s*<\/li>)/;
+const VALIDASI = '<li class="nav-item">\n<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/validasi-kerjasama" href="#">Validasi Kerjasama</a>\n</li>';
 const MENU = `<li class="nav-item dropdown">
 <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="penugasan-role.html" role="button">
                                     Pengaturan
@@ -25,11 +27,12 @@ const MENU = `<li class="nav-item dropdown">
 </ul>
 </li>`;
 
-for (const f of fs.readdirSync(V1).filter((n) => n.endsWith('.html') && n !== 'penugasan-role.html' && !n.includes(' '))) {
+for (const f of fs.readdirSync(V1).filter((n) => n.endsWith('.html') && !n.startsWith('penugasan-role') && !n.includes(' '))) {
     const p = path.join(V1, f);
     const orig = fs.readFileSync(p, 'utf8');
     let s = orig.replace(OLD_PENGATURAN, '').replace(OLD_TOP, '').replace(OLD_DROPDOWN, '');
     s = s.replace(/<aside[\s\S]*?<\/aside>/, (a) => a.replace(OLD_SIDEBAR, ''));
+    if (!s.includes('>Validasi Kerjasama</a>')) s = s.replace(MITRA_END, (m) => m + '\n' + VALIDASI);
     s = s.replace(LAPORAN_END, (m) => m + '\n' + MENU);
     if (s !== orig) { fs.writeFileSync(p, s); console.log('patched', f); }
 }
