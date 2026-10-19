@@ -219,6 +219,9 @@
 <li class="nav-item">
 <a aria-current="page" class="nav-link" href="mitra.html">Mitra</a>
 </li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/validasi-kerjasama" href="#">Validasi Kerjasama</a>
+</li>
 <li class="nav-item dropdown">
 <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="unit-kerja.html" role="button">
                                     Data Referensi
@@ -325,31 +328,21 @@
     .pr-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     @media (max-width: 991.98px) { .pr-stats { grid-template-columns: repeat(2, 1fr); } }
     .pr-stat__icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex: none; }
-    .pr-unit { border: 1px solid var(--bs-border-color); border-radius: 12px; background: #fff; overflow: hidden; transition: box-shadow .15s; }
-    .pr-unit:hover { box-shadow: 0 2px 10px rgba(16, 24, 40, .06); }
-    .pr-unit__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: var(--bs-tertiary-bg); border-bottom: 1px solid var(--bs-border-color); }
-    .pr-unit__name { font-weight: 600; color: var(--bs-emphasis-color); margin: 0; font-size: .9375rem; }
-    .pr-unit__sub { font-size: .8125rem; color: var(--bs-secondary-color); }
-    .pr-person { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; gap: 16px; padding: 12px 16px; }
-    .pr-person--head { padding: 8px 16px; font-size: .75rem; font-weight: 500; color: var(--bs-secondary-color); border-bottom: 1px solid var(--bs-border-color); }
-        @media (max-width: 767.98px) { .pr-person { grid-template-columns: 1fr auto; } .pr-person--head { display: none; } }
-    .pr-person + .pr-person { border-top: 1px solid var(--bs-border-color); }
-    .pr-person__name { color: var(--bs-emphasis-color); font-weight: 500; }
-    .pr-person__role { justify-self: start; }
-    .pr-note { padding: 10px 16px; border-top: 1px dashed var(--bs-border-color); color: var(--bs-secondary-color); font-size: .8125rem; display: flex; align-items: center; gap: 8px; }
-    .pr-form { border: 1px solid var(--bs-primary-border-subtle); border-radius: 12px; background: var(--bs-body-bg); box-shadow: 0 0 0 4px rgba(37, 99, 235, .07); overflow: hidden; }
-    .pr-form__head { padding: 14px 16px; background: var(--bs-primary-bg-subtle); border-bottom: 1px solid var(--bs-primary-border-subtle); display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--bs-emphasis-color); }
-    .pr-form__body { padding: 20px 16px; }
-    .pr-form__foot { padding: 12px 16px; border-top: 1px solid var(--bs-border-color); background: var(--bs-tertiary-bg); display: flex; justify-content: flex-end; gap: 8px; }
-    .pr-row { display: flex; align-items: center; gap: 8px; }
-    .pr-row .pr-c-peg { flex: 0 0 55%; min-width: 0; }
-    .pr-row .pr-c-role { flex: 1 1 auto; min-width: 0; }
-    .pr-empty { text-align: center; padding: 48px 16px; border: 1px dashed var(--bs-border-color); border-radius: 12px; background: var(--bs-body-bg); color: var(--bs-secondary-color); }
-    .pr-empty i { font-size: 2rem; color: var(--bs-secondary-color); }
+    .pr-tabs .nav-link { cursor: pointer; }
+    .pr-units { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pr-picker { border: 1px solid var(--bs-border-color); border-radius: 8px; background: var(--bs-body-bg); }
+    .pr-picker__search { padding: 8px; border-bottom: 1px solid var(--bs-border-color); }
+    .pr-picker__body { max-height: 260px; overflow: auto; padding: 4px 8px; }
+    .pr-node { display: flex; align-items: center; gap: 8px; padding: 6px 4px; margin: 0; cursor: pointer; border-radius: 6px; }
+    .pr-node:hover { background: var(--bs-tertiary-bg); }
+    .pr-node.is-locked { cursor: not-allowed; color: var(--bs-secondary-color); }
+    .pr-node.is-locked:hover { background: transparent; }
+    .pr-node__meta { margin-left: auto; font-size: .75rem; color: var(--bs-secondary-color); white-space: nowrap; }
+    .pr-chip { display: inline-flex; align-items: center; gap: 4px; }
+    .pr-chip button { border: 0; background: none; padding: 0 0 0 2px; line-height: 1; color: inherit; cursor: pointer; }
     .pr-toast { position: fixed; right: 24px; bottom: 24px; z-index: 2000; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: var(--bs-emphasis-color); color: #fff; box-shadow: 0 8px 24px rgba(16, 24, 40, .25); transform: translateY(16px); opacity: 0; pointer-events: none; transition: all .2s; }
     .pr-toast.is-show { transform: none; opacity: 1; }
     .pr-toast i { color: var(--bs-success-border-subtle); }
-    @media (max-width: 575.98px) { .pr-row { flex-wrap: wrap; } .pr-row .pr-c-peg { flex-basis: 100%; } }
 </style>
 <div class="container">
 <div class="row row-cols-1 gy-3 p-3 p-lg-4">
@@ -368,76 +361,132 @@
 </div>
 <button class="btn gap-2 btn-primary text-nowrap flex-shrink-0 d-flex align-items-center" id="pr-btn-add" type="button">
 <i class="sym sym-plus"></i>
-<span class="d-none d-lg-block">Tambah Penugasan</span>
+<span class="d-none d-lg-block" id="pr-btn-add-label">Tambah PIC</span>
 </button>
 </div>
 
 <div class="pr-stats px-0" id="pr-stats"></div>
 
 <div class="card shadow-sm border-0 rounded-4">
-<div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<div class="card-header bg-white border-light-subtle px-3 pt-3 pb-0 rounded-top-4 border-2">
+<div class="d-flex flex-wrap gap-2 align-items-center justify-content-between pb-3">
 <div class="d-flex gap-3 align-items-center">
 <div class="ratio ratio-1x1" style="width: 42px; min-width: 42px;">
 <span class="d-flex align-items-center justify-content-center rounded-circle p-2 border"><i class="sym sym-users"></i></span>
 </div>
 <div class="d-block ms-1">
 <h5 class="m-0">Daftar Penugasan</h5>
-<span class="fs-6 text-secondary">Petakan pegawai per unit kerja sebagai Validator dan PIC Kerjasama.</span>
+<span class="fs-6 text-secondary" id="pr-subtitle"></span>
 </div>
 </div>
 <div class="col-12 col-md-4 col-lg-3 ms-md-auto">
-<input class="form-control" id="pr-search" placeholder="Cari unit atau pegawai ..." type="search"/>
+<input class="form-control" id="pr-search" placeholder="Cari nama atau unit ..." type="search"/>
 </div>
+</div>
+<ul class="nav nav-tabs pr-tabs border-bottom-0" id="pr-tabs">
+<li class="nav-item"><button class="nav-link active" data-tab="pic" type="button">PIC Kerjasama</button></li>
+<li class="nav-item"><button class="nav-link" data-tab="val" type="button">Validator Kerjasama</button></li>
+</ul>
 </div>
 <div class="card-body p-3 p-lg-4">
-<div class="d-flex flex-column gap-3" id="pr-list"></div>
-<div class="d-none mt-3" id="pr-form">
-<div class="pr-form">
-<div class="pr-form__head"><i class="sym sym-edit-02"></i><span id="pr-form-title">Tambah Penugasan</span></div>
-<div class="pr-form__body">
+<div class="alert alert-info d-flex gap-2 align-items-start" id="pr-banner" role="alert"></div>
+<div class="table-responsive mb-3 pb-1" id="pr-table-wrap">
+<table class="table table-bordered align-middle mb-0">
+<thead class="align-middle">
+<tr class="table-light">
+<th class="text-nowrap" style="width: 40px">No</th>
+<th class="text-nowrap">Nama</th>
+<th class="text-nowrap">Unit Kerja</th>
+<th class="text-center" id="pr-th-aksi" style="width: 100px">Aksi</th>
+</tr>
+</thead>
+<tbody id="pr-tbody"></tbody>
+</table>
+</div>
+<div id="pr-empty"></div>
+<p class="text-dark m-0 text-center text-md-start" id="pr-info"></p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Form PIC Kerjasama: pilihan Unit Kerja DIBATASI ke hierarki Admin Kerjasama yang login -->
+<div class="modal fade" id="pic-modal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper"><h5 class="modal-title" id="pic-title">Tambah PIC Kerjasama</h5></div>
+<button aria-label="Close" class="btn-close" data-pr-close="pic-modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="alert alert-info d-flex gap-2 align-items-start" id="pic-scope" role="alert"></div>
 <div class="mb-4">
-<label class="form-label" for="pr-unit">Unit Kerja <span class="text-danger">*</span></label>
-<select class="form-select" id="pr-unit"></select>
-<div class="invalid-feedback" id="pr-unit-err"></div>
+<label class="form-label" for="pic-pegawai">Nama <span class="text-danger">*</span></label>
+<select class="form-select" id="pic-pegawai"></select>
+<div class="invalid-feedback" id="pic-pegawai-err"></div>
 </div>
 <div>
-<div class="d-flex align-items-center justify-content-between mb-2">
-<label class="form-label m-0">Nama &amp; Role <span class="text-danger">*</span></label>
-<button class="btn btn-sm btn-light gap-1" id="pr-add-row" type="button"><i class="sym sym-plus"></i>Tambah Nama</button>
-</div>
-<div class="d-flex flex-column gap-2" id="pr-rows"></div>
-<div class="text-danger fs-7 mt-2 d-none" id="pr-pic-err"></div>
-<div class="text-secondary fs-7 mt-2">Minimal 1 PIC Kerjasama per unit kerja. Validator Kerjasama bersifat opsional dan berkedudukan di atas PIC.</div>
+<label class="form-label">Unit Kerja <span class="text-danger">*</span></label>
+<div id="pic-picker"></div>
+<div class="text-danger fs-7 mt-2 d-none" id="pic-units-err"></div>
+<div class="text-secondary fs-7 mt-2">Satu orang dapat menjadi PIC Kerjasama di lebih dari satu unit kerja.</div>
 </div>
 </div>
-<div class="pr-form__foot">
-<button class="btn btn-light btn-sm" id="pr-cancel" type="button">Batalkan</button>
-<button class="btn btn-primary btn-sm" id="pr-submit" type="button">Tambahkan</button>
+<div class="modal-footer">
+<button class="btn btn-light" data-pr-close="pic-modal" type="button">Batalkan</button>
+<button class="btn btn-primary" id="pic-submit" type="button">Simpan</button>
 </div>
 </div>
 </div>
+</div>
+
+<!-- Form Validator Kerjasama: TANPA pembatasan hierarki, semua unit kerja dapat dipilih -->
+<div class="modal fade" id="val-modal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper"><h5 class="modal-title" id="val-title">Tambah Validator Kerjasama</h5></div>
+<button aria-label="Close" class="btn-close" data-pr-close="val-modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="mb-4">
+<label class="form-label" for="val-pegawai">Nama <span class="text-danger">*</span></label>
+<select class="form-select" id="val-pegawai"></select>
+<div class="invalid-feedback" id="val-pegawai-err"></div>
+</div>
+<div>
+<label class="form-label">Unit Kerja <span class="text-danger">*</span></label>
+<div id="val-picker"></div>
+<div class="text-danger fs-7 mt-2 d-none" id="val-units-err"></div>
+<div class="text-secondary fs-7 mt-2">Validator dapat dipetakan ke unit kerja mana pun, tanpa batasan hierarki.</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-light" data-pr-close="val-modal" type="button">Batalkan</button>
+<button class="btn btn-primary" id="val-submit" type="button">Simpan</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Konfirmasi hapus -->
+<div class="modal fade" id="pr-modal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper"><h5 class="modal-title" id="pr-modal-title"></h5></div>
+<button aria-label="Close" class="btn-close" data-pr-close="pr-modal" type="button"></button>
+</div>
+<div class="modal-body" id="pr-modal-body"></div>
+<div class="modal-footer">
+<button class="btn btn-light" data-pr-close="pr-modal" type="button">Batal</button>
+<button class="btn btn-danger" id="pr-modal-ok" type="button">Hapus</button>
 </div>
 </div>
 </div>
 </div>
 
 <div class="pr-toast" id="pr-toast" role="status"><i class="sym sym-check-circle-solid"></i><span id="pr-toast-text"></span></div>
-
-<div class="modal fade" id="pr-modal" tabindex="-1">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<div class="modal__header-wrapper"><h5 class="modal-title" id="pr-modal-title"></h5></div>
-<button aria-label="Close" class="btn-close" data-pr-close type="button"></button>
-</div>
-<div class="modal-body" id="pr-modal-body"></div>
-<div class="modal-footer">
-<button class="btn btn-light" data-pr-close type="button">Batal</button>
-<button class="btn btn-primary" id="pr-modal-ok" type="button">Oke</button>
-</div>
-</div>
-</div>
-</div>
 
 <div class="container-fluid mt-auto bg-white border-top">
 <footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
@@ -452,54 +501,94 @@
 
 <script>
 (function () {
+    // ---- Data contoh -------------------------------------------------------
+    // Hierarki unit kerja (pohon). ADMIN_UNIT = unit tempat Admin Kerjasama yang login bernaung.
     var UNITS = [
-        { id: 'f-ft',  nama: 'Fakultas Teknik',                       jenis: 'Fakultas' },
-        { id: 'f-feb', nama: 'Fakultas Ekonomi dan Bisnis',           jenis: 'Fakultas' },
-        { id: 'f-fh',  nama: 'Fakultas Hukum',                        jenis: 'Fakultas' },
-        { id: 'f-fkip',nama: 'Fakultas Keguruan dan Ilmu Pendidikan', jenis: 'Fakultas' },
-        { id: 'p-ti',  nama: 'S1 - Teknik Informatika', jenis: 'Program Studi' },
-        { id: 'p-si',  nama: 'S1 - Sistem Informasi',   jenis: 'Program Studi' },
-        { id: 'p-sp',  nama: 'S1 - Teknik Sipil',       jenis: 'Program Studi' },
-        { id: 'p-mj',  nama: 'S1 - Manajemen',          jenis: 'Program Studi' },
-        { id: 'p-ak',  nama: 'S1 - Akuntansi',          jenis: 'Program Studi' },
-        { id: 'p-ih',  nama: 'S1 - Ilmu Hukum',         jenis: 'Program Studi' },
-        { id: 'p-dr',  nama: 'Prof - Pendidikan Profesi Dokter', jenis: 'Program Studi' }
+        { id: 'u-root', nama: 'Universitas Foxtrot', jenis: 'Universitas', parent: null },
+        { id: 'f-ft',   nama: 'Fakultas Teknik', jenis: 'Fakultas', parent: 'u-root' },
+        { id: 'p-ti',   nama: 'S1 - Teknik Informatika', jenis: 'Program Studi', parent: 'f-ft' },
+        { id: 'p-si',   nama: 'S1 - Sistem Informasi', jenis: 'Program Studi', parent: 'f-ft' },
+        { id: 'p-sp',   nama: 'S1 - Teknik Sipil', jenis: 'Program Studi', parent: 'f-ft' },
+        { id: 'f-feb',  nama: 'Fakultas Ekonomi dan Bisnis', jenis: 'Fakultas', parent: 'u-root' },
+        { id: 'p-mj',   nama: 'S1 - Manajemen', jenis: 'Program Studi', parent: 'f-feb' },
+        { id: 'p-ak',   nama: 'S1 - Akuntansi', jenis: 'Program Studi', parent: 'f-feb' },
+        { id: 'f-fh',   nama: 'Fakultas Hukum', jenis: 'Fakultas', parent: 'u-root' },
+        { id: 'p-ih',   nama: 'S1 - Ilmu Hukum', jenis: 'Program Studi', parent: 'f-fh' },
+        { id: 'f-fk',   nama: 'Fakultas Kedokteran', jenis: 'Fakultas', parent: 'u-root' },
+        { id: 'p-dr',   nama: 'Prof - Pendidikan Profesi Dokter', jenis: 'Program Studi', parent: 'f-fk' }
     ];
+    // NOTE (developer): admin_kerjasama saat ini berakses penuh se-kampus (FOX-1088/1089: "Semua - tidak
+    // berubah dari sekarang"), jadi ADMIN_UNIT = unit universitas (akar pohon) dan seluruh unit dapat dipilih.
+    // Pembatasan "hanya unit di bawah hierarkinya" (FOX-1228 BR-02) baru terlihat bila Admin Kerjasama
+    // ditempatkan di unit yang lebih rendah, mis. ADMIN_UNIT = 'f-ft' -> unit lain tampil terkunci.
+    // Aturan final BR-02 masih perlu dikonfirmasi ke PM/Tech Lead.
+    // POV: halaman ini dipakai ulang untuk varian role lain (lihat build_penugasan_role.js).
+    //   role   = peran yang sedang login; unit = unit sesi; manage = hak kelola per tab.
+    var POV = window.PR_POV || { role: 'admin', roleLabel: 'Admin Kerjasama', unit: 'u-root', manage: { pic: true, val: true } };
+    var ADMIN_UNIT = POV.unit;
+    function fullAccess() { return !unitOf(ADMIN_UNIT).parent; }
     var PEGAWAI = [
-        { id: 1,  nama: 'Budi Santoso, S.T., M.T.', nip: '198503122010011002' },
-        { id: 2,  nama: 'Dr. Siti Rahma, M.Kom.', nip: '197908212005012001' },
-        { id: 3,  nama: 'Ahmad Fauzi, S.Kom., M.Cs.', nip: '198809142014031001' },
-        { id: 4,  nama: 'Rina Kartika, S.Kom.', nip: '199106052019032004' },
-        { id: 5,  nama: 'Dewi Lestari, S.E., M.M.', nip: '198201172008012003' },
-        { id: 6,  nama: 'Hendra Wijaya, S.E., M.Ak.', nip: '197705302003121002' },
+        { id: 1,  nama: 'Budi Santoso, S.T., M.T.',       nip: '198503122010011002' },
+        { id: 2,  nama: 'Dr. Siti Rahma, M.Kom.',         nip: '197908212005012001' },
+        { id: 3,  nama: 'Ahmad Fauzi, S.Kom., M.Cs.',     nip: '198809142014031001' },
+        { id: 4,  nama: 'Rina Kartika, S.Kom.',           nip: '199106052019032004' },
+        { id: 5,  nama: 'Dewi Lestari, S.E., M.M.',       nip: '198201172008012003' },
+        { id: 6,  nama: 'Hendra Wijaya, S.E., M.Ak.',     nip: '197705302003121002' },
         { id: 7,  nama: 'Prof. Dr. Agus Prasetyo, M.Si.', nip: '196907111994031001' },
-        { id: 8,  nama: 'Maya Anggraini, S.H., M.H.', nip: '198412252011012005' },
-        { id: 9,  nama: 'Rizky Pratama, S.T.', nip: '199303182020121001' },
-        { id: 10, nama: 'Nurul Hidayah, S.Pd., M.Pd.', nip: '198702092012012002' },
-        { id: 11, nama: 'Eko Susilo, S.Kom.', nip: '199001202018031003' },
-        { id: 12, nama: 'Lina Marlina, S.Sos.', nip: '198906302016022001' }
+        { id: 8,  nama: 'Maya Anggraini, S.H., M.H.',     nip: '198412252011012005' },
+        { id: 9,  nama: 'Rizky Pratama, S.T.',            nip: '199303182020121001' },
+        { id: 10, nama: 'Nurul Hidayah, S.Pd., M.Pd.',    nip: '198702092012012002' },
+        { id: 11, nama: 'Eko Susilo, S.Kom.',             nip: '199001202018031003' },
+        { id: 12, nama: 'Lina Marlina, S.Sos.',           nip: '198906302016022001' }
     ];
-    var ROLE = { validator: 'Validator Kerjasama', pic: 'PIC Kerjasama' }; // urutan = hierarki
-    var ORDER = ['validator', 'pic'];
-    var KEY = 'simkema.penugasan-role.v1';
+    var KEY = 'simkema.penugasan-role.v2';
+    // Satu baris = satu orang dengan daftar unit. Satu orang boleh punya banyak unit (PIC multi-unit).
+    var state = {
+        pic: [
+            { pid: 1,  units: ['f-ft', 'p-sp'] },   // Budi: PIC di 2 unit sekaligus
+            { pid: 3,  units: ['p-ti'] },
+            { pid: 4,  units: ['p-ti'] },
+            { pid: 11, units: ['p-si'] },
+            { pid: 5,  units: ['f-feb'] }           // di luar hierarki Admin: tidak tampil di daftar
+        ],
+        val: [
+            { pid: 2, units: ['f-ft', 'p-ti'] },
+            { pid: 6, units: ['f-feb'] },
+            { pid: 7, units: ['f-fh'] }
+        ]
+    };
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.pic && s.val) state = s; } catch (e) {}
 
-    var state = [
-        { unit: 'f-ft',  members: [{ pid: 2, role: 'validator' }, { pid: 1, role: 'pic' }] },
-        { unit: 'p-ti',  members: [{ pid: 3, role: 'pic' }, { pid: 4, role: 'pic' }] },
-        { unit: 'f-feb', members: [{ pid: 6, role: 'validator' }, { pid: 5, role: 'pic' }] }
-    ];
-    try { var s = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(s)) state = s; } catch (e) {}
-    var form = null; // { mode, unit, rows }
+    var TAB = 'pic', form = null, modalOk = null;
 
     function $(id) { return document.getElementById(id); }
     function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
     function unitOf(id) { return UNITS.filter(function (u) { return u.id === id; })[0]; }
     function pegOf(id) { return PEGAWAI.filter(function (p) { return p.id === Number(id); })[0]; }
     function label(p) { return p.nip + ' - ' + p.nama; }
-    function sorted(m) { return m.slice().sort(function (a, b) { return ORDER.indexOf(a.role) - ORDER.indexOf(b.role); }); }
-    function initials(n) {
-        var w = n.replace(/^(Prof\.|Dr\.)\s*/g, '').replace(/,.*$/, '').trim().split(/\s+/);
-        return ((w[0] || '')[0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase();
+    function depth(u) { var d = 0; while (u.parent) { u = unitOf(u.parent); d++; } return d; }
+    // Unit berada di dalam hierarki Admin Kerjasama bila ia adalah ADMIN_UNIT atau turunannya.
+    function inScope(id) {
+        var u = unitOf(id);
+        while (u) { if (u.id === ADMIN_UNIT) return true; u = u.parent ? unitOf(u.parent) : null; }
+        return false;
+    }
+    // Urutan tampil pohon (depth-first) agar anak muncul tepat di bawah induknya.
+    function treeOrder() {
+        var out = [];
+        (function walk(pid) { UNITS.filter(function (u) { return u.parent === pid; }).forEach(function (u) { out.push(u); walk(u.id); }); })(null);
+        return out;
+    }
+    // Daftar yang tampil: PIC hanya menampilkan unit di dalam hierarki Admin; Validator menampilkan semua unit.
+    function chainUnit(id) { // unit di subtree POV.unit atau induk-induknya (jenjang validasi)
+        if (inScope(id)) return true;
+        var u = unitOf(ADMIN_UNIT);
+        while (u) { if (u.id === id) return true; u = u.parent ? unitOf(u.parent) : null; }
+        return false;
+    }
+    function visibleUnits(kind, row) {
+        if (kind === 'pic') return row.units.filter(inScope);
+        return POV.role === 'admin' ? row.units : row.units.filter(chainUnit);
     }
 
     // ---- Auto save ---------------------------------------------------------
@@ -512,182 +601,212 @@
         toastTimer = setTimeout(function () { $('pr-toast').classList.remove('is-show'); }, 2600);
     }
 
-    // ---- Modal konfirmasi --------------------------------------------------
-    var modalOk = null;
-    function openModal(title, body, okLabel, okClass, onOk) {
-        $('pr-modal-title').textContent = title; $('pr-modal-body').textContent = body;
-        var ok = $('pr-modal-ok'); ok.textContent = okLabel; ok.className = 'btn ' + okClass;
-        modalOk = onOk;
-        var m = $('pr-modal'); m.classList.add('show'); m.style.display = 'block';
-        var b = document.createElement('div'); b.className = 'modal-backdrop fade show'; b.id = 'pr-backdrop';
+    // ---- Overlay -----------------------------------------------------------
+    function show(id) {
+        var m = $(id); m.classList.add('show'); m.style.display = 'block';
+        var b = document.createElement('div'); b.className = 'modal-backdrop fade show'; b.dataset.for = id;
         document.body.appendChild(b); document.body.classList.add('modal-open');
     }
-    function closeModal() {
-        var m = $('pr-modal'); m.classList.remove('show'); m.style.display = 'none';
-        var b = $('pr-backdrop'); if (b) b.remove();
-        document.body.classList.remove('modal-open');
+    function hide(id) {
+        var m = $(id); m.classList.remove('show'); m.style.display = 'none';
+        document.querySelectorAll('.modal-backdrop[data-for="' + id + '"]').forEach(function (b) { b.remove(); });
+        if (!document.querySelector('.modal.show')) document.body.classList.remove('modal-open');
     }
-    $('pr-modal-ok').addEventListener('click', function () { var f = modalOk; closeModal(); if (f) f(); });
-    document.querySelectorAll('[data-pr-close]').forEach(function (b) { b.addEventListener('click', closeModal); });
+    document.querySelectorAll('[data-pr-close]').forEach(function (b) { b.addEventListener('click', function () { hide(b.dataset.prClose); }); });
+    function confirmDel(title, body, onOk) {
+        $('pr-modal-title').textContent = title; $('pr-modal-body').textContent = body; modalOk = onOk; show('pr-modal');
+    }
+    $('pr-modal-ok').addEventListener('click', function () { var f = modalOk; hide('pr-modal'); if (f) f(); });
 
-    // ---- Render ------------------------------------------------------------
+    // ---- Daftar ------------------------------------------------------------
     function renderStats() {
-        var v = 0, p = 0, noVal = 0;
-        state.forEach(function (e) {
-            var cv = e.members.filter(function (m) { return m.role === 'validator'; }).length;
-            v += cv; p += e.members.length - cv; if (!cv) noVal++;
+        var scope = UNITS.filter(function (u) { return inScope(u.id); });
+        var picRows = state.pic.filter(function (r) { return visibleUnits('pic', r).length; });
+        var withPic = scope.filter(function (u) { return picRows.some(function (r) { return r.units.indexOf(u.id) > -1; }); }).length;
+        // NOTE (developer): kartu "Unit tanpa Validator" hanya dihitung dari unit kerja yang SUDAH
+        // terpetakan (punya PIC dan/atau Validator) di dalam hierarki Admin. Unit yang belum dipetakan
+        // sama sekali tidak ikut dihitung, karena belum punya penugasan apa pun. Nilainya = jumlah unit
+        // terpetakan yang belum punya Validator Kerjasama (Validator bersifat opsional).
+        var mapped = scope.filter(function (u) {
+            return state.pic.concat(state.val).some(function (r) { return r.units.indexOf(u.id) > -1; });
         });
+        var noVal = mapped.filter(function (u) { return !state.val.some(function (r) { return r.units.indexOf(u.id) > -1; }); }).length;
         function tile(icon, tone, num, lbl) {
             return '<div class="card shadow-sm border-0 rounded-4"><div class="card-body d-flex align-items-center gap-3 p-3"><div class="pr-stat__icon bg-' + tone + '-subtle text-' + tone + '"><i class="sym ' + icon + '"></i></div><div><div class="fs-4 fw-semibold lh-1 mb-1">' + num + '</div><div class="text-secondary fs-7">' + lbl + '</div></div></div></div>';
         }
         $('pr-stats').innerHTML =
-            tile('sym-building-02', 'secondary', state.length + '<span class="fs-6 text-secondary fw-normal"> / ' + UNITS.length + '</span>', 'Unit kerja terpetakan') +
-            tile('sym-check-circle', 'success', v, 'Validator Kerjasama') +
-            tile('sym-user-circle-solid', 'primary', p, 'PIC Kerjasama') +
+            tile('sym-building-02', 'secondary', withPic + '<span class="fs-6 text-secondary fw-normal"> / ' + scope.length + '</span>', 'Unit sudah memiliki PIC') +
+            tile('sym-user-circle-solid', 'primary', picRows.length, 'PIC Kerjasama') +
+            tile('sym-check-circle', 'success', state.val.length, 'Validator Kerjasama') +
             tile('sym-info-circle', 'warning', noVal, 'Unit tanpa Validator');
     }
 
-    function renderList() {
-        $('pr-list').insertAdjacentElement('afterend', $('pr-form')); // selamatkan form sebelum innerHTML diganti
-        var q = $('pr-search').value.trim().toLowerCase();
-        var html = '', shown = 0;
-        state.forEach(function (e) {
-            var editing = form && form.mode === 'edit' && form.unit === e.unit;
-            var u = unitOf(e.unit);
-            if (!editing && q) {
-                var hay = u.nama.toLowerCase();
-                e.members.forEach(function (m) { hay += ' ' + label(pegOf(m.pid)).toLowerCase(); });
-                if (hay.indexOf(q) < 0) return;
-            }
-            shown++;
-            if (editing) { html += '<div id="pr-edit-slot"></div>'; return; }
-            var ms = sorted(e.members), hasVal = ms.some(function (m) { return m.role === 'validator'; });
-            var rows = ms.map(function (m) {
-                var n = pegOf(m.pid).nama;
-                return '<div class="pr-person"><span class="pr-person__name">' + esc(label(pegOf(m.pid))) + '</span><span class="pr-person__role badge badge-outline-' + (m.role === 'validator' ? 'success' : 'primary') + ' badge-sm">' + ROLE[m.role] + '</span></div>';
-            }).join('');
-            html += '<div class="pr-unit"><div class="pr-unit__head"><div class="d-flex align-items-center gap-2">' +
-                '<div><div class="pr-unit__sub">' + u.jenis + '</div><h3 class="pr-unit__name">' + esc(u.nama) + '</h3></div></div>' +
-                '<div class="d-flex gap-2">' +
-                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-edit="' + e.unit + '" type="button" aria-label="Ubah"><i class="sym sym-edit-02"></i></button>' +
-                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-del="' + e.unit + '" type="button" aria-label="Hapus"><i class="sym sym-trash-solid"></i></button>' +
-                '</div></div><div class="pr-person pr-person--head"><span>Nama</span><span>Role</span></div>' + rows +
-                (hasVal ? '' : '<div class="pr-note">Unit ini belum memiliki Validator Kerjasama.</div>') + '</div>';
+    function unitBadges(kind, row) {
+        var cls = kind === 'pic' ? 'badge-outline-primary' : 'badge-outline-success';
+        return '<div class="pr-units">' + visibleUnits(kind, row).map(function (id) {
+            return '<span class="badge ' + cls + ' badge-sm">' + esc(unitOf(id).nama) + '</span>';
+        }).join('') + '</div>';
+    }
+
+    function render() {
+        var kind = TAB, q = $('pr-search').value.trim().toLowerCase();
+        var isPic = kind === 'pic';
+        document.querySelectorAll('#pr-tabs [data-tab]').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === kind); });
+        $('pr-btn-add-label').textContent = isPic ? 'Tambah PIC' : 'Tambah Validator';
+        var canManage = !!POV.manage[kind];
+        $('pr-btn-add').classList.toggle('d-none', !canManage);
+        $('pr-th-aksi').classList.toggle('d-none', !canManage);
+        $('pr-subtitle').textContent = isPic
+            ? (fullAccess() ? 'Pegawai yang bertugas sebagai PIC Kerjasama pada tiap unit kerja.' : 'Pegawai yang bertugas sebagai PIC Kerjasama pada unit kerja di bawah hierarki Anda.')
+            : 'Pegawai yang bertugas memvalidasi kerjasama yang diajukan PIC. Berkedudukan di atas PIC.';
+        $('pr-banner').className = 'alert ' + (isPic ? 'alert-info' : 'alert-secondary') + ' d-flex gap-2 align-items-start';
+        $('pr-banner').innerHTML = '<i class="sym sym-info-circle mt-1"></i><div>' + (isPic
+            ? (fullAccess()
+                ? 'Anda masuk sebagai ' + POV.roleLabel + ' <strong>' + esc(unitOf(ADMIN_UNIT).nama) + '</strong>. Anda dapat menunjuk PIC Kerjasama untuk seluruh unit kerja.'
+                : 'Anda masuk sebagai ' + POV.roleLabel + ' <strong>' + esc(unitOf(ADMIN_UNIT).nama) + '</strong>. Anda hanya dapat menunjuk PIC Kerjasama untuk unit kerja di bawah hierarki tersebut.')
+            : (POV.manage.val ? 'Validator dapat dipetakan ke unit kerja mana pun, tanpa batasan hierarki.' : 'Penugasan Validator Kerjasama dikelola oleh Admin Kerjasama. Anda hanya dapat melihat jenjang validasi di unit Anda dan di atasnya.')) + '</div>';
+
+        var rows = state[kind].filter(function (r) { return visibleUnits(kind, r).length; }).filter(function (r) {
+            if (!q) return true;
+            var hay = label(pegOf(r.pid)).toLowerCase();
+            visibleUnits(kind, r).forEach(function (id) { hay += ' ' + unitOf(id).nama.toLowerCase(); });
+            return hay.indexOf(q) > -1;
         });
-        if (!shown && !(form && form.mode === 'add')) {
-            html = '<div class="pr-empty"><i class="sym sym-users"></i><div class="mt-2 fw-medium text-dark">' + (state.length ? 'Tidak ada hasil yang cocok' : 'Belum ada penugasan') + '</div><div class="fs-7">' +
-                (state.length ? 'Coba kata kunci lain.' : 'Klik “Tambah Penugasan” untuk memetakan unit kerja dan pegawai.') + '</div></div>';
-        }
-        $('pr-list').innerHTML = html;
-        var slot = $('pr-edit-slot'), f = $('pr-form');
-        if (slot) { slot.appendChild(f); f.classList.remove('mt-3'); } else { f.classList.add('mt-3'); }
-        $('pr-btn-add').disabled = !!form;
+        var h = '';
+        rows.forEach(function (r, i) {
+            h += '<tr><td>' + (i + 1) + '</td><td>' + esc(label(pegOf(r.pid))) + '</td><td>' + unitBadges(kind, r) + '</td>' +
+                (canManage ? '<td class="cell-action text-nowrap"><div class="text-center d-flex gap-1 justify-content-center">' +
+                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-edit="' + r.pid + '" type="button" aria-label="Ubah"><i class="sym sym-edit-02"></i></button>' +
+                '<button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary btn-sm" data-del="' + r.pid + '" type="button" aria-label="Hapus"><i class="sym sym-trash-solid"></i></button>' +
+                '</div></td>' : '') + '</tr>';
+        });
+        $('pr-tbody').innerHTML = h;
+        $('pr-table-wrap').classList.toggle('d-none', !rows.length);
+        $('pr-info').classList.toggle('d-none', !rows.length);
+        $('pr-info').innerHTML = 'Menampilkan <span class="fw-bold">1-' + rows.length + '</span> dari total ' + rows.length + ' data';
+        $('pr-empty').innerHTML = rows.length ? '' :
+            '<div class="empty-list d-flex flex-column justify-content-center align-items-center p-5"><div class="empty-list__wrapper text-center"><div class="empty-list__content d-flex flex-column align-items-center"><div>' +
+            '<img alt="illustration" class="img-fluid mb-4" src="assets/empty-state.png" width="200px"/>' +
+            '<h1 class="h4">Belum Ada Data ' + (isPic ? 'PIC Kerjasama' : 'Validator Kerjasama') + '</h1>' +
+            '<p class="text-muted">Silakan tambah data dengan cara klik tombol ' + (isPic ? 'tambah PIC' : 'tambah validator') + '</p>' +
+            '</div></div></div></div>';
         renderStats();
     }
 
-    // ---- Form --------------------------------------------------------------
-    function renderUnitSelect() {
-        var used = state.map(function (e) { return e.unit; });
-        function opt(u) {
-            var dis = form.mode === 'add' && used.indexOf(u.id) > -1;
-            return '<option value="' + u.id + '"' + (form.unit === u.id ? ' selected' : '') + (dis ? ' disabled' : '') + '>' + esc(u.nama) + (dis ? ' (sudah ditugaskan)' : '') + '</option>';
+    // ---- Picker unit kerja -------------------------------------------------
+    // restrict=true  -> PIC: node di luar hierarki Admin dikunci (tidak bisa dipilih).
+    // restrict=false -> Validator: semua node bebas dipilih.
+    function renderPicker(kind) {
+        var restrict = kind === 'pic', q = (form.search || '').toLowerCase();
+        var nodes = treeOrder().filter(function (u) { return !q || u.nama.toLowerCase().indexOf(q) > -1; });
+        var body = nodes.map(function (u) {
+            var locked = restrict && !inScope(u.id);
+            return '<label class="pr-node' + (locked ? ' is-locked' : '') + '" style="padding-left:' + (depth(u) * 20 + 4) + 'px">' +
+                '<input class="form-check-input m-0" data-unit="' + u.id + '" type="checkbox"' + (form.units.indexOf(u.id) > -1 ? ' checked' : '') + (locked ? ' disabled' : '') + '/>' +
+                '<span>' + esc(u.nama) + '</span><span class="pr-node__meta">' + (locked ? 'Di luar hierarki Anda' : u.jenis) + '</span></label>';
+        }).join('') || '<div class="text-secondary fs-7 p-2">Unit kerja tidak ditemukan.</div>';
+        var chips = form.units.map(function (id) {
+            var cls = restrict ? 'badge-outline-primary' : 'badge-outline-success';
+            return '<span class="badge ' + cls + ' badge-sm pr-chip">' + esc(unitOf(id).nama) + '<button data-unit-rm="' + id + '" type="button" aria-label="Hapus unit">&times;</button></span>';
+        }).join('');
+        var host = $(kind + '-picker');
+        var keep = host.querySelector('[data-pick-search]');
+        var focus = keep && document.activeElement === keep;
+        host.innerHTML = '<div class="pr-picker"><div class="pr-picker__search"><input class="form-control form-control-sm" data-pick-search placeholder="Cari unit kerja ..." type="search" value="' + esc(form.search || '') + '"/></div><div class="pr-picker__body">' + body + '</div></div>' +
+            '<div class="pr-units mt-2">' + (chips || '<span class="text-secondary fs-7">Belum ada unit dipilih.</span>') + '</div>';
+        if (focus) { var el = host.querySelector('[data-pick-search]'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+    }
+
+    function renderPegawaiSelect(kind) {
+        var existing = state[kind].map(function (r) { return r.pid; });
+        var o = '<option value="">Pilih nama</option>' + PEGAWAI.map(function (p) {
+            var dup = form.mode === 'add' && existing.indexOf(p.id) > -1;
+            return '<option value="' + p.id + '"' + (String(form.pid) === String(p.id) ? ' selected' : '') + (dup ? ' disabled' : '') + '>' + esc(label(p)) + (dup ? ' (sudah terdaftar, ubah dari daftar)' : '') + '</option>';
+        }).join('');
+        $(kind + '-pegawai').innerHTML = o;
+        $(kind + '-pegawai').disabled = form.mode === 'edit';
+    }
+
+    function clearErrors(kind) {
+        $(kind + '-pegawai').classList.remove('is-invalid'); $(kind + '-pegawai-err').textContent = '';
+        $(kind + '-units-err').classList.add('d-none');
+    }
+
+    function openForm(kind, mode, pid) {
+        var row = state[kind].filter(function (r) { return r.pid === pid; })[0];
+        form = { kind: kind, mode: mode, pid: pid || '', units: row ? visibleUnits(kind, row).slice() : [], search: '' };
+        $(kind + '-title').textContent = (mode === 'add' ? 'Tambah ' : 'Ubah ') + (kind === 'pic' ? 'PIC Kerjasama' : 'Validator Kerjasama');
+        if (kind === 'pic') {
+            $('pic-scope').innerHTML = '<i class="sym sym-info-circle mt-1"></i><div>' + (fullAccess()
+                ? 'Sebagai Admin Kerjasama, Anda dapat memilih seluruh unit kerja.'
+                : 'Pilihan unit kerja dibatasi ke hierarki <strong>' + esc(unitOf(ADMIN_UNIT).nama) + '</strong>. Unit lain ditampilkan terkunci.') + '</div>';
         }
-        $('pr-unit').innerHTML = '<option value="">Pilih unit kerja</option>' +
-            '<optgroup label="Fakultas">' + UNITS.filter(function (u) { return u.jenis === 'Fakultas'; }).map(opt).join('') + '</optgroup>' +
-            '<optgroup label="Program Studi">' + UNITS.filter(function (u) { return u.jenis !== 'Fakultas'; }).map(opt).join('') + '</optgroup>';
-        $('pr-unit').disabled = form.mode === 'edit';
+        clearErrors(kind); renderPegawaiSelect(kind); renderPicker(kind); show(kind + '-modal');
     }
-    function renderRows() {
-        var h = '';
-        form.rows.forEach(function (r, i) {
-            var taken = form.rows.filter(function (x, j) { return j !== i && x.pid !== ''; }).map(function (x) { return String(x.pid); });
-            var po = '<option value="">Pilih nama</option>';
-            PEGAWAI.forEach(function (p) {
-                if (taken.indexOf(String(p.id)) > -1) return;
-                po += '<option value="' + p.id + '"' + (String(p.id) === String(r.pid) ? ' selected' : '') + '>' + esc(label(p)) + '</option>';
-            });
-            var ro = ORDER.map(function (k) { return '<option value="' + k + '"' + (r.role === k ? ' selected' : '') + '>' + ROLE[k] + '</option>'; }).join('');
-            h += '<div class="pr-row">' +
-                '<div class="pr-c-peg"><select class="form-select" data-f="pid" data-i="' + i + '" aria-label="Nama">' + po + '</select></div>' +
-                '<div class="pr-c-role"><select class="form-select" data-f="role" data-i="' + i + '" aria-label="Role">' + ro + '</select></div>' +
-                '<div class="pr-c-del"><button class="btn btn-icon d-md-flex justify-content-center align-items-center btn-outline-secondary" data-rm="' + i + '" type="button" aria-label="Hapus baris"' + (form.rows.length === 1 ? ' disabled' : '') + '><i class="sym sym-trash-solid"></i></button></div></div>';
-        });
-        $('pr-rows').innerHTML = h;
-    }
-    function renderForm() {
-        $('pr-form').classList.toggle('d-none', !form);
-        if (!form) return;
-        $('pr-form-title').textContent = form.mode === 'add' ? 'Tambah Penugasan' : 'Ubah Penugasan';
-        $('pr-submit').textContent = form.mode === 'add' ? 'Tambahkan' : 'Ubah';
-        renderUnitSelect(); renderRows();
-    }
-    function clearErrors() {
-        $('pr-unit').classList.remove('is-invalid'); $('pr-unit-err').textContent = '';
-        $('pr-pic-err').classList.add('d-none');
-        document.querySelectorAll('#pr-rows select.is-invalid').forEach(function (s) { s.classList.remove('is-invalid'); });
-    }
-    function openForm(mode, unitId) {
-        var e = state.filter(function (x) { return x.unit === unitId; })[0];
-        form = mode === 'edit'
-            ? { mode: 'edit', unit: unitId, rows: sorted(e.members).map(function (m) { return { pid: m.pid, role: m.role }; }) }
-            : { mode: 'add', unit: '', rows: [{ pid: '', role: 'pic' }] };
-        clearErrors(); renderList(); renderForm();
-        $('pr-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-    function closeForm() { form = null; clearErrors(); renderList(); renderForm(); }
 
     function submitForm() {
-        clearErrors();
-        var ok = true;
-        if (!form.unit) { $('pr-unit').classList.add('is-invalid'); $('pr-unit-err').textContent = 'Unit kerja wajib dipilih.'; ok = false; }
-        form.rows.forEach(function (r, i) {
-            if (r.pid === '') { document.querySelector('#pr-rows select[data-f="pid"][data-i="' + i + '"]').classList.add('is-invalid'); ok = false; }
-        });
-        if (!form.rows.some(function (r) { return r.role === 'pic'; })) {
-            $('pr-pic-err').textContent = 'Minimal 1 PIC Kerjasama wajib ditugaskan pada setiap unit kerja.';
-            $('pr-pic-err').classList.remove('d-none'); ok = false;
+        var kind = form.kind, ok = true;
+        clearErrors(kind);
+        if (!form.pid) { $(kind + '-pegawai').classList.add('is-invalid'); $(kind + '-pegawai-err').textContent = 'Nama wajib dipilih.'; ok = false; }
+        if (!form.units.length) {
+            $(kind + '-units-err').textContent = 'Pilih minimal 1 unit kerja.';
+            $(kind + '-units-err').classList.remove('d-none'); ok = false;
         }
         if (!ok) return;
-        var entry = { unit: form.unit, members: form.rows.map(function (r) { return { pid: Number(r.pid), role: r.role }; }) };
-        var added = form.mode === 'add';
-        if (added) state.push(entry); else state = state.map(function (e) { return e.unit === entry.unit ? entry : e; });
-        persist(added ? 'Penugasan ditambahkan.' : 'Penugasan diubah.');
-        closeForm();
+        var pid = Number(form.pid), idx = -1;
+        state[kind].forEach(function (r, i) { if (r.pid === pid) idx = i; });
+        var units = form.units.slice();
+        if (idx > -1 && kind === 'pic') {
+            // Pertahankan unit di luar hierarki Admin (dikelola Admin lain), hanya ubah yang di dalam hierarki.
+            units = state[kind][idx].units.filter(function (id) { return !inScope(id); }).concat(units);
+        }
+        if (idx > -1) state[kind][idx] = { pid: pid, units: units }; else state[kind].push({ pid: pid, units: units });
+        persist(form.mode === 'add' ? 'Data ditambahkan.' : 'Data diubah.');
+        hide(kind + '-modal'); form = null; render();
     }
 
     // ---- Event -------------------------------------------------------------
-    $('pr-btn-add').addEventListener('click', function () { openForm('add'); });
-    $('pr-search').addEventListener('input', renderList);
-    $('pr-cancel').addEventListener('click', function () {
-        openModal('Batalkan ' + (form.mode === 'add' ? 'Tambah' : 'Ubah') + ' Data',
-            'Apakah Anda yakin ingin membatalkan? Jika dibatalkan, perubahan pada form ini tidak akan disimpan.', 'Oke', 'btn-primary', closeForm);
+    $('pr-tabs').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-tab]'); if (!b) return;
+        TAB = b.dataset.tab; $('pr-search').value = ''; render();
     });
-    $('pr-submit').addEventListener('click', submitForm);
-    $('pr-unit').addEventListener('change', function (e) { form.unit = e.target.value; clearErrors(); });
-    $('pr-add-row').addEventListener('click', function () { form.rows.push({ pid: '', role: 'pic' }); renderRows(); });
-    $('pr-form').addEventListener('change', function (e) {
-        var t = e.target;
-        if (t.matches('select[data-f]')) { form.rows[Number(t.dataset.i)][t.dataset.f] = t.value; clearErrors(); renderRows(); }
+    $('pr-btn-add').addEventListener('click', function () { openForm(TAB, 'add'); });
+    $('pr-search').addEventListener('input', render);
+    ['pic', 'val'].forEach(function (kind) {
+        var host = $(kind + '-modal');
+        $(kind + '-submit').addEventListener('click', submitForm);
+        $(kind + '-pegawai').addEventListener('change', function (e) { form.pid = e.target.value; clearErrors(kind); });
+        host.addEventListener('change', function (e) {
+            var cb = e.target.closest('[data-unit]'); if (!cb) return;
+            var id = cb.dataset.unit, i = form.units.indexOf(id);
+            if (cb.checked && i < 0) form.units.push(id); else if (!cb.checked && i > -1) form.units.splice(i, 1);
+            clearErrors(kind); renderPicker(kind);
+        });
+        host.addEventListener('input', function (e) {
+            if (e.target.matches('[data-pick-search]')) { form.search = e.target.value; renderPicker(kind); }
+        });
+        host.addEventListener('click', function (e) {
+            var rm = e.target.closest('[data-unit-rm]'); if (!rm) return;
+            form.units = form.units.filter(function (id) { return id !== rm.dataset.unitRm; }); renderPicker(kind);
+        });
     });
-    $('pr-form').addEventListener('click', function (e) {
-        var b = e.target.closest('[data-rm]');
-        if (b && form.rows.length > 1) { form.rows.splice(Number(b.dataset.rm), 1); renderRows(); }
-    });
-    $('pr-list').addEventListener('click', function (e) {
+    $('pr-tbody').addEventListener('click', function (e) {
         var ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
-        if (ed) openForm('edit', ed.dataset.edit);
+        if (ed) openForm(TAB, 'edit', Number(ed.dataset.edit));
         if (del) {
-            var id = del.dataset.del;
-            openModal('Hapus Penugasan', 'Apakah Anda yakin ingin menghapus penugasan untuk ' + unitOf(id).nama + '? Karena data yang telah dihapus tidak dapat dikembalikan lagi.',
-                'Hapus', 'btn-danger', function () {
-                    state = state.filter(function (x) { return x.unit !== id; });
-                    if (form && form.unit === id) form = null;
-                    persist('Penugasan dihapus.'); renderList(); renderForm();
-                });
+            var pid = Number(del.dataset.del), kind = TAB;
+            confirmDel('Hapus Data', 'Apakah Anda yakin ingin menghapus penugasan ' + (kind === 'pic' ? 'PIC' : 'Validator') + ' untuk ' + pegOf(pid).nama + '? Karena data yang telah dihapus tidak dapat dikembalikan lagi.', function () {
+                // PIC: hanya lepas unit di dalam hierarki Admin; unit di luar hierarki (milik Admin lain) dipertahankan.
+                state[kind] = state[kind].map(function (r) {
+                    if (r.pid !== pid) return r;
+                    return kind === 'pic' ? { pid: r.pid, units: r.units.filter(function (id) { return !inScope(id); }) } : null;
+                }).filter(function (r) { return r && r.units.length; });
+                persist('Data dihapus.'); render();
+            });
         }
     });
 
-    renderList(); renderForm();
+    render();
 })();
 </script>
 </main>
