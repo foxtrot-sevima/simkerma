@@ -1,0 +1,244 @@
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<style>
+    .ps-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 24px; align-items: start; padding: 20px 0; }
+    .ps-row + .ps-row { border-top: 1px solid var(--bs-border-color); }
+    .ps-row:first-child { padding-top: 4px; }
+    .ps-row:last-child { padding-bottom: 4px; }
+    .ps-label { font-weight: 600; color: var(--bs-emphasis-color); margin: 0 0 2px; }
+    .ps-desc { color: var(--bs-secondary-color); font-size: .875rem; margin: 0; }
+    .ps-field .input-group { width: 100%; }
+    .ps-diff td { vertical-align: middle; }
+    .ps-arrow { color: var(--bs-secondary-color); }
+    .ps-toast { position: fixed; right: 24px; bottom: 24px; z-index: 2000; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: var(--bs-emphasis-color); color: #fff; box-shadow: 0 8px 24px rgba(16, 24, 40, .25); transform: translateY(16px); opacity: 0; pointer-events: none; transition: all .2s; }
+    .ps-toast.is-show { transform: none; opacity: 1; }
+    .ps-toast i { color: var(--bs-success-border-subtle); }
+    @media (max-width: 767.98px) { .ps-row { grid-template-columns: 1fr; gap: 12px; } }
+</style>
+<div class="container">
+<div class="row row-cols-1 gy-3 p-3 p-lg-4">
+<div class="d-flex align-items-center justify-content-between gap-1 px-0 mb-2">
+<div class="d-flex flex-column gap-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li class="breadcrumb-item">Pengaturan</li>
+<li aria-current="page" class="breadcrumb-item active">Pengaturan Status Kerjasama</li>
+</ol>
+</nav>
+<h4 class="m-0">Pengaturan Status Kerjasama</h4>
+</div>
+<button class="btn btn-primary text-nowrap flex-shrink-0" disabled id="ps-save" type="button">Simpan</button>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header d-flex gap-3 align-items-center bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<div class="ratio ratio-1x1" style="width: 42px; min-width: 42px;">
+<span class="d-flex align-items-center justify-content-center rounded-circle p-2 border"><i class="sym sym-calendar-check"></i></span>
+</div>
+<div class="d-block ms-1">
+<h5 class="m-0">Status Kerjasama</h5>
+<span class="fs-6 text-secondary">Atur kapan status kerjasama berubah dan kapan pengingat perpanjangan dikirim.</span>
+</div>
+</div>
+<div class="card-body p-3 p-lg-4">
+<div class="ps-row">
+<div>
+<h6 class="ps-label"><label for="ps-akan">Akan Kedaluwarsa</label> <span class="text-danger">*</span></h6>
+<p class="ps-desc">Kerjasama berstatus <span class="badge badge-outline-warning badge-sm">Akan Kedaluwarsa</span> bila sisa masa berlakunya kurang dari atau sama dengan jumlah hari ini sebelum tanggal berakhir.</p>
+</div>
+<div class="ps-field">
+<div class="input-group has-validation"><input class="form-control" id="ps-akan" inputmode="numeric" type="text"/><span class="input-group-text">hari</span><div class="invalid-feedback" id="ps-akan-err"></div></div>
+</div>
+</div>
+<div class="ps-row">
+<div>
+<h6 class="ps-label"><label for="ps-auto">Ubah Menjadi Tidak Aktif</label></h6>
+<p class="ps-desc">Kerjasama yang sudah <span class="badge badge-outline-danger badge-sm">Kedaluwarsa</span> otomatis menjadi <span class="badge badge-outline-dark badge-sm">Tidak Aktif</span> setelah jumlah hari ini. Kosongkan bila tidak digunakan.</p>
+</div>
+<div class="ps-field">
+<div class="input-group has-validation"><input class="form-control" id="ps-auto" inputmode="numeric" placeholder="Tidak digunakan" type="text"/><span class="input-group-text">hari</span><div class="invalid-feedback" id="ps-auto-err"></div></div>
+</div>
+</div>
+<div class="ps-row">
+<div>
+<h6 class="ps-label"><label for="ps-rem">Reminder Perpanjangan</label></h6>
+<p class="ps-desc">Kirim notifikasi pengingat perpanjangan kepada PIC dan Admin Kerjasama sekian hari sebelum tanggal berakhir. Kosongkan bila tidak digunakan.</p>
+</div>
+<div class="ps-field">
+<div class="input-group has-validation"><input class="form-control" id="ps-rem" inputmode="numeric" placeholder="Tidak digunakan" type="text"/><span class="input-group-text">hari</span><div class="invalid-feedback" id="ps-rem-err"></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Konfirmasi dampak sebelum simpan -->
+<div class="modal fade" id="ps-modal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper"><h5 class="modal-title">Konfirmasi Perubahan Pengaturan</h5></div>
+<button aria-label="Close" class="btn-close" data-ps-close type="button"></button>
+</div>
+<div class="modal-body">
+<div class="alert alert-warning d-flex gap-2 align-items-start" role="alert">
+<i class="sym sym-alert-circle mt-1"></i>
+<div id="ps-impact-summary"></div>
+</div>
+<h6 class="mb-2">Perubahan pengaturan</h6>
+<div class="table-responsive mb-4">
+<table class="table table-bordered align-middle mb-0 ps-diff">
+<thead><tr class="table-light"><th>Pengaturan</th><th>Sebelum</th><th></th><th>Sesudah</th></tr></thead>
+<tbody id="ps-diff"></tbody>
+</table>
+</div>
+<h6 class="mb-2">Perkiraan dampak ke data kerjasama</h6>
+<div class="table-responsive">
+<table class="table table-bordered align-middle mb-0 ps-diff">
+<thead><tr class="table-light"><th>Dampak</th><th class="text-center" style="width: 90px">Sebelum</th><th class="text-center" style="width: 90px">Sesudah</th><th class="text-center" style="width: 110px">Selisih</th></tr></thead>
+<tbody id="ps-impact"></tbody>
+</table>
+</div>
+<p class="text-secondary fs-7 mt-3 mb-0">Status seluruh kerjasama dihitung ulang pada proses terjadwal berikutnya. Perubahan ini tidak dapat dibatalkan otomatis.</p>
+</div>
+<div class="modal-footer">
+<button class="btn btn-light" data-ps-close type="button">Batal</button>
+<button class="btn btn-primary" id="ps-confirm" type="button">Ya, Simpan</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="ps-toast" id="ps-toast" role="status"><i class="sym sym-check-circle-solid"></i><span>Pengaturan status kerjasama berhasil disimpan.</span></div>
+
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="pengaturan-status-kerjasama.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+
+<script>
+(function () {
+    // Pengaturan Status Kerjasama - FOX-1230.
+    // Satu section, tanpa toggle: "Akan Kedaluwarsa" wajib; "Ubah Menjadi Tidak Aktif" dan
+    // "Reminder Perpanjangan" opsional - dikosongkan = fitur tidak digunakan (null).
+    // State via query string untuk capture/review desain:
+    //   (kosong)          -> default: Akan Kedaluwarsa bawaan sistem, lainnya kosong
+    //   ?state=terisi     -> semua terisi/diubah (tombol Simpan aktif)
+    //   ?state=konfirmasi -> terisi + dialog konfirmasi dampak terbuka
+    var DEFAULTS = { akan: 90, auto: null, rem: null };
+    var saved = JSON.parse(JSON.stringify(DEFAULTS));
+    var cur = JSON.parse(JSON.stringify(saved));
+
+    // Data contoh portofolio kerjasama untuk memperkirakan dampak (sisa hari menuju berakhir; hari sejak berakhir).
+    var AKTIF = [4, 9, 14, 21, 28, 33, 41, 55, 60, 68, 75, 88, 92, 105, 120, 140, 160, 185, 210, 260, 300, 340];
+    var BERAKHIR = [2, 6, 11, 19, 27, 38, 52, 70, 96, 130];
+
+    function $(id) { return document.getElementById(id); }
+    function parse(v) { v = String(v).trim(); if (v === '') return null; return /^\d+$/.test(v) ? parseInt(v, 10) : NaN; }
+    function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+
+    function impact(s) {
+        return {
+            akan: AKTIF.filter(function (d) { return d <= s.akan; }).length,
+            kedal: BERAKHIR.filter(function (d) { return s.auto === null || d < s.auto; }).length,
+            nonaktif: s.auto === null ? 0 : BERAKHIR.filter(function (d) { return d >= s.auto; }).length,
+            rem: s.rem === null ? 0 : AKTIF.filter(function (d) { return d <= s.rem; }).length
+        };
+    }
+    function dirty() { return !same(cur, saved); }
+    function show2(v) { return v === null ? '' : v; }
+
+    function paint() {
+        $('ps-akan').value = show2(cur.akan); $('ps-auto').value = show2(cur.auto); $('ps-rem').value = show2(cur.rem);
+        $('ps-save').disabled = !dirty();
+    }
+
+    // Validasi: bilangan bulat 1-3650. Akan Kedaluwarsa wajib; dua lainnya boleh kosong.
+    function validate() {
+        var ok = true;
+        function check(id, errId, required) {
+            var el = $(id), v = parse(el.value), bad = '';
+            if (v === null) { if (required) bad = 'Wajib diisi.'; }
+            else if (isNaN(v)) bad = 'Isi dengan bilangan bulat.';
+            else if (v < 1) bad = 'Minimal 1 hari.';
+            else if (v > 3650) bad = 'Maksimal 3650 hari.';
+            el.classList.toggle('is-invalid', !!bad); $(errId).textContent = bad;
+            if (bad) ok = false; return v;
+        }
+        var a = check('ps-akan', 'ps-akan-err', true), u = check('ps-auto', 'ps-auto-err', false), r = check('ps-rem', 'ps-rem-err', false);
+        if (ok) { cur.akan = a; cur.auto = u; cur.rem = r; }
+        return ok;
+    }
+
+    ['ps-akan', 'ps-auto', 'ps-rem'].forEach(function (id) {
+        $(id).addEventListener('input', function () {
+            var key = { 'ps-akan': 'akan', 'ps-auto': 'auto', 'ps-rem': 'rem' }[id], v = parse($(id).value);
+            if (!(typeof v === 'number' && isNaN(v)) && !(key === 'akan' && v === null)) cur[key] = v;
+            $(id).classList.remove('is-invalid');
+            $('ps-save').disabled = !(dirty() || (typeof v === 'number' && isNaN(v)) || (key === 'akan' && v === null));
+        });
+    });
+
+    // ---- Dialog konfirmasi ---------------------------------------------------
+    function dayText(v) { return v === null ? 'Tidak digunakan' : v + ' hari'; }
+    function openConfirm() {
+        var rows = [
+            ['Akan Kedaluwarsa', dayText(saved.akan), dayText(cur.akan), saved.akan !== cur.akan],
+            ['Ubah Menjadi Tidak Aktif', dayText(saved.auto), dayText(cur.auto), saved.auto !== cur.auto],
+            ['Reminder Perpanjangan', dayText(saved.rem), dayText(cur.rem), saved.rem !== cur.rem]
+        ].filter(function (r) { return r[3]; });
+        $('ps-diff').innerHTML = rows.map(function (r) {
+            return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td class="ps-arrow"><i class="sym sym-arrow-right"></i></td><td class="fw-semibold">' + r[2] + '</td></tr>';
+        }).join('');
+        var a = impact(saved), b = impact(cur);
+        var lines = [
+            ['Berstatus Akan Kedaluwarsa', a.akan, b.akan],
+            ['Berstatus Kedaluwarsa', a.kedal, b.kedal],
+            ['Otomatis menjadi Tidak Aktif', a.nonaktif, b.nonaktif],
+            ['Mendapat reminder perpanjangan', a.rem, b.rem]
+        ];
+        var affected = 0;
+        $('ps-impact').innerHTML = lines.map(function (l) {
+            var d = l[2] - l[1]; affected += Math.abs(d);
+            var cls = d > 0 ? 'text-success' : d < 0 ? 'text-danger' : 'text-secondary';
+            return '<tr><td>' + l[0] + ' (kerjasama)</td><td class="text-center">' + l[1] + '</td><td class="text-center fw-semibold">' + l[2] + '</td><td class="text-center ' + cls + '">' + (d > 0 ? '+' + d : d) + '</td></tr>';
+        }).join('');
+        $('ps-impact-summary').innerHTML = affected
+            ? 'Perubahan ini akan memengaruhi status <strong>' + affected + ' kerjasama</strong> pada proses terjadwal berikutnya. Pastikan nilainya sudah benar sebelum menyimpan.'
+            : 'Perubahan ini tidak mengubah status kerjasama yang ada saat ini, hanya berlaku untuk perhitungan berikutnya.';
+        show();
+    }
+    function show() {
+        var m = $('ps-modal'); m.classList.add('show'); m.style.display = 'block';
+        var b = document.createElement('div'); b.className = 'modal-backdrop fade show'; b.id = 'ps-backdrop';
+        document.body.appendChild(b); document.body.classList.add('modal-open');
+    }
+    function hide() {
+        var m = $('ps-modal'); m.classList.remove('show'); m.style.display = 'none';
+        var b = $('ps-backdrop'); if (b) b.remove(); document.body.classList.remove('modal-open');
+    }
+    document.querySelectorAll('[data-ps-close]').forEach(function (b) { b.addEventListener('click', hide); });
+    $('ps-save').addEventListener('click', function () { if (validate()) openConfirm(); });
+    $('ps-confirm').addEventListener('click', function () {
+        saved = JSON.parse(JSON.stringify(cur)); hide(); paint();
+        $('ps-toast').classList.add('is-show');
+        setTimeout(function () { $('ps-toast').classList.remove('is-show'); }, 2800);
+    });
+
+    // ---- State awal ----------------------------------------------------------
+    var state = new URLSearchParams(location.search).get('state');
+    if (state === 'terisi' || state === 'konfirmasi') cur = { akan: 60, auto: 30, rem: 14 };
+    paint();
+    if (state === 'konfirmasi') openConfirm();
+})();
+</script>
+</main>
