@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="sf-js-enabled" data-mockup-page-id="komponen/notifikasi" lang="en"><head><base href="/v1/"/><link href="assets/captured/app-1960aad9.css" rel="stylesheet"/><link href="assets/captured/app-627c9488.css" rel="stylesheet"/><link href="assets/captured/stylesheets.css" rel="stylesheet"/></head><body><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo" name="csrf-token"/>
+<title>SEVIMA Platform - Komponen Reminder & Badge Counter</title>
+<link href="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Mitra_files/logo-sevimaplatform-small.png" rel="icon"/>
+<style>
+        .qn-header-pattern {
+            background-image: url(assets/vendors/local-assets/sevima-header.webp);
+        }
+
+        .qn-sidebar {
+            background-image: url(assets/vendors/local-assets/sevima-sidebar.svg);
+        }
+
+        @font-face {
+            font-display: block;
+            font-family: "quantum-symbols";
+            src: url(assets/vendors/local-assets/quantum-symbols.woff2) format("woff2"),
+            url(assets/vendors/local-assets/quantum-symbols.woff) format("woff");
+        }
+    </style><style>/* Make clicks pass-through */
+
+    #nprogress {
+      pointer-events: none;
+    }
+
+    #nprogress .bar {
+      background: var(--livewire-progress-bar-color, #29d);
+
+      position: fixed;
+      z-index: 1031;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 2px;
+    }
+
+    /* Fancy blur effect */
+    #nprogress .peg {
+      display: block;
+      position: absolute;
+      right: 0px;
+      width: 100px;
+      height: 100%;
+      box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+      opacity: 1.0;
+
+      -webkit-transform: rotate(3deg) translate(0px, -4px);
+          -ms-transform: rotate(3deg) translate(0px, -4px);
+              transform: rotate(3deg) translate(0px, -4px);
+    }
+
+    /* Remove these to get rid of the spinner */
+    #nprogress .spinner {
+      display: block;
+      position: fixed;
+      z-index: 1031;
+      top: 15px;
+      right: 15px;
+    }
+
+    #nprogress .spinner-icon {
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+
+      border: solid 2px transparent;
+      border-top-color: var(--livewire-progress-bar-color, #29d);
+      border-left-color: var(--livewire-progress-bar-color, #29d);
+      border-radius: 50%;
+
+      -webkit-animation: nprogress-spinner 400ms linear infinite;
+              animation: nprogress-spinner 400ms linear infinite;
+    }
+
+    .nprogress-custom-parent {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .nprogress-custom-parent #nprogress .spinner,
+    .nprogress-custom-parent #nprogress .bar {
+      position: absolute;
+    }
+
+    @-webkit-keyframes nprogress-spinner {
+      0%   { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes nprogress-spinner {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    </style><style></style>
+<div class="">
+<header class="qn-header z-2 sticky-top">
+<div class="qn-header-pattern p-md-3 py-3 px-xl-5 bg-primary text-white">
+<div class="container-fluid">
+<div class="d-flex flex-wrap align-items-center justify-content-start">
+<div class="d-flex gap-2 gap-md-3 align-items-center">
+<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="btn btn-icon btn-lg btn-light rounded-1 d-block d-lg-none bg-transparent text-white" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<i class="sym sym-menu-03"></i>
+</button>
+<a class="qn-identity d-flex align-items-center link-body-emphasis text-decoration-none rounded-3 bg-white" data-mockup-unresolved="/v2/kerjasama" href="#">
+<img alt="Example Campus Logo" class="img-fluid w-auto h-100 object-fit-contain" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Mitra_files/logo-sevimaplatform-small.png"/>
+</a>
+<div class="d-flex flex-column">
+<span>SIM Kerjasama</span>
+<h5 class="m-0">Universitas Foxtrot</h5>
+</div>
+</div>
+<div class="ms-auto d-flex align-items-center gap-1">
+<div class="dropdown" id="qn-notif">
+<button aria-expanded="false" aria-label="Reminder" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
+<i class="sym sym-bell fs-5"></i>
+<span class="badge rounded-pill text-bg-danger position-absolute top-0 start-100 translate-middle qn-bell-badge" data-qn-notif-badge>3</span>
+</button>
+<div class="dropdown-menu dropdown-menu-end p-0 overflow-hidden" id="qn-notif-menu"></div>
+</div>
+<div class="d-none d-md-flex align-items-center gap-1">
+<a aria-label="Pindah Modul" class="btn btn-light p-2 py-1 bg-transparent text-white border-0" data-mockup-unresolved="/gate/menu" href="#">
+<i class="sym sym-dots-grid-solid"></i>
+<span class="d-none d-lg-inline-block ms-2">Modul</span>
+</a>
+</div>
+<hr class="d-none d-md-block vr mx-2"/>
+<div class="dropdown d-none d-md-block rounded-4 bg-white text-black p-1">
+<a aria-expanded="false" class="d-flex gap-1 align-items-center link-body-emphasis text-decoration-none dropdown-toggle pe-1" data-bs-toggle="dropdown" href="mitra.html">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<span class="qn-avatar-name d-none d-lg-block text-truncate">Dimas Sevima</span>
+</a>
+<ul class="dropdown-menu pt-0 text-small" style="width: 296px;">
+<li>
+<div class="d-flex flex-column gap-2 p-3 py-4 pb-3 text-nowrap">
+<div class="d-flex align-items-center gap-3">
+<div class="text-center rounded-4" style="width: 32px; height: 32px; line-height: 32px;">
+<i class="sym sym-user-circle-solid fs-3"></i>
+</div>
+<div class="d-block">
+<h6 class="mb-1">Dimas Sevima</h6>
+<span class="text-muted">Superadmin</span>
+</div>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<button class="dropdown-item d-flex flex-nowrap justify-content-between" data-bs-target="#modal-switch-role" data-bs-toggle="modal">
+                                    Ganti Role
+                                    <i class="sym sym-refresh-ccw-02"></i>
+</button>
+</li>
+<li>
+<a class="dropdown-item text-danger" data-mockup-unresolved="/v2/gate/sessions/logout" href="#">
+<i class="sym sym-arrow-left-solid me-2"></i>
+                                    Keluar
+                                </a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md-3 py-md-0 px-xl-5 border-bottom shadow-sm bg-white">
+<div class="container-fluid">
+<nav class="navbar navbar-expand-lg p-0 bg-white">
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="w-100 navbar-nav py-1 gap-1">
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="index.html">Dashboard</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="kerjasama.html">Kerjasama</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/kegiatan" href="#">Kegiatan</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" href="mitra.html">Mitra</a>
+</li>
+<li class="nav-item">
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/validasi-kerjasama" href="#">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter" data-qn-counter>3</span></a>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="mitra.html" role="button">
+                                    Data Referensi
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/bentuk-kegiatan" href="#">Bentuk Kegiatan</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sasaran-kinerja" href="#">Sasaran Kinerja</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/kriteria-mitra" href="#">Kriteria Mitra</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/sumber-dana" href="#">Sumber Dana</a></li>
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/jenis-dokumen" href="#">Jenis Dokumen</a></li>
+<li><a class="dropdown-item" href="unit-kerja.html">Unit Kerja</a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="mitra.html" role="button">
+                                    Laporan
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" data-mockup-unresolved="/v2/kerjasama/laporan-kerjasama" href="#">Laporan Kerjasama</a></li>
+</ul>
+</li>
+<li class="nav-item dropdown">
+<a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="penugasan-role.html" role="button">
+                                    Pengaturan
+                                </a>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" href="penugasan-role.html">Penugasan Pegawai</a></li>
+<li><a class="dropdown-item" href="pengaturan-status-kerjasama.html">Pengaturan Status Kerjasama</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+</header>
+<form action="#" data-mockup-unresolved="/v2/gate/sessions/switch-role" enctype="multipart/form-data" id="form-switch" method="POST">
+<input autocomplete="off" name="_token" type="hidden" value="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo"/> <div aria-hidden="true" aria-labelledby="modalDeleteLabel" class="modal fade" id="modal-switch-role" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="modal__header-wrapper">
+<h5 class="modal-title">Ganti Role</h5>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+<div class="box-switch selected" data-module="kerjasama" data-name="sa" data-organization="0" onclick="switchRole(this)">
+<h5>
+                        Superadmin
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">SEVIMA</span>
+</h5>
+<div>
+<i class="sym sym-check-circle-solid" style="color:#5d88f6"></i>
+</div>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_perguruan_tinggi" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Administrator PT
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+<div class="box-switch" data-module="kerjasama" data-name="admin_kerjasama" data-organization="4" onclick="switchRole(this)">
+<h5>
+                        Admin Kerjasama
+                        <br/>
+<span style="font-weight: 400;font-size:0.875rem">Universitas Sevima Testing - f</span>
+</h5>
+</div>
+</div>
+</div>
+</div>
+</div>
+</form>
+<main class="qn-main bg-body-tertiary d-flex flex-column">
+<div class="container">
+<div class="row row-cols-1 gy-3 p-3 p-lg-4">
+<div class="d-flex flex-column gap-2 px-0 mb-2">
+<nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '&gt;';">
+<ol class="breadcrumb mb-1">
+<li aria-label="Home" class="breadcrumb-item">
+<a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
+</li>
+<li aria-current="page" class="breadcrumb-item active">Komponen Reminder &amp; Badge Counter</li>
+</ol>
+</nav>
+<h4 class="m-0">Komponen Reminder &amp; Badge Counter</h4>
+<span class="text-secondary">Lembar desain komponen untuk FOX-1231 (Reminder) dan FOX-1232 (Counter Validasi Kerjasama). Komponen aktif juga terpasang di navbar halaman ini.</span>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<h5 class="m-0">1. Ikon Lonceng</h5>
+<span class="fs-6 text-secondary">Ikon lonceng di header dengan badge angka reminder belum dibaca. Badge disembunyikan bila tidak ada yang belum dibaca; lebih dari 99 ditampilkan 99+.</span>
+</div>
+<div class="card-body p-3 p-lg-4">
+<div class="row g-3" id="cs-bells"></div>
+</div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<h5 class="m-0">2. Dropdown Reminder</h5>
+<span class="fs-6 text-secondary">Mengacu ke pola <code>dropdown_notification</code> Quantum-3 (modul DMS): header + tandai semua dibaca, tab, daftar bergrup per hari, footer. Panel dapat diklik: tab, tandai dibaca, dan tandai semua dibaca berfungsi.</span>
+</div>
+<div class="card-body p-3 p-lg-4">
+<div class="row g-4">
+<div class="col-xl-4 col-md-6"><div class="fw-semibold mb-2">Terisi (ada belum dibaca)</div><div class="qn-notif__panel" id="cs-filled"></div></div>
+<div class="col-xl-4 col-md-6"><div class="fw-semibold mb-2">Kosong (tidak ada reminder)</div><div class="qn-notif__panel" id="cs-empty"></div></div>
+<div class="col-xl-4 col-md-6"><div class="fw-semibold mb-2">Terisi, semua sudah dibaca</div><div class="qn-notif__panel" id="cs-read"></div></div>
+</div>
+</div>
+</div>
+
+<div class="card shadow-sm border-0 rounded-4">
+<div class="card-header bg-white border-light-subtle p-3 rounded-top-4 border-2">
+<h5 class="m-0">3. Badge Counter Menu Validasi Kerjasama</h5>
+<span class="fs-6 text-secondary">Angka kecil menempel pada tulisan menu: jumlah pengajuan yang menunggu validasi. Saat angkanya 0 badge disembunyikan; lebih dari 99 ditampilkan 99+.</span>
+</div>
+<div class="card-body p-3 p-lg-4">
+<div class="row g-3">
+<div class="col-md-6 col-xl-3"><div class="text-secondary fs-7 mb-2">Ada pengajuan (3)</div><div class="border rounded-3 bg-white px-3 py-2"><span class="nav-link d-inline-block p-0">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter">3</span></span></div></div>
+<div class="col-md-6 col-xl-3"><div class="text-secondary fs-7 mb-2">Dua digit (12)</div><div class="border rounded-3 bg-white px-3 py-2"><span class="nav-link d-inline-block p-0">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter">12</span></span></div></div>
+<div class="col-md-6 col-xl-3"><div class="text-secondary fs-7 mb-2">Lebih dari 99</div><div class="border rounded-3 bg-white px-3 py-2"><span class="nav-link d-inline-block p-0">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter">99+</span></span></div></div>
+<div class="col-md-6 col-xl-3"><div class="text-secondary fs-7 mb-2">Tidak ada pengajuan (0, badge disembunyikan)</div><div class="border rounded-3 bg-white px-3 py-2"><span class="nav-link d-inline-block p-0">Validasi Kerjasama</span></div></div>
+<div class="col-12"><div class="text-secondary fs-7 mb-2">Dalam navbar (menu aktif)</div>
+<ul class="navbar-nav flex-row gap-3 border rounded-3 bg-white px-3 py-1">
+<li class="nav-item"><span class="nav-link">Mitra</span></li>
+<li class="nav-item"><span class="nav-link text-primary active">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter">3</span></span></li>
+<li class="nav-item"><span class="nav-link">Data Referensi</span></li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="container-fluid mt-auto bg-white border-top">
+<footer class="d-flex flex-wrap justify-content-center justify-content-md-between align-items-center py-1 py-md-2">
+<div class="col-md-6 d-flex align-items-center">
+<a class="d-none d-md-block me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" href="komponen-notifikasi.html">
+<img alt="Logo SEVIMA" class="w-auto" height="18" src="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevima-platform.png"/>
+</a>
+</div>
+<span class="mb-0 fs-7 text-body-tertiary">© 2005-2026. All Rights Reserved</span>
+</footer>
+</div>
+
+<script>
+window.addEventListener('load', function () {
+    var N = window.QnNotif;
+    function copy(items, read) { return items.map(function (n) { var c = {}; for (var k in n) c[k] = n[k]; if (read) c.unread = false; return c; }); }
+    // Lonceng: tanpa badge, 3, 12, 99+.
+    var bells = [['Semua sudah dibaca (badge hilang)', 0], ['3 belum dibaca', 3], ['12 belum dibaca', 12], ['Lebih dari 99', 120]];
+    document.getElementById('cs-bells').innerHTML = bells.map(function (b) {
+        return '<div class="col-6 col-md-3"><div class="text-secondary fs-7 mb-2">' + b[0] + '</div>' +
+            '<div class="bg-primary rounded-3 p-3 d-flex align-items-center justify-content-center"><span class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative">' +
+            '<i class="sym sym-bell fs-5"></i>' + (b[1] ? '<span class="badge rounded-pill text-bg-danger position-absolute top-0 start-100 translate-middle qn-bell-badge">' + N.fmt(b[1]) + '</span>' : '') +
+            '</span></div></div>';
+    }).join('');
+    N.mount(document.getElementById('cs-filled'), copy(N.samples, false));
+    N.mount(document.getElementById('cs-empty'), []);
+    N.mount(document.getElementById('cs-read'), copy(N.samples, true));
+});
+</script>
+</main>
+
+</div>
+<div aria-hidden="true" aria-labelledby="modalChekedLabel" class="modal fade" id="modal_checked" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="d-flex">
+<h1 class="modal-title fs-5" id="modal_checked">Pilih Mitra Terlebih Dahulu</h1>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+    Silakan centang mitra yang ingin dihapus terlebih dahulu.
+</div> <div class="modal-footer">
+<button class="btn btn-light border" data-bs-dismiss="modal" id="button-not-checked" type="button">Mengerti</button>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" aria-labelledby="modal_delete_checked" class="modal fade" id="modal_delete_checked" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<div class="d-flex">
+<h1 class="modal-title fs-5" id="modal_delete_checked">Hapus Mitra</h1>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+    Apakah Anda yakin ingin menghapus data Mitra? Karena data yang telah dihapus tidak dapat dikembalikan lagi.
+</div> <div class="modal-footer">
+<button class="btn btn-light border" data-bs-dismiss="modal" id="delete-many-cancel-button" type="button">Batal</button>
+<button class="btn btn-danger" data-mockup-delete-confirm="bulk" id="delete-many-button" type="submit">Hapus</button>
+</div> </div>
+</div>
+</div>
+<div aria-hidden="true" aria-labelledby="modal_delete_row_Label" class="modal fade" id="modal_delete_row" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<form enctype="multipart/form-data" id="modal_delete_row_form" method="POST">
+<input autocomplete="off" name="_token" type="hidden" value="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo"/> <input name="_method" type="hidden" value="DELETE"/>
+<div class="modal-header">
+<div class="d-flex">
+<h1 class="modal-title fs-5" id="modal_delete_row">Hapus Mitra</h1>
+</div>
+<button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+    Apakah Anda yakin ingin menghapus data Mitra? Karena data yang telah dihapus tidak dapat dikembalikan lagi.
+</div> <div class="modal-footer">
+<button class="btn btn-light border" data-bs-dismiss="modal" id="delete-cancel-button" type="button">Batal</button>
+<button class="btn btn-danger" data-mockup-delete-confirm="row" id="delete-button" type="submit">Hapus</button>
+</div> </form>
+</div>
+</div>
+</div>
+<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script><script src="assets/notifikasi.js"></script></body></html>

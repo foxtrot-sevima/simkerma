@@ -145,6 +145,13 @@
 </div>
 </div>
 <div class="ms-auto d-flex align-items-center gap-1">
+<div class="dropdown" id="qn-notif">
+<button aria-expanded="false" aria-label="Reminder" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
+<i class="sym sym-bell fs-5"></i>
+<span class="badge rounded-pill text-bg-danger position-absolute top-0 start-100 translate-middle qn-bell-badge" data-qn-notif-badge>3</span>
+</button>
+<div class="dropdown-menu dropdown-menu-end p-0 overflow-hidden" id="qn-notif-menu"></div>
+</div>
 <div class="d-none d-md-flex align-items-center gap-1">
 <a aria-label="Pindah Modul" class="btn btn-light p-2 py-1 bg-transparent text-white border-0" data-mockup-unresolved="/gate/menu" href="#">
 <i class="sym sym-dots-grid-solid"></i>
@@ -212,7 +219,7 @@
 <a aria-current="page" class="nav-link" href="mitra.html">Mitra</a>
 </li>
 <li class="nav-item">
-<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/validasi-kerjasama" href="#">Validasi Kerjasama</a>
+<a aria-current="page" class="nav-link" data-mockup-unresolved="/v2/kerjasama/validasi-kerjasama" href="#">Validasi Kerjasama<span class="badge rounded-pill text-bg-danger qn-counter" data-qn-counter>3</span></a>
 </li>
 <li class="nav-item dropdown">
 <a aria-expanded="false" class="nav-link dropdown-toggle active text-primary" data-bs-toggle="dropdown" href="unit-kerja.html" role="button">
@@ -240,7 +247,8 @@
                                     Pengaturan
                                 </a>
 <ul class="dropdown-menu">
-<li><a class="dropdown-item" href="penugasan-role.html">Penugasan Role</a></li>
+<li><a class="dropdown-item" href="penugasan-role.html">Penugasan Pegawai</a></li>
+<li><a class="dropdown-item" href="pengaturan-status-kerjasama.html">Pengaturan Status Kerjasama</a></li>
 </ul>
 </li>
 </ul>
@@ -513,7 +521,7 @@
 <span class="loader__spinner"></span>
 </div>
 </div>
-<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script><script>// Expands/collapses a parent row's descendants (see
+<div class="give-freely-root" data-extension-id="mbnbehikldjhnfehhnaidhjhoofhpehk" data-extension-name="CSS Peeper" id="give-freely-root-mbnbehikldjhnfehhnaidhjhoofhpehk" style="display: block;"><template shadowrootmode="open"><div><div class="gf-app"></div></div></template></div><script src="assets/set-header-height.js"></script><script src="assets/mockup-interactions.js"></script><script src="assets/notifikasi.js"></script><script>// Expands/collapses a parent row's descendants (see
 // customize_unit_kerja.py). Page-specific scaffolding, same spirit as
 // mockup-interactions.js. The eye/edit actions are plain <a href> links to
 // real pages (unit-kerja-detail.html / unit-kerja-edit.html, built by
