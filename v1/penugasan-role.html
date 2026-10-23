@@ -3,7 +3,7 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="BHS9oUXhZGsHsEWIHcCLjON3oP7xUmYdKI1jDAKo" name="csrf-token"/>
-<title>SEVIMA Platform - Penugasan Kerjasama</title>
+<title>SEVIMA Platform - Penugasan Pegawai</title>
 <link href="../mockups/raw/Kerjasama/SEVIMA Platform - Daftar Unit Kerja_files/logo-sevimaplatform-small.png" rel="icon"/>
 <style>
 
@@ -154,8 +154,8 @@
 </div>
 <div class="ms-auto d-flex align-items-center gap-1">
 <div class="dropdown" id="qn-notif">
-<button aria-expanded="false" aria-label="Notifikasi" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
-<i class="sym sym-bell-02 fs-5"></i>
+<button aria-expanded="false" aria-label="Reminder" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
+<i class="sym sym-bell fs-5"></i>
 <span class="badge rounded-pill text-bg-danger position-absolute top-0 start-100 translate-middle qn-bell-badge" data-qn-notif-badge>3</span>
 </button>
 <div class="dropdown-menu dropdown-menu-end p-0 overflow-hidden" id="qn-notif-menu"></div>
@@ -255,7 +255,7 @@
                                     Pengaturan
                                 </a>
 <ul class="dropdown-menu">
-<li><a class="dropdown-item active" href="penugasan-role.html">Penugasan Kerjasama</a></li>
+<li><a class="dropdown-item active" href="penugasan-role.html">Penugasan Pegawai</a></li>
 <li><a class="dropdown-item" href="pengaturan-status-kerjasama.html">Pengaturan Status Kerjasama</a></li>
 </ul>
 </li>
@@ -316,7 +316,7 @@
 <a class="nav-link bg-primary-subtle text-primary fw-medium" href="penugasan-role.html">
 <div class="d-flex align-items-center">
 <span class="align-self-end">
-                                        Penugasan Kerjasama
+                                        Penugasan Pegawai
                                     </span>
 </div>
 </a>
@@ -372,10 +372,10 @@
 <a data-mockup-unresolved="/v2/kerjasama" href="#"> <i class="sym sym-home-line"></i> </a>
 </li>
 <li class="breadcrumb-item">Pengaturan</li>
-<li aria-current="page" class="breadcrumb-item active">Penugasan Kerjasama</li>
+<li aria-current="page" class="breadcrumb-item active">Penugasan Pegawai</li>
 </ol>
 </nav>
-<h4 class="m-0">Penugasan Kerjasama</h4>
+<h4 class="m-0">Penugasan Pegawai</h4>
 </div>
 <button class="btn gap-2 btn-primary text-nowrap flex-shrink-0 d-flex align-items-center" id="pr-btn-add" type="button">
 <i class="sym sym-plus"></i>
@@ -563,8 +563,6 @@
         { id: 23, nama: 'Naufal Rahman, S.H., M.H.',      nip: '198812012014031007', units: ['p-ih'] },
         { id: 24, nama: 'dr. Olivia Kusuma, Sp.PD',       nip: '198205182009012008', units: ['f-fk'] },
         { id: 25, nama: 'dr. Putra Wijaya, M.Kes.',       nip: '197912302006041001', units: ['p-dr'] },
-        { id: 26, nama: 'Rudi Hermawan, S.Sos.',          nip: '197208151998031002', units: ['u-root'] },
-        { id: 27, nama: 'Sinta Maharani, M.M.',           nip: '198009212005012003', units: ['u-root'] }
     ];
     var KEY = 'simkema.penugasan-role.v3';
     // Satu baris = satu unit kerja + daftar pegawai (pids) yang ditugaskan pada role tersebut di unit itu.
@@ -606,7 +604,10 @@
     function unitOf(id) { return UNITS.filter(function (u) { return u.id === id; })[0]; }
     function pegOf(id) { return PEGAWAI.filter(function (p) { return p.id === Number(id); })[0]; }
     function label(p) { return p.nip + ' - ' + p.nama; }
-    function depth(u) { var d = 0; while (u.parent) { u = unitOf(u.parent); d++; } return d; }
+    // Universitas (akar pohon) tidak dapat dipilih sebagai unit penugasan; hanya Fakultas dan Program Studi.
+    // Jadi kedalaman tampil dihitung dari Fakultas (0).
+    function depth(u) { var d = 0; while (u.parent && unitOf(u.parent).parent) { u = unitOf(u.parent); d++; } return d; }
+    function assignable(u) { return u.jenis !== 'Universitas'; }
     function fullAccess() { return !unitOf(ADMIN_UNIT).parent; }
     // Unit berada di dalam hierarki bila ia adalah POV.unit atau turunannya.
     function inScope(id) {
@@ -627,7 +628,7 @@
     }
     function treeOrder() {
         var out = [];
-        (function walk(pid) { UNITS.filter(function (u) { return u.parent === pid; }).forEach(function (u) { out.push(u); walk(u.id); }); })(null);
+        (function walk(pid) { UNITS.filter(function (u) { return u.parent === pid; }).forEach(function (u) { if (assignable(u)) out.push(u); walk(u.id); }); })(null);
         return out;
     }
     function rowOf(kind, unit) { return state[kind].filter(function (r) { return r.unit === unit; })[0]; }
@@ -666,7 +667,7 @@
         return Object.keys(seen).length;
     }
     function renderStats() {
-        var scope = UNITS.filter(function (u) { return inScope(u.id); });
+        var scope = UNITS.filter(function (u) { return assignable(u) && inScope(u.id); });
         var withPic = scope.filter(function (u) { var r = rowOf('pic', u.id); return r && r.pids.length; }).length;
         // NOTE (developer): kartu "Unit tanpa Validator" hanya dihitung dari unit kerja yang SUDAH
         // terpetakan (punya PIC dan/atau Validator) di dalam hierarki. Unit yang belum dipetakan sama

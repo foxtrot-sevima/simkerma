@@ -1,5 +1,5 @@
 /*
- * Daftarkan menu "Pengaturan > Penugasan Kerjasama" (dropdown level atas, setelah
+ * Daftarkan menu "Pengaturan > Penugasan Pegawai" (dropdown level atas, setelah
  * Laporan) di navbar semua halaman v1/. Menu dibuat sebagai grup "Pengaturan"
  * supaya ke depan pengaturan lain bisa ditambahkan di bawahnya. Membuang sisa
  * iterasi sebelumnya (link level atas, item di Data Referensi). Idempotent.
@@ -12,8 +12,8 @@ const path = require('path');
 
 const V1 = path.resolve(__dirname, '..', '..', 'v1');
 const OLD_PENGATURAN = /\s*<li class="nav-item dropdown">\s*<a[^>]*>\s*Pengaturan\s*<\/a>[\s\S]*?<\/ul>\s*<\/li>/;
-const OLD_TOP = /\s*<li class="nav-item">\s*<a[^>]*href="penugasan-role\.html">Penugasan (?:Role|Kerjasama)<\/a>\s*<\/li>/;
-const OLD_DROPDOWN = /\s*<li><a class="dropdown-item[^"]*" href="penugasan-role\.html">Penugasan (?:Role|Kerjasama)<\/a><\/li>/;
+const OLD_TOP = /\s*<li class="nav-item">\s*<a[^>]*href="penugasan-role\.html">Penugasan (?:Role|Kerjasama|Pegawai)<\/a>\s*<\/li>/;
+const OLD_DROPDOWN = /\s*<li><a class="dropdown-item[^"]*" href="penugasan-role\.html">Penugasan (?:Role|Kerjasama|Pegawai)<\/a><\/li>/;
 const OLD_SIDEBAR = /\s*<li class="nav-item">\s*<a class="nav-link[^"]*" href="penugasan-role\.html">[\s\S]*?<\/li>/;
 const LAPORAN_END = /(<li class="nav-item dropdown">\s*<a[^>]*>\s*Laporan\s*<\/a>[\s\S]*?<\/ul>\s*<\/li>)/;
 const MITRA_END = /(<li class="nav-item">\s*<a[^>]*href="mitra\.html">Mitra<\/a>\s*<\/li>)/;
@@ -23,7 +23,7 @@ const MENU = `<li class="nav-item dropdown">
                                     Pengaturan
                                 </a>
 <ul class="dropdown-menu">
-<li><a class="dropdown-item" href="penugasan-role.html">Penugasan Kerjasama</a></li>
+<li><a class="dropdown-item" href="penugasan-role.html">Penugasan Pegawai</a></li>
 <li><a class="dropdown-item" href="pengaturan-status-kerjasama.html">Pengaturan Status Kerjasama</a></li>
 </ul>
 </li>`;

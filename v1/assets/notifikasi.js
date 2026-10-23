@@ -1,22 +1,22 @@
-// Komponen Notifikasi (lonceng + dropdown) dan badge counter menu Validasi Kerjasama.
-// Mockup scaffolding - FOX-1231 (Notifikasi) & FOX-1232 (Counter Validasi Kerjasama).
+// Komponen Reminder (lonceng + dropdown) dan badge counter menu Validasi Kerjasama.
+// Mockup scaffolding - FOX-1231 (Reminder, sebelumnya "Notifikasi") & FOX-1232 (Counter Validasi Kerjasama).
 //
 // Pola mengacu ke dropdown_notification Quantum-3 (dipakai modul DMS,
 // Modules/DMS/.../outer/header.blade.php): header (judul + "tandai semua dibaca"),
 // tab, body bergrup per hari (judul grup + item: ikon, teks tebal, waktu - sumber),
-// footer ("lihat semua notifikasi" + ikon pengaturan). CSS kelas `notification__*`
+// footer ("lihat semua reminder" + ikon pengaturan). CSS kelas `notification__*`
 // milik Quantum-3 tidak ikut bundle QUANTUM v2 yang dipakai mockup, jadi pola yang
 // sama dibangun ulang dengan komponen Bootstrap/QUANTUM + token --bs-*.
 //
 // State via query string (untuk capture desain / review):
-//   ?notif=kosong      -> dropdown tanpa notifikasi (empty state, badge lonceng hilang)
-//   ?notif=dibaca      -> ada notifikasi, semuanya sudah dibaca (badge hilang)
+//   ?notif=kosong      -> dropdown tanpa reminder (empty state, badge lonceng hilang)
+//   ?notif=dibaca      -> ada reminder, semuanya sudah dibaca (badge hilang)
 //   ?counter=0|3|12|120 -> angka badge Validasi Kerjasama (0 = disembunyikan, >99 tampil 99+)
 (function () {
     var SAMPLE = [
         { id: 1, type: 'validasi',    unread: true,  group: 'Hari Ini',   html: 'Pengajuan kerjasama <b>PT Teknologi Nusantara</b> menunggu validasi Anda', time: '2 jam lalu', src: 'Validasi Kerjasama' },
-        { id: 2, type: 'kedaluwarsa', unread: true,  group: 'Hari Ini',   html: 'Kerjasama <b>MoU Universitas Gadjah Mada</b> akan kedaluwarsa dalam 30 hari', time: '5 jam lalu', src: 'Status Kerjasama' },
-        { id: 3, type: 'reminder',    unread: true,  group: 'Kemarin',    html: 'Pengingat perpanjangan: <b>PKS RS Sevima Sehat</b> berakhir 14 hari lagi', time: 'Kemarin, 09.12', src: 'Perpanjangan' },
+        { id: 2, type: 'kedaluwarsa', unread: true,  group: 'Hari Ini',   html: 'Kerjasama <b>MoU Universitas Gadjah Mada</b> akan kedaluwarsa di 22 Nov 2026', time: '5 jam lalu', src: 'Status Kerjasama' },
+        { id: 3, type: 'reminder',    unread: true,  group: 'Kemarin',    html: 'Pengingat perpanjangan: <b>PKS RS Sevima Sehat</b> berakhir di 6 Nov 2026', time: 'Kemarin, 09.12', src: 'Perpanjangan' },
         { id: 4, type: 'disetujui',   unread: false, group: 'Kemarin',    html: 'Pengajuan <b>PKS PT Karya Mandiri</b> disetujui oleh Validator', time: 'Kemarin, 08.30', src: 'Validasi Kerjasama' },
         { id: 5, type: 'ditolak',     unread: false, group: 'Sebelumnya', html: 'Pengajuan <b>MoA Dinas Pendidikan</b> ditolak. Lihat alasan penolakan', time: '3 hari lalu', src: 'Validasi Kerjasama' }
     ];
@@ -55,8 +55,10 @@
         '.qn-notif__footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--bs-border-color)}' +
         '.qn-notif__footer a{font-weight:500;text-decoration:none}' +
         '.qn-notif__panel{background:var(--bs-body-bg);border:1px solid var(--bs-border-color);border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,.12);overflow:hidden;display:inline-block}' +
-        '.qn-bell-badge{font-size:.625rem!important;min-width:18px;padding:3px 5px!important}' +
-        '.qn-counter{font-size:.6875rem;font-weight:600;vertical-align:text-top;margin-left:4px}';
+        '.qn-bell-badge,.qn-counter{display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;min-width:18px;height:18px;padding:0 5px!important;font-size:.6875rem!important;font-weight:600;line-height:1!important;border-radius:999px}' +
+        '.qn-bell-badge.is-single,.qn-counter.is-single{width:18px;padding:0!important}' +
+        '.qn-bell-badge.d-none,.qn-counter.d-none{display:none!important}' +
+        '.qn-counter{margin-left:6px;vertical-align:middle}';
     var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
     function params() { try { return new URLSearchParams(location.search); } catch (e) { return new URLSearchParams(''); } }
@@ -68,10 +70,10 @@
         var list = tab === 'unread' ? unread : items;
         var body;
         if (!items.length) {
-            // State kosong: tidak ada notifikasi sama sekali.
-            body = '<div class="qn-notif__empty"><i class="sym sym-bell-off-02"></i><strong>Tidak ada notifikasi</strong>Notifikasi terkait validasi dan status kerjasama akan muncul di sini.</div>';
+            // State kosong: tidak ada reminder sama sekali.
+            body = '<div class="qn-notif__empty"><i class="sym sym-bell-off"></i><strong>Tidak ada reminder</strong>Reminder terkait validasi dan status kerjasama akan muncul di sini.</div>';
         } else if (!list.length) {
-            body = '<div class="qn-notif__empty"><i class="sym sym-check-circle"></i><strong>Semua sudah dibaca</strong>Tidak ada notifikasi yang belum dibaca.</div>';
+            body = '<div class="qn-notif__empty"><i class="sym sym-check-circle"></i><strong>Semua sudah dibaca</strong>Tidak ada reminder yang belum dibaca.</div>';
         } else {
             var last = null; body = '';
             list.forEach(function (n) {
@@ -84,12 +86,12 @@
             });
         }
         return '<div class="qn-notif">' +
-            '<div class="qn-notif__header d-flex align-items-center justify-content-between"><h3 class="qn-notif__title">Notifikasi</h3>' +
+            '<div class="qn-notif__header d-flex align-items-center justify-content-between"><h3 class="qn-notif__title">Reminder</h3>' +
             '<button class="qn-notif__readall" data-notif-readall type="button"' + (unread.length ? '' : ' disabled') + '>Tandai semua dibaca</button></div>' +
             '<div class="qn-notif__tabs"><button class="qn-notif__tab' + (tab !== 'unread' ? ' is-active' : '') + '" data-notif-tab="all" type="button">Semua</button>' +
             '<button class="qn-notif__tab' + (tab === 'unread' ? ' is-active' : '') + '" data-notif-tab="unread" type="button">Belum Dibaca' + (unread.length ? '<span class="qn-notif__count">' + unread.length + '</span>' : '') + '</button></div>' +
             '<div class="qn-notif__body">' + body + '</div>' +
-            '<div class="qn-notif__footer"><a href="#">Lihat semua notifikasi</a><a aria-label="Pengaturan notifikasi" href="#"><i class="sym sym-settings"></i></a></div></div>';
+            '<div class="qn-notif__footer"><a href="#">Lihat semua reminder</a><a aria-label="Pengaturan reminder" href="#"><i class="sym sym-settings"></i></a></div></div>';
     }
 
     // mount: render panel ke root & pasang interaksi. onChange(items) dipanggil tiap ada perubahan baca/belum.
@@ -118,6 +120,7 @@
         if (!el) return;
         el.textContent = fmt(n);
         el.classList.toggle('d-none', n <= 0);
+        el.classList.toggle('is-single', el.textContent.length === 1); // 1 digit = lingkaran sempurna
     }
 
     // Lonceng di header (semua halaman).
@@ -134,6 +137,9 @@
     var c = params().get('counter');
     var count = c === null ? 3 : parseInt(c, 10) || 0;
     document.querySelectorAll('[data-qn-counter]').forEach(function (el) { setBadge(el, count); });
+
+    // Badge statis (lembar komponen) ikut simetris.
+    document.querySelectorAll('.qn-bell-badge,.qn-counter').forEach(function (el) { el.classList.toggle('is-single', el.textContent.trim().length === 1); });
 
     window.QnNotif = { sample: function () { return initialItems(); }, samples: SAMPLE, mount: mount, panelHTML: panelHTML, fmt: fmt };
 })();

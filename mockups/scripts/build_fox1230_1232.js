@@ -1,7 +1,7 @@
 /*
  * Build halaman desain tiket FOX-1230/1231/1232:
  *  - v1/pengaturan-status-kerjasama.html : Pengaturan Status Kerjasama (di bawah menu Pengaturan)
- *  - v1/komponen-notifikasi.html         : lembar komponen Notifikasi + badge counter Validasi Kerjasama
+ *  - v1/komponen-notifikasi.html         : lembar komponen Reminder + badge counter Validasi Kerjasama
  * Lonceng dan badge counter dipasang ke semua halaman oleh add_notifikasi.js; menu Pengaturan oleh add_penugasan_nav.js.
  *
  * Usage:
@@ -34,7 +34,7 @@ const replaceMain = (html, file) => html.replace(/<main class="qn-main[\s\S]*?<\
 {
     let h = read('mitra.html');
     h = h.replace('data-mockup-page-id="mitra/index"', 'data-mockup-page-id="komponen/notifikasi"');
-    h = h.replace('<title>SEVIMA Platform - Daftar Mitra</title>', '<title>SEVIMA Platform - Komponen Notifikasi & Badge Counter</title>');
+    h = h.replace('<title>SEVIMA Platform - Daftar Mitra</title>', '<title>SEVIMA Platform - Komponen Reminder & Badge Counter</title>');
     h = h.replace('class="nav-link text-primary active" href="mitra.html"', 'class="nav-link" href="mitra.html"');
     fs.writeFileSync(path.join(V1, 'komponen-notifikasi.html'), replaceMain(h, 'komponen_notifikasi_main.html'));
     console.log('wrote v1/komponen-notifikasi.html');
