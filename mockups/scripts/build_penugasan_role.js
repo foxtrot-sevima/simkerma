@@ -7,7 +7,7 @@
  * Pola UI mengikuti /spmi/surat-tugas-auditor/create ("Silakan petakan unit
  * kerja dan auditor yang bertugas"): daftar per unit + form inline.
  *
- * Menu: navbar "Pengaturan" > "Penugasan Kerjasama", dengan sidebar "Pengaturan"
+ * Menu: navbar "Pengaturan" > "Penugasan Pegawai", dengan sidebar "Pengaturan"
  * (siap ditambah pengaturan lain). Chrome dipinjam dari
  * v1/unit-kerja-detail.html (halaman ber-sidebar); yang diganti: penanda
  * menu aktif, sidebar, dan <main> (penugasan_role_main.html).
@@ -24,7 +24,7 @@ const V1 = path.resolve(__dirname, '..', '..', 'v1');
 let html = fs.readFileSync(path.join(V1, 'unit-kerja-detail.html'), 'utf8');
 
 html = html.replace('data-mockup-page-id="unit-kerja/detail"', 'data-mockup-page-id="kerjasama/penugasan-role"');
-html = html.replace('<title>SEVIMA Platform - Detail Unit Kerja</title>', '<title>SEVIMA Platform - Penugasan Kerjasama</title>');
+html = html.replace('<title>SEVIMA Platform - Detail Unit Kerja</title>', '<title>SEVIMA Platform - Penugasan Pegawai</title>');
 html = html.replace(/href="unit-kerja-detail\.html"/g, 'href="penugasan-role.html"');
 
 // Navbar + sidebar menu Pengaturan (lihat lib_pengaturan.js).

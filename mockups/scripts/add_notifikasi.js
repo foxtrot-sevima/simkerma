@@ -1,6 +1,6 @@
 /*
  * Pasang elemen tiket FOX-1230/1231/1232 ke chrome semua halaman v1/ (idempotent):
- *  1. Ikon lonceng + dropdown notifikasi di header (kerangka; isi dirender assets/notifikasi.js)
+ *  1. Ikon lonceng + dropdown reminder di header (kerangka; isi dirender assets/notifikasi.js)
  *  2. Badge counter angka pada menu "Validasi Kerjasama" di navbar
  *  3. <script src="assets/notifikasi.js"> setelah mockup-interactions.js
  *  4. Membersihkan item "Pengaturan Status Kerjasama" yang sempat ditaruh di Data Referensi
@@ -14,8 +14,8 @@ const path = require('path');
 const V1 = path.resolve(__dirname, '..', '..', 'v1');
 
 const BELL = `<div class="dropdown" id="qn-notif">
-<button aria-expanded="false" aria-label="Notifikasi" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
-<i class="sym sym-bell-02 fs-5"></i>
+<button aria-expanded="false" aria-label="Reminder" class="btn btn-light p-2 py-1 bg-transparent text-white border-0 position-relative" data-bs-toggle="dropdown" type="button">
+<i class="sym sym-bell fs-5"></i>
 <span class="badge rounded-pill text-bg-danger position-absolute top-0 start-100 translate-middle qn-bell-badge" data-qn-notif-badge>3</span>
 </button>
 <div class="dropdown-menu dropdown-menu-end p-0 overflow-hidden" id="qn-notif-menu"></div>
@@ -35,6 +35,8 @@ for (const f of fs.readdirSync(V1).filter((n) => n.endsWith('.html') && !n.inclu
     const orig = fs.readFileSync(p, 'utf8');
     let s = orig;
     if (!s.includes('id="qn-notif"')) s = s.replace(HEADER_RIGHT, (m, a, b) => a + BELL + b);
+    s = s.replace('aria-label="Notifikasi" class="btn btn-light', 'aria-label="Reminder" class="btn btn-light'); // label lama
+    s = s.split('sym sym-bell-02 fs-5').join('sym sym-bell fs-5'); // ikon lonceng tegak (bell-02 miring)
     if (!s.includes('data-qn-counter')) s = s.replace('>Validasi Kerjasama</a>', COUNTER);
     if (!s.includes('assets/notifikasi.js')) s = s.replace(SCRIPT_AFTER, SCRIPT_AFTER + '<script src="assets/notifikasi.js"></script>');
     // Hapus duplikat item Validasi Kerjasama tanpa badge (sisa bug sisip ganda) bila versi ber-badge sudah ada.

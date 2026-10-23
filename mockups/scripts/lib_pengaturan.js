@@ -4,7 +4,7 @@
  * (dan di MENU add_penugasan_nav.js agar muncul di dropdown navbar semua halaman).
  */
 const ITEMS = [
-    { href: 'penugasan-role.html', label: 'Penugasan Kerjasama' },
+    { href: 'penugasan-role.html', label: 'Penugasan Pegawai' },
     { href: 'pengaturan-status-kerjasama.html', label: 'Pengaturan Status Kerjasama' },
 ];
 const ACTIVE = 'bg-primary-subtle text-primary fw-medium';
