@@ -756,31 +756,48 @@
         if (focus) { var el = host.querySelector('[data-pick-search]'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
     }
 
+    // Nama TIDAK ditampilkan semua. Setelah unit dipilih, pengguna mencari dulu (nama/NIP); hanya yang cocok
+    // yang tampil. NOTE (developer): query ke server per unit + kata kunci (min. 2 karakter, batasi hasil, mis. 8),
+    // jangan memuat seluruh pegawai di unit/fakultas - datanya bisa sangat banyak.
+    var MIN_CHARS = 2, MAX_RESULTS = 8;
+    function chipsHTML(kind) {
+        if (!form.pids.length) return '<div class="text-secondary fs-7">Belum ada nama dipilih.</div>';
+        var cls = kind === 'pic' ? 'badge-outline-primary' : 'badge-outline-success';
+        return '<div class="d-flex flex-wrap gap-2">' + form.pids.map(function (id) {
+            return '<span class="badge ' + cls + ' badge-sm d-inline-flex align-items-center gap-1">' + esc(label(pegOf(id))) +
+                '<button aria-label="Hapus nama" data-pid-rm="' + id + '" style="border:0;background:none;padding:0 0 0 2px;line-height:1;color:inherit;cursor:pointer" type="button">&times;</button></span>';
+        }).join('') + '</div>';
+    }
     function renderNames(kind) {
         var host = $(kind + '-names');
         if (!form.unit) {
-            host.innerHTML = '<div class="pr-placeholder">Pilih unit kerja terlebih dahulu untuk menampilkan nama pegawai di unit tersebut.</div>';
+            host.innerHTML = '<div class="pr-placeholder">Pilih unit kerja terlebih dahulu, lalu cari nama pegawai di unit tersebut.</div>';
             return;
         }
-        if (form.loading) {
-            host.innerHTML = '<div class="pr-picker p-3"><div class="text-secondary fs-7 mb-3">Memuat pegawai di ' + esc(unitOf(form.unit).nama) + ' ...</div>' +
-                '<div class="pr-skel mb-3" style="width:80%"></div><div class="pr-skel mb-3" style="width:65%"></div><div class="pr-skel" style="width:72%"></div></div>';
-            return;
-        }
-        var list = pegawaiDiUnit(form.unit), q = (form.nameSearch || '').toLowerCase();
+        var q = (form.nameSearch || '').trim().toLowerCase();
         var otherRow = rowOf(OTHER[kind], form.unit), other = otherRow ? otherRow.pids : [];
-        var shown = list.filter(function (p) { return !q || label(p).toLowerCase().indexOf(q) > -1; });
-        var body = shown.map(function (p) {
-            // Satu akun tidak boleh memegang PIC dan Validator di unit yang sama.
-            var clash = other.indexOf(p.id) > -1;
-            return '<label class="pr-node' + (clash ? ' is-locked' : '') + '">' +
-                '<input class="form-check-input m-0" data-pid="' + p.id + '" type="checkbox"' + (form.pids.indexOf(p.id) > -1 ? ' checked' : '') + (clash ? ' disabled' : '') + '/>' +
-                '<span>' + esc(label(p)) + '</span>' +
-                (clash ? '<span class="pr-node__meta">Sudah menjadi ' + (kind === 'pic' ? 'Validator' : 'PIC') + ' di unit ini</span>' : '') + '</label>';
-        }).join('') || '<div class="text-secondary fs-7 p-2">' + (list.length ? 'Nama tidak ditemukan.' : 'Tidak ada pegawai terdaftar di unit ini.') + '</div>';
+        var results = '';
+        if (q.length < MIN_CHARS) {
+            results = '<div class="text-secondary fs-7 p-3">Ketik minimal ' + MIN_CHARS + ' karakter nama atau NIP untuk mencari pegawai di ' + esc(unitOf(form.unit).nama) + '.</div>';
+        } else {
+            var found = pegawaiDiUnit(form.unit).filter(function (p) { return label(p).toLowerCase().indexOf(q) > -1; });
+            if (!found.length) {
+                results = '<div class="text-secondary fs-7 p-3">Tidak ada nama yang cocok di unit ini.</div>';
+            } else {
+                results = found.slice(0, MAX_RESULTS).map(function (p) {
+                    // Satu akun tidak boleh memegang PIC dan Validator di unit yang sama.
+                    var clash = other.indexOf(p.id) > -1;
+                    return '<label class="pr-node' + (clash ? ' is-locked' : '') + '">' +
+                        '<input class="form-check-input m-0" data-pid="' + p.id + '" type="checkbox"' + (form.pids.indexOf(p.id) > -1 ? ' checked' : '') + (clash ? ' disabled' : '') + '/>' +
+                        '<span>' + esc(label(p)) + '</span>' +
+                        (clash ? '<span class="pr-node__meta">Sudah menjadi ' + (kind === 'pic' ? 'Validator' : 'PIC') + ' di unit ini</span>' : '') + '</label>';
+                }).join('') + (found.length > MAX_RESULTS ? '<div class="text-secondary fs-7 p-2">Menampilkan ' + MAX_RESULTS + ' dari ' + found.length + ' hasil. Perjelas kata kunci untuk mempersempit.</div>' : '');
+            }
+        }
         var keep = host.querySelector('[data-name-search]'), focus = keep && document.activeElement === keep;
-        host.innerHTML = '<div class="pr-picker"><div class="pr-picker__search"><input class="form-control form-control-sm" data-name-search placeholder="Cari nama atau NIP ..." type="search" value="' + esc(form.nameSearch || '') + '"/></div><div class="pr-picker__body">' + body + '</div></div>' +
-            '<div class="text-secondary fs-7 mt-2">' + list.length + ' pegawai di ' + esc(unitOf(form.unit).nama) + ' &middot; ' + form.pids.length + ' dipilih. Satu orang boleh menjadi PIC dan Validator, asal tidak di unit yang sama.</div>';
+        host.innerHTML = '<div class="pr-picker"><div class="pr-picker__search"><input class="form-control form-control-sm" data-name-search placeholder="Cari nama atau NIP ..." type="search" value="' + esc(form.nameSearch || '') + '"/></div>' +
+            '<div class="pr-picker__body">' + results + '</div></div>' +
+            '<div class="mt-3"><div class="text-secondary fs-7 mb-2">' + form.pids.length + ' dipilih. Satu orang boleh menjadi PIC dan Validator, asal tidak di unit yang sama.</div>' + chipsHTML(kind) + '</div>';
         if (focus) { var el = host.querySelector('[data-name-search]'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
     }
 
@@ -789,10 +806,8 @@
     function selectUnit(kind, id) {
         // Unit yang sudah punya penugasan: nama yang ada ikut tercentang agar tidak tertimpa saat simpan.
         var existing = rowOf(kind, id);
-        form.unit = id; form.pids = existing ? existing.pids.slice() : []; form.nameSearch = ''; form.loading = true;
-        var token = ++loadToken;
+        form.unit = id; form.pids = existing ? existing.pids.slice() : []; form.nameSearch = ''; form.loading = false;
         renderNames(kind);
-        setTimeout(function () { if (token !== loadToken || !form) return; form.loading = false; renderNames(kind); }, 450); // simulasi baca per unit
     }
 
     function openForm(kind, mode, unit) {
@@ -837,6 +852,10 @@
                 if (c.checked && i < 0) form.pids.push(id); else if (!c.checked && i > -1) form.pids.splice(i, 1);
                 clearErrors(kind); renderNames(kind);
             }
+        });
+        host.addEventListener('click', function (e) {
+            var rm = e.target.closest('[data-pid-rm]'); if (!rm) return;
+            var id = Number(rm.dataset.pidRm); form.pids = form.pids.filter(function (p) { return p !== id; }); clearErrors(kind); renderNames(kind);
         });
         host.addEventListener('input', function (e) {
             if (e.target.matches('[data-pick-search]')) { form.search = e.target.value; renderUnitPicker(kind); }
